@@ -1,0 +1,18 @@
+<query id="getOrderListAll" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_srl" />
+		<column name="order_status" />
+	</columns>
+	<conditions>
+		<condition operation="like_prefix" column="last_changed_date" var="last_changed_date" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="regdate" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

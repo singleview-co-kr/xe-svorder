@@ -1,0 +1,11 @@
+<query id="updateOrderRedeliveryByOrderSrl" action="update">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="is_redelivery" var="is_redelivery" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" notnull="notnull" />
+	</conditions>
+</query>

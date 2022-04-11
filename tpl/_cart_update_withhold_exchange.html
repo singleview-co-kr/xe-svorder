@@ -1,0 +1,24 @@
+<h1>교환 보류 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>교환 보류 사유 코드</th>
+			<th>교환 보류 상세 사유</th>
+			<th>기타 교환 비용</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="exchange_withhold_reason" id="exchange_withhold_reason">
+				<option value="">교환보류사유선택</option>
+				<option loop="$exchange_withhold_reason=>$sReasonCode,$sSymbol" value="{$sSymbol}">{$sReasonCode}</option>
+				</select>
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+			<td>
+				<input type="text" name="exchange_withhold_fee" value="" placeholder='기타 교환 비용' style='padding: 5px 5px; line-height: 28px;'/>
+			</td>
+		</tr>
+	</tbody>
+</table>

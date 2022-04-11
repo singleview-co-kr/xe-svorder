@@ -1,0 +1,627 @@
+<!-- Google Analytics Code Begin (20160306) singleview.co.kr -->
+<script type='text/javascript' src='https://svapi.co.kr:5018/gatk.js'></script>
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+gatkHeader.init( '{$config->ga_tracking_id}' );
+gatkMypage.init();
+</script>
+<!-- Google Analytics Code End (20160306) singleview.co.kr -->
+<include target="_header.html" />
+<div id="orderlist">
+	<form action="./" method="post" id='frm-orderdetail'>
+		<input type="hidden" name="module" value="{$module}" />
+		<input type="hidden" name="act" value="procSvorderAdminUpdateOrderDetail" />
+		<input type="hidden" name="status" value="{$status}" />
+		<input type="hidden" name="order_srl" value="{$order_srl}" />
+		<section class="section">
+			<h1>{$lang->title_conversion_media_info}</h1>
+			<table class="x_table">
+				<tbody>
+					<tr>
+						<th>{$lang->order_referral}</th>
+						<td>{$order_referral[$order_info->order_referral]}</td>
+						<th>utm_source</th>
+						<td>{$order_info->utm_source}</td>
+						<th>utm_medium</th>
+						<td>{$order_info->utm_medium}</td>
+						<th>utm_campaign</th>
+						<td>{$order_info->utm_campaign}</td>
+						<th>utm_term</th>
+						<td>{$order_info->utm_term}</td>
+						<th>mobile</th>
+						<td>{$order_info->is_mobile_access}</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+{@
+$address = $order_info->recipient_address;
+$address1 = $address[0];
+$address2 = $address[1];
+$address3 = $address[2];
+$address4 = $address[3];
+}
+		<section class="section">
+			<h1>{$lang->title_order_info} (<span class="ko_text red">{$order_status[$order_info->order_status]}</span> {$lang->status})</h1>
+			<table class="x_table">
+				<tbody>
+					<tr>
+						<th>{$lang->order_date}</th>
+						<td>{zdate($order_info->regdate)}</td>
+						<th>{$lang->items_to_deliver}</th>
+						<td>{$order_info->item_count}</td>
+					</tr>
+					<tr>
+						<th>{$lang->order_number}</th>
+						<td>
+							<img src="/modules/svorder/tpl/imgs/icons/localhost.png" /> &rarr; {$order_info->order_srl}
+<block cond="$order_info->ext_pg_order_id">
+						<img cond="$order_info->order_referral==svorder::ORDER_REFERRAL_NPAY" src="/modules/svorder/tpl/imgs/icons/naverpay.png" />
+						&rarr; {$order_info->ext_pg_order_id}
+</block>
+						</td>
+						<th><div cond="$config->external_server!=''">{$config->external_server} 물류 주문 번호</div></th>
+						<td><div cond="$config->external_server!=''">{$order_info->thirdparty_order_id}</div></td>
+					</tr>
+					<tr>
+						<th>{$lang->purchaser_name}</th>
+						<td>{$order_info->purchaser_name} &nbsp; 
+<block cond="$order_info->member_srl">
+						( <a href="#popup_menu_area" class="member_{$order_info->member_srl}">{$order_info->item_list[0]->nick_name}</a> )
+</block>
+<block cond="$order_info->member_srl==0">
+						<span class="btn small" data-item-srl="{$item_srl}"><a href="#transferToMember" class="modalAnchor transferToMember">{$lang->cmd_move_to_member}</a></span>
+</block>
+						</td>
+<block cond="$order_info->recipient_name">
+						<th>{$lang->recipient}</th>
+						<td>{$order_info->recipient_name} &nbsp;</td>
+</block>
+					</tr>
+					<tr cond="$order_info->recipient_cellphone">
+						<th> {$lang->recipient}{$lang->address}</th>
+						<td ><span cond="$order_info->recipient_postcode">({$order_info->recipient_postcode})</span>{$address1} {$address2} {$address3} {$address4}</td>
+						<th>{$lang->recipient} {$lang->cellphone}</th>
+						<td >{$order_info->recipient_cellphone}</td>
+					</tr>
+					<tr cond="$order_info->recipient_telnum">
+						<th>{$lang->recipient} {$lang->telnum}</th>
+						<td colspan="3">{$order_info->recipient_telnum}</td>
+					</tr>
+					<tr loop="$extra_vars=>$key,$val">
+						<th>{$val->name}</th>
+						<td colspan="3"><span>{$val->value}</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="section">
+			<h1>{$lang->title_ordered_items}</h1>
+			<table class="x_table">
+				<thead>
+					<tr>
+						<th>{$lang->cart_number}</th>
+						<th>{$lang->order_status}</th>
+						<th>{$lang->product}</th>
+						<th>{$lang->product_name}</th>
+						<th>{$lang->quantity}</th>
+						<th>{$lang->price}</th>
+						<th>{$lang->discount}</th>
+						<th>{$lang->order_amount}</th>
+						<th>{$lang->delivery_memo}</th>
+						<th>{$lang->task}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr loop="$cart_list=>$no,$item">
+<!-- Google Analytics Code Begin (3/4/2016 9:48 AM) singleview.co.kr -->
+<script>
+gatkMypage.queueItemInfo( '{$item->item_srl}', '{$item->item_name}', '', '', '{$item->option_title}', '{$item->price+$item->option_price}', '{$item->quantity}', '' );
+</script>
+<!-- Google Analytics Code End (3/4/2016 9:48 AM) singleview.co.kr -->
+						<td>
+							<input type="hidden" name="cart_srls[]" value="{$item->cart_srl}" />{$item->cart_srl}
+<block cond="$item->npay_product_order_id">
+						<BR>
+						&rarr; {$item->npay_product_order_id}
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCEL_REQUESTED">
+							<font color='red'><strong>
+</block>
+							{$order_status[$item->order_status]}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCEL_REQUESTED">
+							</strong></font>
+</block
+						</td>
+						<td><a href="{getUrl('','module',$module,'act','dispSvitemAdminUpdateItem','module_srl',$item->module_srl,'item_srl',$item->item_srl)}"><img src="{svitemView::_dispThumbnailUrl($item->thumb_file_srl,40)}" /></a></td>
+						<td>
+							<div>{$item->item_name}</div>
+							<div cond="$item->option_srl">{$item->option_title} ({$item->printPrice($item->option_price)})</div>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{$item->quantity}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->price)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->discount_amount)}<br />
+								<block loop="$item->discount_info=>$promotionkey,$promotionval">
+<block cond="$promotionval->is_applied == 'no'">
+<strike>
+</block>
+								{$promotionval->title}<BR>
+<block cond="$promotionval->is_applied == 'no'">
+</strike>
+</block>
+								</block>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->discounted_price)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						<td>{$item->delivery_memo}</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_ON_DELIVERY">
+{@
+if( $item->bRedelivery == 'Y' )
+	$sRedeliery = '재';
+else
+	$sRedeliery = null;
+}
+							<a href="{$item->shipping_info[0]->sTrackingUrl}" class="kso_btn" target="_blank"><span>{$sRedeliery}배송추적</span></a><BR>
+</block>
+<block loop="$item->aChangeableStatus => $tgt_cart_status,$btn_title">
+							<span><input type="button" value="{$btn_title}" data-cart-item-tgt-status="{$tgt_cart_status}" data-order-srl="{$item->order_srl}" data-cart-srl="{$item->cart_srl}" class="cart_item_task"/></span><BR>
+</block>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="section">
+			<h1>{$lang->title_delivery_info}</h1>
+			<table class="x_table">
+				<tr>
+					<th>{$lang->cart_number}</th>
+					<th>{$lang->delivery_company}</th>
+					<th>{$lang->invoice_no}</th>
+					<th>배송추적</th>
+				</tr>
+<block loop="$cart_list=>$nSvCartSrl,$oCartVal">
+				<tr loop="$oCartVal->shipping_info=>$nIdx,$oShipVal">
+					<td>{$oCartVal->cart_srl}</td>
+					<td>{$delivery_companies[$oShipVal->express_id]}</td>
+					<td>{$oShipVal->invoice_no}</td>
+					<td><a cond="$item->order_status == svorder::ORDER_STATE_ON_DELIVERY" href="{$item->shipping_info[0]->sTrackingUrl}" class="kso_btn" target="_blank"><span>배송추적</span></a></td>
+				</tr>
+</block>
+			</table>
+		</section>
+		<section class="section">
+			<h1>{$lang->title_payment_details}</h1>
+			<table class="x_table">
+				<thead>
+					<tr>
+						<th>{$lang->paymethod}</th>
+						<block cond="$order_info->vact_bankname">
+						<th>{$lang->account_number}</th>
+						<th>{$lang->bank_code}</th>
+						<th>{$lang->account_holder}</th>
+						<th>{$lang->sender_name}</th>
+						<th cond="$order_info->vact_date">{$lang->send_date}</th>
+						</block>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{$order_info->payment_method_translated}</td>
+						<block cond="$order_info->vact_bankname">
+						<td>{$order_info->vact_num}</td>
+						<td>{$order_info->vact_bankname}({$order_info->vact_bankcode})</td>
+						<td>{$order_info->vact_name}</td>
+						<td>{$order_info->vact_inputname}</td>
+						<td cond="$payment_info->vact_date">{zdate($order_info->vact_date,'Y-m-d')}</td>
+						</block>
+					</tr>
+				</tbody>
+			</table>
+			<h1>{$lang->title_ordered_items}</h1>
+			<table class="x_table">
+				<thead>
+					<tr>
+						<th>{$lang->item_price}</th>
+						<th>{$lang->discount}</th>
+<block cond="$order_info->consumed_reserves_amount">
+						<th>{$lang->consumed_reserves}</th>
+</block>
+						<th>{$lang->delivery_fee}</th>
+						<th>{$lang->amount}</th>
+<block cond="$order_info->received_reserves_amount">
+						<th>{$lang->received_reserves}</th>
+</block>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+							{number_format($order_info->sum_price)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+							-{number_format($order_info->total_discount_amount)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+							<block loop="$order_info->checkout_promotion_info->aCheckoutPromotion=>$checkoupromotionkey,$checkoutpromotionval">
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+							<BR>{$checkoutpromotionval->title}<BR>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+							</block>
+						</td>
+<block cond="$order_info->consumed_reserves_amount">
+						<td>-{number_format($order_info->consumed_reserves_amount)}</td>
+</block>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+							+{number_format($order_info->delivery_fee)}</td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						<td>={number_format($order_info->total_discounted_price)}</td>
+<block cond="$order_info->received_reserves_amount">
+						<td>{number_format($order_info->received_reserves_amount)}</td>
+</block>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="section" >
+			<h1>{$lang->title_status_info}</h1>
+			<table class="x_table">
+				<tr>
+					<th>{$lang->asis} {$lang->order_status}</th>
+					<th cond="$order_info->order_status != svorder::ORDER_STATE_COMPLETED && $order_info->order_status != svorder::ORDER_STATE_CANCELLED">{$lang->tobe} {$lang->order_status}</th>
+					<!----th>{$lang->cs_memo}1</th---->
+				</tr>
+				<tr>
+					<td><span class="ko_text red">{$order_status[$order_info->order_status]}</span></td>
+					<td cond="$order_info->order_status != svorder::ORDER_STATE_COMPLETED && $order_info->order_status != svorder::ORDER_STATE_CANCELLED">
+						<select name="target_order_status" id="target_order_status" data-order-srl="{$item->order_srl}">
+						<option value=""></option>
+						<option value="memo_only">단순메모</option>
+						<option loop="$status_button_arr=>$nOrderStatus,$sOrderTitle" value="{$nOrderStatus}">{$sOrderTitle}</option>
+						</select>
+					</td>
+					<!---td>
+						<textarea name="cs_memo" id="cs_memo">{$order_info->cs_memo}</textarea>
+						<a href="#cs_memo_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+						<p id="cs_memo_help" class="x_help-block" hidden>{$lang->about_cs_memo}</p>
+					</td---->
+				</tr>
+			</table>
+			<div id="OrderStatusUpdateForm"></div>
+		</section>
+		<section id='section_deduction' class="section" cond="count((array)$order_info->aSingleDeductionInfo ) > 0 && $order_info->aSingleDeductionInfo!=-1">
+			<h1>{$lang->deduction_for_cancel}</h1>
+<block loop="$order_info->aSingleDeductionInfo=>$nSvCartSrl,$aDeductInfo">
+			<table class="x_table">
+				<thead>
+					<tr>
+						<th>장바구니 번호</th>
+						<th>차감 항목명</th>
+						<th>금액</th>
+					</tr>
+				</thead>
+				<tbody id="deduction_detail">
+					<tr loop="$aDeductInfo=>$sTitle,$nDeductAmnt" cond="$sTitle!='bank_name' && $sTitle!='bank_acct' && $sTitle!='acct_holder' && $sTitle!='resultant_refund_amnt' && $sTitle!='deduction_level' && $sTitle!='pg_manual_cancel'">
+						<td>{$nSvCartSrl}</td>
+						<td>{$sTitle}</td>
+						<td>{number_format($nDeductAmnt)}</td>
+					</tr>
+				</tbody>
+				<tfoot align="center" cond="$aDeductInfo['bank_acct']">
+					<tr>
+						<td>환불 계좌 정보<BR>{$aDeductInfo['bank_name']} {$aDeductInfo['bank_acct']} ({$aDeductInfo['acct_holder']})</td>
+						<td>환불 요청액 {number_format($aDeductInfo['resultant_refund_amnt'])}</td>
+<block cond="$aDeductInfo['deduction_level']=='order'">
+{@
+if( $aDeductInfo['pg_manual_cancel'] == 'y' )
+	$bPgManualCancelChecked = 'CHECKED onclick="return false;"';
+}
+						<td><input type="checkbox" name="pg_manual_cancel" value="y" {$bPgManualCancelChecked}> 수기 취소 완료</td>
+</block>
+<block cond="$aDeductInfo['deduction_level']=='cart'">
+{@
+if( $aDeductInfo['pg_manual_cancel'] == 'y' )
+	$bPgManualCancelChecked = '수기 취소 완료';
+else
+	$bPgManualCancelChecked = '개별 품목 상태 변경에서 취소하세요.';
+}
+						<td>{$bPgManualCancelChecked}</td>
+</block>
+					</tr>
+				</tfoot>
+			</table>
+</block>
+		</section>
+		<div class="btnArea">
+<block cond="$config->external_server">
+			<button ID='btnTransmitExt' NAME='btnTransmitExt' type="button" class="x_btn x_btn-primary" onClick="javascript:transmitSettlement( '{$order_info->order_srl}' ); return false;" cond="($order_info->thirdparty_order_id==''||$order_info->thirdparty_order_id=='err:general_transmit_failure')&&$order_info->order_status==svorder::ORDER_STATE_PAID">외부서버에 주문 전송</button>&nbsp;&nbsp
+</block>
+			<button type="submit" id='btn-form-submit' class="x_btn x_btn-primary" cond="$allow_modification" >{$lang->cmd_save}</button>
+		</div>
+	</form>
+	<section class="section">
+		<h1>{$lang->title_cs_info}</h1>
+		<table class="x_table">
+			<tr>
+				<th>{$lang->result}</th>
+				<th>{$lang->cart_number}</th>
+				<th>{$lang->cmd_update_order_status}</th>
+				<th>{$lang->update_order_status_reason}</th>
+				<th>{$lang->cs_memo}</th>
+				<th>CS 비용</th>
+				<th>{$lang->updater_info}</th>
+				<th>{$lang->regdate}</th>
+			</tr>
+			<tr loop="$cs_memos=>$memo_key,$memo_val">
+				<td>{$memo_val->is_allowed}</td>
+				<td>{$memo_val->cart_srl}</td>
+<block cond="$memo_val->order_status_source != $memo_val->order_status_dest">
+				<td>{$order_status[$memo_val->order_status_source]} &rarr; {$order_status[$memo_val->order_status_dest]} </td>
+</block>
+<block cond="$memo_val->order_status_source == $memo_val->order_status_dest">
+				<td>메모 </td>
+</block>
+				<td>{$memo_val->sClaimReason}</td>
+				<td><textarea cols='60'>{$memo_val->memo}</textarea></td>
+				<td>{$memo_val->amount_type}{number_format($memo_val->amount)}</td>
+				<td>
+					<block cond="!$memo_val->admin_member_srl">guest</block>
+					<block cond="$memo_val->admin_member_srl"><a href="#popup_menu_area" class="member_{$memo_val->admin_member_srl}" title="{$memo_val->admin_user_id}">{cut_str($memo_val->nick_name,6)}</a></block>
+				</td>
+				<td>{zdate($memo_val->regdate, 'Y-m-d h:i:s')}</td>
+			</tr>
+		</table>
+	</section>
+</div>
+<div class="x_modal" id="transferToMember">
+	<form action="./" class="fg form" method="post">
+		<input type="hidden" name="act" value="procSvorderAdminTransferToMember" />
+		<input type="hidden" name="module" value="svshopmaster" />
+		<input type="hidden" name="order_srl" value="{$order_srl}" />
+		<div id="transferForm">
+			<div class="x_modal-header">
+				<h1>{$lang->cmd_move_to_member}</h1>
+			</div>
+			<div class="x_modal-content">
+				<table>
+					<tbody>
+						<tr>
+							<td>이 주문을</td>
+							<td><input type="text" name="member_srl" value="" />번 회원에게 이관</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="x_modal-footer">
+				<button type="submit" class="x_btn x_btn-inverse">{$lang->cmd_submit}</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+function _collected_exchange_approved($oClickHandler)
+{
+	var sTgtCartItemStatus = $oClickHandler.attr('data-cart-item-tgt-status');
+	var nCartSrl = $oClickHandler.attr('data-cart-srl');
+	var aCartSrl = [nCartSrl];
+	var params = new Array();
+	params['order_srl'] = $oClickHandler.attr('data-order-srl');
+	params['choosed'] = aCartSrl; // means choosed cart srl list
+	params['tgt_status'] = sTgtCartItemStatus;
+	exec_xml('svorder', 'procSvorderAdminUpdateCartItems', params, function(ret_obj){
+		if(ret_obj['message'] == '저장했습니다.')
+			location.reload();
+	});	
+}
+
+function _exchange_rejected($oClickHandler)
+{
+	var sRejectReason = prompt('구매자에게 알려줄 교환거절 사유를 입력해 주세요.', '예)제품파손');
+	if( sRejectReason == '' || sRejectReason == null || sRejectReason == '예)제품파손' )
+	{
+		alert( '교환거절 사유를 입력해 주세요.' );
+		return;
+	}
+
+	var sTgtCartItemStatus = $oClickHandler.attr('data-cart-item-tgt-status');
+	var nCartSrl = $oClickHandler.attr('data-cart-srl');
+	var aCartSrl = [nCartSrl];
+	var params = new Array();
+	params['order_srl'] = $oClickHandler.attr('data-order-srl');
+	params['choosed'] = aCartSrl; // means choosed cart srl list
+	params['tgt_status'] = sTgtCartItemStatus;
+	params['reject_reason'] = sRejectReason;
+	exec_xml('svorder', 'procSvorderAdminUpdateCartItems', params, function(ret_obj){
+		if(ret_obj['message'] == '저장했습니다.')
+			location.reload();
+	});	
+}
+
+function _return_rejected($oClickHandler)
+{
+	var sRejectReason = prompt('반품 거절 시 구매자에게 통지할 메모를 입력해 주세요.', '예)제품이 심하게 파손되었습니다.');
+	if( sRejectReason == '' || sRejectReason == null || sRejectReason == '예)제품이 심하게 파손되었습니다.' )
+	{
+		alert( '메모를 입력해 주세요.' );
+		return;
+	}
+	var sTgtCartItemStatus = $oClickHandler.attr('data-cart-item-tgt-status');
+	var nCartSrl = $oClickHandler.attr('data-cart-srl');
+	var aCartSrl = [nCartSrl];
+	var params = new Array();
+	params['order_srl'] = $oClickHandler.attr('data-order-srl');
+	params['choosed'] = aCartSrl; // means choosed cart srl list
+	params['tgt_status'] = sTgtCartItemStatus;
+	params['reject_reason'] = sRejectReason;
+	exec_xml('svorder', 'procSvorderAdminUpdateCartItems', params, function(ret_obj){
+		if(ret_obj['message'] == '저장했습니다.')
+			location.reload();
+	});	
+}
+
+function _release_exchange_hold($oClickHandler)
+{
+	var sTgtCartItemStatus = $oClickHandler.attr('data-cart-item-tgt-status');
+	var nCartSrl = $oClickHandler.attr('data-cart-srl');
+	var aCartSrl = [nCartSrl];
+	var params = new Array();
+	params['order_srl'] = $oClickHandler.attr('data-order-srl');
+	params['choosed'] = aCartSrl; // means choosed cart srl list
+	params['tgt_status'] = sTgtCartItemStatus;
+	exec_xml('svorder', 'procSvorderAdminUpdateCartItems', params, function(ret_obj){
+		if(ret_obj['message'] == '저장했습니다.')
+			location.reload();
+	});	
+}
+
+function _changeStatusSimple($oClickHandler)
+{
+	var sTgtCartItemStatus = $oClickHandler.attr('data-cart-item-tgt-status');
+	var nCartSrl = $oClickHandler.attr('data-cart-srl');
+	var aCartSrl = [nCartSrl];
+	var params = new Array();
+	params['order_srl'] = $oClickHandler.attr('data-order-srl');
+	params['choosed'] = aCartSrl; // means choosed cart srl list
+	params['tgt_status'] = sTgtCartItemStatus;
+	exec_xml('svorder', 'procSvorderAdminUpdateCartItems', params, function(ret_obj){
+		if(ret_obj['message'] == '저장했습니다.')
+			location.reload();
+	});	
+}
+
+jQuery('.cart_item_task').click(function()
+{
+	var sTgtCartItemStatus = jQuery(this).attr('data-cart-item-tgt-status');
+	if( sTgtCartItemStatus == '{svorder::ORDER_STATE_COLLECTED_EXCHANGE_APPROVED}' )
+		_collected_exchange_approved(jQuery(this));
+	else if( sTgtCartItemStatus == '{svorder::ORDER_STATE_EXCHANGE_REJECTED}' )
+		_exchange_rejected(jQuery(this));
+	else if( sTgtCartItemStatus == '{svorder::ORDER_STATE_RETURN_REJECTED}' )
+		_return_rejected(jQuery(this));
+	else if( sTgtCartItemStatus == '{svorder::ORDER_STATE_RELEASE_EXCHANGE_HOLD}' )
+		_release_exchange_hold(jQuery(this));
+	else if( sTgtCartItemStatus == '{svorder::ORDER_STATE_DELIVERED}' || sTgtCartItemStatus == '{svorder::ORDER_STATE_COMPLETED}')
+		_changeStatusSimple(jQuery(this));
+	else if( sTgtCartItemStatus == '{svorder::ORDER_STATE_EXCHANGE_REQUESTED}' )
+		alert('지원하지 않는 기능입니다. 관리자에게 문의해 주세요.');
+	else
+	{
+		var sUrl = current_url.setQuery('act','dispSvorderAdminCartItemManagement').setQuery('status', '').setQuery('tgt_status', sTgtCartItemStatus).setQuery('order_srl', jQuery(this).attr('data-order-srl')).setQuery('cart_srl', jQuery(this).attr('data-cart-srl'));
+		location.href=sUrl;
+	}
+});
+
+jQuery(function() {
+	jQuery('#target_order_status').change(function(){
+		if( jQuery( this ).val() == '')
+			jQuery('#OrderStatusUpdateForm').html('');
+		else
+		{
+			var params = new Array();
+			params['tgt_status'] = jQuery( this ).val();
+			params['order_srl'] = jQuery( this ).attr('data-order-srl'); // for cancel_request and cancelled only
+			params['real_act'] = '{$act}'; // for cancel_request and cancelled only
+			exec_xml('svorder', 'getSvorderAdminOrderStatusUpdateForm', params, function(ret_obj){
+				var sTpl = ret_obj.tpl.replace(/<enter>/g, '\n');
+				jQuery('#OrderStatusUpdateForm').html(sTpl);
+			},['error','message','tpl']);
+		}
+	});
+
+	jQuery('.remove_deduction').click(function(){ // 삭제기능
+		jQuery(this).parent().parent().remove(); 
+	});
+
+	jQuery('.deduction_amnt').keyup(function(){          
+		jQuery(this).val( $(this).val().replace(/[^0-9]/gi,'') ); //숫자만 입력가능
+	});
+});
+
+function transmitSettlement( nOrderSrl )
+{
+	if( typeof nOrderSrl == 'undefined' )
+	{
+		alert( '잘못된 주문번호입니다.' );
+		return;
+	}
+
+	if( nOrderSrl.length == 0 )
+	{
+		alert( '잘못된 주문번호입니다.' );
+		return;
+	}
+
+	var sManualTransmitReason = prompt("수기로 주문전송하는 사유를 입력해 주세요.", "예)PG사 통신 오류");
+	if( sManualTransmitReason == null )
+		return;
+	else if( sManualTransmitReason == "예)PG사 통신 오류" || sManualTransmitReason == '' || sManualTransmitReason == null )
+	{
+		alert( '수기 주문 전송 사유를 입력해 주세요.' );
+		return;
+	}
+
+	var params = new Array();
+	params['order_srl'] = nOrderSrl;
+	params['manual_transmit_reason'] = sManualTransmitReason;
+	var response = ['order_srl', 'cart_srl', 'partial_cancel_difference'];
+	exec_xml('svorder', 'procSvorderAdminTransmitTransaction', params, function(ret_obj){
+		console.log(ret_obj);
+		//jQuery('#btnTransmitExtl').attr('disabled','disabled');
+	},response);
+}
+</script>

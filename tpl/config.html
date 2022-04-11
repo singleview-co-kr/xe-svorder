@@ -1,0 +1,108 @@
+<include target="_header.html" />
+
+<form action="./" class="x_form-horizontal" method="post" enctype="multipart/form-data" ruleset="insertConfig">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="procSvorderAdminConfig" />
+	<section class="section">
+		<div class="x_control-group">
+			<label class="x_control-label" for="guest_buy">{$lang->guest_buy}</label>
+			<div class="x_controls">
+				<select name="guest_buy">
+					<option value="N" selected="selected"|cond="$config->guest_buy == 'N' || $config->guest_buy == ''">{$lang->notuse}</option>
+					<option value="Y" selected="selected"|cond="$config->guest_buy == 'Y'">{$lang->use}</option>
+				</select>
+				<a href="#guest_buy_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="guest_buy_help" class="x_help-block" hidden>{$lang->about_guest_buy}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->default_delivery_company}</label>
+			<div class="x_controls">
+				<select name="default_delivery_company">
+					<option loop="$delivery_companies=>$code,$name" value="{$code}" selected="selected"|cond="$code == $config->default_delivery_company">{$name}</option>
+				</select>
+				<a href="#default_delivery_company_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="default_delivery_company_help" class="x_help-block" hidden>{$lang->about_delivery_company}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="">{$lang->shipping_fee_payment_type}</label>
+			<div class="x_controls">
+				<select name="shipping_fee_payment_type">
+					<option value="postpaid" selected="selected"|cond="$config->shipping_fee_payment_type == '' || $config->shipping_fee_payment_type == 'postpaid'">{$lang->shipping_cost_postpaid}</option>
+					<option value="prepaid" selected="selected"|cond="$config->shipping_fee_payment_type == 'prepaid'">{$lang->shipping_cost_prepaid}</option>				
+					<option value="buyer_define" selected="selected"|cond="$config->shipping_fee_payment_type == 'buyer_define'">{$lang->shipping_cost_buyer_define}</option>
+				</select>
+				<a href="#shipping_fee_payment_type_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="shipping_fee_payment_type_help" class="x_help-block" hidden>{$lang->about_shipping_fee_payment_type}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="delivery_fee">{$lang->delivery_fee}</label>
+			<div class="x_controls">
+				<input type="text" name="delivery_fee" value="{$config->delivery_fee}" />
+				<a href="#delivery_fee_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="delivery_fee_help" class="x_help-block" hidden>{$lang->about_delivery_fee}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="freedeliv_amount">{$lang->amount_for_free_delivery}</label>
+			<div class="x_controls">
+				<input type="text" name="freedeliv_amount" value="{$config->freedeliv_amount}" />
+				<a href="#freedeliv_amount" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="freedeliv_amount" class="x_help-block" hidden>{$lang->about_free_delivery}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="default_shipping_serial_column_name">{$lang->default_shipping_serial_column_name}</label>
+			<div class="x_controls">
+				<input type="text" name="default_shipping_serial_column_name" id="default_shipping_serial_column_name" value="{$config->default_shipping_serial_column_name}" />
+				<a href="#default_shipping_serial_column_name_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="default_shipping_serial_column_name_help" class="x_help-block" hidden>{$lang->about_default_shipping_serial_column_name}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="use_purchaser_alarm_mail">{$lang->use_purchaser_alarm_mail}</label>
+			<div class="x_controls">
+				<select name="use_purchaser_alarm_mail">
+					<option value="N" selected="selected"|cond="$config->use_purchaser_alarm_mail == 'N' || $config->use_purchaser_alarm_mail == ''">{$lang->notuse}</option>
+					<option value="Y" selected="selected"|cond="$config->use_purchaser_alarm_mail == 'Y'">{$lang->use}</option>
+				</select>
+				<a href="#guest_buy_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="use_purchaser_alarm_mail_help" class="x_help-block" hidden>{$lang->about_use_purchaser_alarm_mail}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="order_admin_info">{$lang->order_admin_info}</label>
+			<div class="x_controls" >
+				<textarea name="order_admin_info">{$config->order_admin_info}</textarea>
+				<a href="#order_admin_info_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="order_admin_info_help" class="x_help-block" hidden>{$lang->about_order_admin_info}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="ga_tracking_id">{$lang->ga_tracking_id}</label>
+			<div class="x_controls">
+				<input type="text" name="ga_tracking_id" id="ga_tracking_id" value="{$config->ga_tracking_id}" />
+				<a href="#ga_tracking_id_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="ga_tracking_id_help" class="x_help-block" hidden>{$lang->about_ga_tracking_id}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="external_server">{$lang->transmit_to_external_server}</label>
+			<div class="x_controls">
+				<select name="external_server" id="external_server">
+					<option value='' selected="selected"|cond="$config->external_server==''">{$lang->no_transmit}</option>
+					<option value='ecaso' selected="selected"|cond="$config->external_server=='ecaso'">ecaso</option>
+				</select>
+				<a href="#external_server_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="external_server_help" class="x_help-block" hidden>{$lang->about_transmit_to_external_server}</p>
+			</div>
+		</div>
+	</section>
+	<div class="x_clearfix btnArea">
+		<div class="x_pull-right">
+			<button class="x_btn x_btn-primary" type="submit" accesskey="s">{$lang->cmd_registration}</button>
+		</div>
+	</div>
+</form>

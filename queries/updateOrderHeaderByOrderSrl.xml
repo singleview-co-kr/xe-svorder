@@ -1,0 +1,18 @@
+<query id="updateOrderHeaderByOrderSrl" action="update">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="reserves_consume_srl" var="reserves_consume_srl" />
+		<column name="reserves_receive_srl" var="reserves_receive_srl" />
+		<column name="offered_price" var="offered_price" />
+		<column name="delivery_fee" var="delivery_fee" />
+		<column name="delivfee_inadvance" var="delivfee_inadvance" default="Y" />
+		<column name="total_discount_amount" var="total_discount_amount" />
+		<column name="use_escrow" var="use_escrow" />
+		<column name="last_changed_date" var="last_changed_date" default="curdate()" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" notnull="notnull" />
+	</conditions>
+</query>

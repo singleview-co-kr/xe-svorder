@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="sv_column_type_list" type="array">
+		<item name="text">
+			<value xml:lang="ko"><![CDATA[한줄 입력칸(text)]]></value>
+		</item>
+		<item name="hidden">
+			<value xml:lang="ko"><![CDATA[숨김값(hidden)]]></value>
+		</item>
+		<item name="homepage">
+			<value xml:lang="ko"><![CDATA[URL 형식]]></value>
+		</item>
+		<item name="email_address">
+			<value xml:lang="ko"><![CDATA[이메일 형식(email)]]></value>
+		</item>
+		<item name="tel">
+			<value xml:lang="ko"><![CDATA[전화번호 형식(phone)]]></value>
+		</item>
+		<item name="textarea">
+			<value xml:lang="ko"><![CDATA[여러 줄 입력칸(textarea)]]></value>
+		</item>
+		<item name="radio">
+			<value xml:lang="ko"><![CDATA[단일 선택(radio)]]></value>
+		</item>
+		<item name="select">
+			<value xml:lang="ko"><![CDATA[단일 선택(single select)]]></value>
+		</item>
+		<item name="checkbox">
+			<value xml:lang="ko"><![CDATA[다중 선택(checkbox)]]></value>
+		</item>
+		<item name="kr_zip">
+			<value xml:lang="ko"><![CDATA[한국주소(zip)]]></value>
+		</item>
+		<item name="date">
+			<value xml:lang="ko"><![CDATA[일자(연월일)]]></value>
+		</item>
+	</item>
+	<item name="arr_delivery_method_code" type="array">
+		<item name="DELIVERY">
+			<value xml:lang="ko"><![CDATA[택배, 등기, 소포]]></value>
+		</item>
+		<item name="GDFW_ISSUE_SVC">
+			<value xml:lang="ko"><![CDATA[굿스플로 송장 출력]]></value>
+		</item>
+		<item name="VISIT_RECEIPT">
+			<value xml:lang="ko"><![CDATA[방문 수령]]></value>
+		</item>
+		<item name="DIRECT_DELIVERY">
+			<value xml:lang="ko"><![CDATA[직접 전달]]></value>
+		</item>
+		<item name="QUICK_SVC">
+			<value xml:lang="ko"><![CDATA[퀵서비스]]></value>
+		</item>
+		<item name="NOTHING">
+			<value xml:lang="ko"><![CDATA[배송 없음]]></value>
+		</item>
+	</item>
+	<item name="arr_collect_delivery_method_code" type="array">
+		<item name="RETURN_DESIGNATED">
+			<value xml:lang="ko"><![CDATA[지정 반품 택배]]></value>
+		</item>
+		<item name="RETURN_DELIVERY">
+			<value xml:lang="ko"><![CDATA[일반 반품 택배]]></value>
+		</item>
+		<item name="RETURN_INDIVIDUAL">
+			<value xml:lang="ko"><![CDATA[직접 반송]]></value>
+		</item>
+	</item>
+	<item name="arr_order_status_code" type="array">
+		<item name="0">
+			<value xml:lang="ko"><![CDATA[카트보관]]></value>
+		</item>
+		<item name="1">
+			<value xml:lang="ko"><![CDATA[입금대기]]></value>
+		</item>
+		<item name="2">
+			<value xml:lang="ko"><![CDATA[입금완료]]></value>
+		</item>
+		<item name="3">
+			<value xml:lang="ko"><![CDATA[배송준비]]></value>
+		</item>
+		<item name="4">
+			<value xml:lang="ko"><![CDATA[배송중]]></value>
+		</item>
+		<item name="5">
+			<value xml:lang="ko"><![CDATA[배송완료]]></value>
+		</item>
+		<item name="6">
+			<value xml:lang="ko"><![CDATA[거래완료]]></value>
+		</item>
+		<item name="A">
+			<value xml:lang="ko"><![CDATA[배송지연]]></value>
+		</item>
+		<item name="B">
+			<value xml:lang="ko"><![CDATA[반품요청]]></value>
+		</item>
+		<item name="C">
+			<value xml:lang="ko"><![CDATA[반품실물 수령확인]]></value>
+		</item>
+		<item name="D">
+			<value xml:lang="ko"><![CDATA[반품 거부]]></value>
+		</item>
+		<item name="E">
+			<value xml:lang="ko"><![CDATA[반품]]></value>
+		</item>
+		<item name="G">
+			<value xml:lang="ko"><![CDATA[교환요청]]></value>
+		</item>
+		<item name="H">
+			<value xml:lang="ko"><![CDATA[교환실물 수령확인]]></value>
+		</item>
+		<item name="I">
+			<value xml:lang="ko"><![CDATA[교환 재배송 준비]]></value>
+		</item>
+		<item name="J">
+			<value xml:lang="ko"><![CDATA[교환 보류 요청]]></value>
+		</item>
+		<item name="K">
+			<value xml:lang="ko"><![CDATA[교환 보류 해제]]></value>
+		</item>
+		<item name="L">
+			<value xml:lang="ko"><![CDATA[교환 재배송]]></value>
+		</item>
+		<item name="M">
+			<value xml:lang="ko"><![CDATA[교환 거부]]></value>
+		</item>
+		<item name="N">
+			<value xml:lang="ko"><![CDATA[교환]]></value>
+		</item>
+		<item name="Q">
+			<value xml:lang="ko"><![CDATA[취소요청]]></value>
+		</item>
+		<item name="R">
+			<value xml:lang="ko"><![CDATA[취소]]></value>
+		</item>
+		<item name="S">
+			<value xml:lang="ko"><![CDATA[취소승인]]></value>
+		</item>
+		<item name="W">
+			<value xml:lang="ko"><![CDATA[구매확정 보류요청]]></value>
+		</item>
+		<item name="Z">
+			<value xml:lang="ko"><![CDATA[삭제]]></value>
+		</item>
+	</item>
+	<item name="cart_keep">
+		<value xml:lang="ko"><![CDATA[카트보관]]></value>
+	</item>
+	<item name="wait_deposit">
+		<value xml:lang="ko"><![CDATA[입금대기]]></value>
+	</item>
+	<item name="deposit_done">
+		<value xml:lang="ko"><![CDATA[입금완료]]></value>
+	</item>
+	<item name="prepare_delivery">
+		<value xml:lang="ko"><![CDATA[배송준비]]></value>
+	</item>
+	<item name="on_delivery">
+		<value xml:lang="ko"><![CDATA[배송중]]></value>
+	</item>
+	<item name="delivery_done">
+		<value xml:lang="ko"><![CDATA[배송완료]]></value>
+	</item>
+	<item name="transaction_done">
+		<value xml:lang="ko"><![CDATA[거래완료]]></value>
+	</item>
+	<item name="delivery_delayed">
+		<value xml:lang="ko"><![CDATA[배송지연]]></value>
+	</item>
+	<item name="return_requested">
+		<value xml:lang="ko"><![CDATA[반품요청]]></value>
+	</item>
+	<item name="returns">
+		<value xml:lang="ko"><![CDATA[반품]]></value>
+	</item>
+	<item name="exchange_requested">
+		<value xml:lang="ko"><![CDATA[교환요청]]></value>
+	</item>
+	<item name="collected_exchange_approved">
+		<value xml:lang="ko"><![CDATA[교환실물 수령확인]]></value>
+	</item>
+	<item name="collected_return_approved">
+		<value xml:lang="ko"><![CDATA[반품실물 수령확인]]></value>
+	</item>
+	<item name="return_rejected">
+		<value xml:lang="ko"><![CDATA[반품 거부]]></value>
+	</item>
+	<item name="exchange_redelivery_ready">
+		<value xml:lang="ko"><![CDATA[교환 재배송 준비]]></value>
+	</item>
+	<item name="exchange_rejected">
+		<value xml:lang="ko"><![CDATA[교환 거부]]></value>
+	</item>
+	<item name="exchange_withhold">
+		<value xml:lang="ko"><![CDATA[교환 보류]]></value>
+	</item>
+	<item name="exchanged">
+		<value xml:lang="ko"><![CDATA[교환]]></value>
+	</item>
+	<item name="on_cancelling">
+		<value xml:lang="ko"><![CDATA[취소요청]]></value>
+	</item>
+	<item name="cancel_approved">
+		<value xml:lang="ko"><![CDATA[취소승인]]></value>
+	</item>
+	<item name="cancelled">
+		<value xml:lang="ko"><![CDATA[취소]]></value>
+	</item>
+	<item name="deleted">
+		<value xml:lang="ko"><![CDATA[삭제]]></value>
+	</item>
+	<item name="arr_exchange_withhold_reason_code" type="array">
+		<item name="EXCHANGE_DELIVERYFEE">
+			<value xml:lang="ko"><![CDATA[교환 배송비 청구]]></value>
+		</item>
+		<item name="EXCHANGE_EXTRAFEE">
+			<value xml:lang="ko"><![CDATA[기타 교환 비용 청구]]></value>
+		</item>
+		<item name="EXCHANGE_PRODUCT_READY">
+			<value xml:lang="ko"><![CDATA[교환 상품 준비 중]]></value>
+		</item>
+		<item name="EXCHANGE_PRODUCT_NOT_DELIVERED">
+			<value xml:lang="ko"><![CDATA[교환 상품 미입고]]></value>
+		</item>
+		<item name="EXCHANGE_HOLDBACK">
+			<value xml:lang="ko"><![CDATA[교환 구매 확정 보류]]></value>
+		</item>
+		<item name="ETC">
+			<value xml:lang="ko"><![CDATA[기타 사유]]></value>
+		</item>
+	</item>
+	<item name="arr_delivery_delay_reason_code" type="array">
+		<item name="PRODUCT_PREPARE">
+			<value xml:lang="ko"><![CDATA[상품 준비 중]]></value>
+		</item>
+		<item name="CUSTOMER_REQUEST">
+			<value xml:lang="ko"><![CDATA[고객 요청]]></value>
+		</item>
+		<item name="CUSTOM_BUILD">
+			<value xml:lang="ko"><![CDATA[주문 제작]]></value>
+		</item>
+		<item name="RESERVED_DISPATCH">
+			<value xml:lang="ko"><![CDATA[예약 발송]]></value>
+		</item>
+		<item name="ETC">
+			<value xml:lang="ko"><![CDATA[기타 사유]]></value>
+		</item>
+	</item>
+	<item name="arr_npay_claim_cancel_return_reason" type="array">
+		<item name="INTENT_CHANGED">
+			<value xml:lang="ko"><![CDATA[구매 의사 취소]]></value>
+		</item>
+		<item name="COLOR_AND_SIZE">
+			<value xml:lang="ko"><![CDATA[색상 및 사이즈 변경]]></value>
+		</item>
+		<item name="WRONG_ORDER">
+			<value xml:lang="ko"><![CDATA[다른 상품 잘못 주문]]></value>
+		</item>
+		<item name="PRODUCT_UNSATISFIED">
+			<value xml:lang="ko"><![CDATA[서비스 및 상품 불만족]]></value>
+		</item>
+		<item name="DELAYED_DELIVERY">
+			<value xml:lang="ko"><![CDATA[배송 지연]]></value>
+		</item>
+		<item name="SOLD_OUT">
+			<value xml:lang="ko"><![CDATA[상품 품절]]></value>
+		</item>
+		<item name="DROPPED_DELIVERY">
+			<value xml:lang="ko"><![CDATA[배송 누락]]></value>
+		</item>
+		<item name="BROKEN">
+			<value xml:lang="ko"><![CDATA[상품 파손]]></value>
+		</item>
+		<item name="INCORRECT_INFO">
+			<value xml:lang="ko"><![CDATA[상품 정보 상이]]></value>
+		</item>
+		<item name="WRONG_DELIVERY">
+			<value xml:lang="ko"><![CDATA[오배송]]></value>
+		</item>
+		<item name="WRONG_OPTION">
+			<value xml:lang="ko"><![CDATA[색상 등이 다른 상품을 잘못 배송]]></value>
+		</item>
+	</item>
+	<item name="msg_exceed_qty_limit">
+		<value xml:lang="ko"><![CDATA[주문 최대 수량을 초과했습니다. 일부 주문을 삭제해 주세요.]]></value>
+	</item>
+	<item name="msg_cart_not_choosed">
+		<value xml:lang="ko"><![CDATA[선택 품목이 없습니다.]]></value>
+	</item>
+	<item name="msg_order_status_quick_update_disallowed_or_will_be_served_soon">
+		<value xml:lang="ko"><![CDATA[아직 지원하지 않는 기능입니다.]]></value>
+	</item>
+	<item name="msg_invoice_already_registerted">
+		<value xml:lang="ko"><![CDATA[이미 운송장 등록됨.]]></value>
+	</item>
+	<item name="msg_cart_order_status_not_aligned">
+		<value xml:lang="ko"><![CDATA[%s번 주문-개별 품목 상태 달라서 처리 불가!  ]]></value>
+	</item>
+	<item name="title_multiple_choice">
+		<value xml:lang="ko"><![CDATA[(복수선택)]]></value>
+	</item>
+	<item name="msg_value_must_be_filled">
+		<value xml:lang="ko"><![CDATA[%s에 값을 입력해 주세요.]]></value>
+	</item>
+	<item name="msg_value_must_be_unique">
+		<value xml:lang="ko"><![CDATA[%s에 이미 등록된 값입니다.]]></value>
+	</item>
+	<item name="order_management">
+		<value xml:lang="ko"><![CDATA[주문관리]]></value>
+	</item>
+	<item name="wo_status">
+		<value xml:lang="ko"><![CDATA[모든주문상태검색]]></value>
+	</item>
+	<item name="wt_status">
+		<value xml:lang="ko"><![CDATA[주문상태별검색]]></value>
+	</item>
+	<item name="all_month">
+		<value xml:lang="ko"><![CDATA[모든월검색]]></value>
+	</item>
+	<item name="page_list">
+		<value xml:lang="ko"><![CDATA[페이지 목록]]></value>
+	</item>
+	<item name="page_creation">
+		<value xml:lang="ko"><![CDATA[페이지 생성]]></value>
+	</item>
+	<item name="page_management">
+		<value xml:lang="ko"><![CDATA[페이지 관리]]></value>
+	</item>
+	<item name="npay_api_setting">
+		<value xml:lang="ko"><![CDATA[Npay 주문 API 설정]]></value>
+	</item>
+	<item name="npay_api_use">
+		<value xml:lang="ko"><![CDATA[Npay Api 사용]]></value>
+	</item>
+	<item name="about_npay_api_use">
+		<value xml:lang="ko"><![CDATA[Npay Api 사용 여부를 선택합니다.]]></value>
+	</item>
+	<item name="npay_api_accesslicense">
+		<value xml:lang="ko"><![CDATA[Npay Access License]]></value>
+	</item>
+	<item name="common_settings">
+		<value xml:lang="ko"><![CDATA[공통 설정]]></value>
+	</item>
+	<item name="debug_settings">
+		<value xml:lang="ko"><![CDATA[디버그 모드 설정]]></value>
+	</item>
+	<item name="release_settings">
+		<value xml:lang="ko"><![CDATA[운영 모드 설정]]></value>
+	</item>
+	<item name="about_npay_api_accesslicense">
+		<value xml:lang="ko"><![CDATA[Npay에서 발급받은 Access License]]></value>
+	</item>
+	<item name="npay_api_secretkey">
+		<value xml:lang="ko"><![CDATA[Npay Secret Key]]></value>
+	</item>
+	<item name="about_npay_api_secretkey">
+		<value xml:lang="ko"><![CDATA[Npay에서 발급받은 Secret Key]]></value>
+	</item>
+	<item name="msg_cart_invoice_already_registerted">
+		<value xml:lang="ko"><![CDATA[운송장 기등록으로 미처리 주문내역 - %s!]]></value>
+	</item>
+	<item name="msg_npay_api_is_not_allowed">
+		<value xml:lang="ko"><![CDATA[Npay API 연동이 금지되었습니다.]]></value>
+	</item>
+	<item name="msg_unmatched_number_of_order_to_be_processed">
+		<value xml:lang="ko"><![CDATA[감지한 주문수와 처리한 주문수가 불일치합니다.]]></value>
+	</item>
+	<item name="msg_no_changeable_order">
+		<value xml:lang="ko"><![CDATA[변경할 수 없는 주문 상태입니다.]]></value>
+	</item>
+	<item name="npay_shop_id">
+		<value xml:lang="ko"><![CDATA[Npay 가맹점 ID]]></value>
+	</item>
+	<item name="npay_api_server">
+		<value xml:lang="ko"><![CDATA[Npay 주문 API 서버 종류]]></value>
+	</item>
+	<item name="about_npay_api_server">
+		<value xml:lang="ko"><![CDATA[Npay 주문 API 서버 종류를 선택합니다. Sandbox 기능이 제한된 테스트 서버, ec 모든 기능의 운영 서버]]></value>
+	</item>
+
+	<item name="npay_shop_debug_mode">
+		<value xml:lang="ko"><![CDATA[Npay 주문 API 디버그 모드]]></value>
+	</item>
+	<item name="about_npay_shop_debug_mode">
+		<value xml:lang="ko"><![CDATA[디버그 모드를 선택하면, 디버그 메세지가 표시된 후 화면이 redirect 되지 않습니다.]]></value>
+	</item>
+	<item name="npay_shop_order_collect_from">
+		<value xml:lang="ko"><![CDATA[Npay 주문 작동 방식]]></value>
+	</item>
+	<item name="npay_shop_collect_from_payed">
+		<value xml:lang="ko"><![CDATA[결제완료부터 수집]]></value>
+	</item>
+	<item name="npay_shop_collect_from_dispatched">
+		<value xml:lang="ko"><![CDATA[발송처리부터 수집]]></value>
+	</item>
+	<item name="about_npay_shop_order_collect_from">
+		<value xml:lang="ko"><![CDATA[npay 주문을 결제완료부터 수집할지 발송처리된 주문부터 수집할지 결정합니다.<BR>npay 주문 API로 운송장 대량 할당이 불안정할 경우,<BR>이를 npay 주문 관리자에서 직접 처리하고 발송처리된 주문부터 API로 수집하게 변경할 수 있습니다.]]></value>
+	</item>
+	<item name="npay_connected_svorder_mid">
+		<value xml:lang="ko"><![CDATA[Npay 연동 결제 모듈]]></value>
+	</item>
+	<item name="npay_connected_svitem_mid">
+		<value xml:lang="ko"><![CDATA[Npay 연동 카탈로그 모듈]]></value>
+	</item>
+	<item name="npay_return_deliv_fee">
+		<value xml:lang="ko"><![CDATA[Npay 반품 배송비]]></value>
+	</item>
+	<item name="about_npay_return_deliv_fee">
+		<value xml:lang="ko"><![CDATA[Npay 발송 후 반품 신청시 자동 징수되는 배송비를 입력합니다.]]></value>
+	</item>
+	<item name="refund_bank_name">
+		<value xml:lang="ko"><![CDATA[취소 시 환불 은행명]]></value>
+	</item>
+	<item name="refund_account_holder">
+		<value xml:lang="ko"><![CDATA[예금주]]></value>
+	</item>
+	<item name="refund_bank_account">
+		<value xml:lang="ko"><![CDATA[계좌번호]]></value>
+	</item>
+	<item name="deduction_for_cancel">
+		<value xml:lang="ko"><![CDATA[취소 시 차감액]]></value>
+	</item>
+	<item name="about_npay_shop_id">
+		<value xml:lang="ko"><![CDATA[네이버 페이 심사 승인 후 발급받는 페이센터 ID를 입력해야 합니다.]]></value>
+	</item>
+	<item name="page_configuration">
+		<value xml:lang="ko"><![CDATA[페이지설정]]></value>
+	</item>
+	<item name="data_format_setting">
+		<value xml:lang="ko"><![CDATA[데이터 포맷 설정]]></value>
+	</item>
+	<item name="register_shipping_serial">
+		<value xml:lang="ko"><![CDATA[운송장 일괄등록]]></value>
+	</item>
+	<item name="register_invoice_info_file">
+		<value xml:lang="ko"><![CDATA[송장정보 파일]]></value>
+	</item>
+	<item name="about_register_invoice_info_file">
+		<value xml:lang="ko"><![CDATA[운송장정보 파일에는 반드시 "주문번호", "운송장번호", "택배사" 필드가 존재해야 합니다.<BR>만약 "택배사" 필드가 포함되어 있지 않으면 "기본설정"탭의 "기본 배송회사" 설정으로 일괄처리 됩니다.]]></value>
+	</item>
+	<item name="gather_data_via_api">
+		<value xml:lang="ko"><![CDATA[API로 데이터 수동 수집]]></value>
+	</item>
+	<item name="reset_npay_order_info">
+		<value xml:lang="ko"><![CDATA[npay 주문 정보 초기화]]></value>
+	</item>
+	<item name="about_reset_npay_order_info">
+		<value xml:lang="ko"><![CDATA[기존에 수집된 npay 주문 정보를 모두 제거하고 다시 시작하게 합니다.]]></value>
+	</item>
+	<item name="collect_manually">
+		<value xml:lang="ko"><![CDATA[수동으로 API 정보 수집]]></value>
+	</item>
+	<item name="npay_api_order_collection">
+		<value xml:lang="ko"><![CDATA[npay 주문 정보 수집]]></value>
+	</item>
+	<item name="about_npay_api_order_collection">
+		<value xml:lang="ko"><![CDATA[최초 주문 발생일을 yyyymmdd 형식으로 입력하시면 해당 일시부터 수집을 시작합니다. 최초 수집 시 공란이면 이전 24시간부터 수집을 시작합니다. ]]></value>
+	</item>
+	<item name="npay_api_review_collection">
+		<value xml:lang="ko"><![CDATA[npay 리뷰 수집]]></value>
+	</item>
+	<item name="about_npay_api_review_collection">
+		<value xml:lang="ko"><![CDATA[최초 리뷰 발생일을 yyyymmdd 형식으로 입력하시면 해당 일시부터 수집을 시작합니다. 최초 수집 시 공란이면 이전 24시간부터 수집을 시작합니다. ]]></value>
+	</item>
+	<item name="npay_api_inquiry_collection">
+		<value xml:lang="ko"><![CDATA[npay 질문 수집]]></value>
+	</item>
+	<item name="about_npay_api_inquiry_collection">
+		<value xml:lang="ko"><![CDATA[최초 질문 발생일을 yyyymmdd 형식으로 입력하시면 해당 일시부터 수집을 시작합니다. 최초 수집 시 공란이면 이전 24시간부터 수집을 시작합니다. ]]></value>
+	</item>
+	<item name="about_order_complete">
+		<value xml:lang="ko"><![CDATA[<em>결제</em>가 완료되었습니다.]]></value>
+	</item>
+	<item name="about_bankaccount_info">
+		<value xml:lang="ko"><![CDATA[<em>입금</em>하시면 주문완료 됩니다.]]></value>
+	</item>
+	<item name="about_order_number">
+		<value xml:lang="ko"><![CDATA[* 주문번호는 비회원 주문배송 조회시 꼭 필요 합니다. 분실하지 않도록 주의해주세요.]]></value>
+	</item>
+	<item name="payment_options">
+		<value xml:lang="ko"><![CDATA[결제옵션]]></value>
+	</item>
+	<item name="msg_already_cancelled_order">
+		<value xml:lang="ko"><![CDATA[취소 완료된 주문은 변경할 수 없습니다.]]></value>
+	</item>
+	<item name="msg_already_registered_order">
+		<value xml:lang="ko"><![CDATA[이미 등록된 주문입니다.]]></value>
+	</item>
+	<item name="msg_invalid_cs_detail_reason">
+		<value xml:lang="ko"><![CDATA[상세 사유를 입력하세요.]]></value>
+	</item>
+	<item name="msg_invalid_purchaser_name">
+		<value xml:lang="ko"><![CDATA[주문자 성명을 확인하세요.]]></value>
+	</item>
+	<item name="msg_invalid_purchaser_email">
+		<value xml:lang="ko"><![CDATA[주문자 이메일을 확인하세요.]]></value>
+	</item>
+	<item name="msg_invalid_purchaser_cellphone">
+		<value xml:lang="ko"><![CDATA[주문자 핸드폰을 확인하세요.]]></value>
+	</item>
+	<item name="msg_invalid_receipient_cellphone">
+		<value xml:lang="ko"><![CDATA[수령인 핸드폰을 확인하세요.]]></value>
+	</item>
+	<item name="msg_invalid_receipient_address">
+		<value xml:lang="ko"><![CDATA[수령인 받으실 주소를 확인하세요.]]></value>
+	</item>
+	<item name="msg_incompleted_pg_manual_cancel">
+		<value xml:lang="ko"><![CDATA[수기 취소가 확인되지 않아서 주문 취소가 불가능합니다.]]></value>
+	</item>
+	<item name="register_invoice_info_file_type">
+		<value xml:lang="ko"><![CDATA[송장정보 파일 유형]]></value>
+	</item>
+	<item name="shipping_fee_payment_type">
+		<value xml:lang="ko"><![CDATA[배송비 결제 방식]]></value>
+	</item>
+	<item name="shipping_cost_postpaid">
+		<value xml:lang="ko"><![CDATA[배송비 착불]]></value>
+	</item>
+	<item name="shipping_cost_prepaid">
+		<value xml:lang="ko"><![CDATA[배송비 선불]]></value>
+	</item>
+	<item name="shipping_cost_buyer_define">
+		<value xml:lang="ko"><![CDATA[배송비 지불방식 구매자 선택]]></value>
+	</item>
+	<item name="about_shipping_fee_payment_type">
+		<value xml:lang="ko"><![CDATA[배송비 결제 방식을 선택하세요. 배송비 후불이 기본입니다.]]></value>
+	</item>
+	<item name="delivery_memo">
+		<value xml:lang="ko"><![CDATA[배송메모]]></value>
+	</item>
+	<item name="task">
+		<value xml:lang="ko"><![CDATA[작업]]></value>
+	</item>
+	<item name="delivery_fee">
+		<value xml:lang="ko"><![CDATA[배송비]]></value>
+	</item>
+	<item name="about_delivery_fee">
+		<value xml:lang="ko"><![CDATA[배송비를 입력하세요.]]></value>
+	</item>
+	<item name="amount_for_free_delivery">
+		<value xml:lang="ko"><![CDATA[무료배송 결제액]]></value>
+	</item>
+	<item name="about_free_delivery">
+		<value xml:lang="ko"><![CDATA[무료배송 결제액을 입력해주세요. 0이면 무료배송. 예) 70000 입력시 총 결제금액이 7만원 이상일 때 배송비는 0원]]></value>
+	</item>
+	<item name="guest_buy">
+		<value xml:lang="ko"><![CDATA[비회원 구매]]></value>
+	</item>
+	<item name="about_guest_buy">
+		<value xml:lang="ko"><![CDATA[비회원 구매 기능 사용여부를 선택하세요.]]></value>
+	</item>
+	<item name="msg_no_guest_buy">
+		<value xml:lang="ko"><![CDATA[비회원 구매가 허용되지 않았습니다. 로그인 후 구매하세요.]]></value>
+	</item>
+	<item name="basic_setting">
+		<value xml:lang="ko"><![CDATA[기본설정]]></value>
+	</item>
+	<item name="skin_settings">
+		<value xml:lang="ko"><![CDATA[스킨설정]]></value>
+	</item>
+	<item name="amnt_to_be_reserved">
+		<value xml:lang="ko"><![CDATA[거래 완료 후 지급 적립금]]></value>
+	</item>
+	<item name="reserves">
+		<value xml:lang="ko"><![CDATA[적립금]]></value>
+	</item>
+	<item name="will_claim_reserves">
+		<value xml:lang="ko"><![CDATA[원을 사용할 수 있나요?]]></value>
+	</item>
+	<item name="consumed_reserves">
+		<value xml:lang="ko"><![CDATA[차감 적립금]]></value>
+	</item>
+	<item name="received_reserves">
+		<value xml:lang="ko"><![CDATA[지급 적립금]]></value>
+	</item>
+	<item name="order_management_details">
+		<value xml:lang="ko"><![CDATA[주문관리내역]]></value>
+	</item>
+	<item name="order_rawdata_download">
+		<value xml:lang="ko"><![CDATA[거래원장 다운로드]]></value>
+	</item>
+	<item name="use_purchaser_alarm_mail">
+		<value xml:lang="ko"><![CDATA[고객 알림메일 사용]]></value>
+	</item>
+	<item name="about_use_purchaser_alarm_mail">
+		<value xml:lang="ko"><![CDATA[결제 취소 권한을 보유한 관리자 1명의 meber_srl을 입력합니다.]]></value>
+	</item>
+	<item name="order_admin_info">
+		<value xml:lang="ko"><![CDATA[주문관리자 선정<BR>중요 사건 메일 알림]]></value>
+	</item>
+	<item name="about_order_admin_info">
+		<value xml:lang="ko"><![CDATA[주문 관리자의 member_srl을 정하고 중요한 주문상태 변경이 발생하면 입력된 member_srl의 이메일 주소로 메일 통지 됩니다. 여러 관리자일 경우 member_srl;수신자명;메일주소(줄바꿈)으로 구분하세요.]]></value>
+	</item>
+	<item name="msg_invalid_order_admin_info">
+		<value xml:lang="ko"><![CDATA[기본설정->주문관리자 메일 알림 정보 를 바르게 설정해 주세요.]]></value>
+	</item>
+	<item name="ga_tracking_id">
+		<value xml:lang="ko"><![CDATA[GA 추적 ID]]></value>
+	</item>
+	<item name="about_ga_tracking_id">
+		<value xml:lang="ko"><![CDATA[관리자에서 실행되는 PG사 결제 취소를 Google Analytics 데이터에 반영하기 위해 입력합니다.]]></value>
+	</item>
+	<item name="transmit_to_external_server">
+		<value xml:lang="ko"><![CDATA[외부서버로 주문정보 전송]]></value>
+	</item>
+	<item name="no_transmit">
+		<value xml:lang="ko"><![CDATA[전송하지 않음]]></value>
+	</item>
+	<item name="about_transmit_to_external_server">
+		<value xml:lang="ko"><![CDATA[설정하면 외부서버로 주문 정보를 전송합니다.]]></value>
+	</item>
+	<item name="recover_transaction">
+		<value xml:lang="ko"><![CDATA[거래복구]]></value>
+	</item>
+	<item name="escrow">
+		<value xml:lang="ko"><![CDATA[에스크로]]></value>
+	</item>
+	<item name="default_delivery_company">
+		<value xml:lang="ko"><![CDATA[기본 배송회사]]></value>
+	</item>
+	<item name="default_shipping_serial_column_name">
+		<value xml:lang="ko"><![CDATA[기본 송장번호 컬럼명]]></value>
+	</item>
+	<item name="order_srl">
+		<value xml:lang="ko"><![CDATA[주문번호]]></value>
+	</item>
+	<item name="cart_srl">
+		<value xml:lang="ko"><![CDATA[장바구니번호]]></value>
+	</item>
+	<item name="recipient">
+		<value xml:lang="ko"><![CDATA[수령인]]></value>
+	</item>
+	<item name="recipient_name">
+		<value xml:lang="ko"><![CDATA[수령인명]]></value>
+	</item>
+	<item name="cellphone">
+		<value xml:lang="ko"><![CDATA[휴대전화]]></value>
+	</item>
+	<item name="telnum">
+		<value xml:lang="ko"><![CDATA[일반전화]]></value>
+	</item>
+	<item name="recipient_telnum">
+		<value xml:lang="ko"><![CDATA[수령인 일반전화]]></value>
+	</item>
+	<item name="btn_update">
+		<value xml:lang="ko"><![CDATA[변경]]></value>
+	</item>
+	<item name="register_new_addr">
+		<value xml:lang="ko"><![CDATA[새 주소 등록 요청]]></value>
+	</item>
+	<item name="address">
+		<value xml:lang="ko"><![CDATA[주소]]></value>
+	</item>
+	<item name="address1">
+		<value xml:lang="ko"><![CDATA[주소]]></value>
+	</item>
+	<item name="address2">
+		<value xml:lang="ko"><![CDATA[상세주소]]></value>
+	</item>
+	<item name="postcode">
+		<value xml:lang="ko"><![CDATA[우편번호]]></value>
+	</item>
+	<item name="item">
+		<value xml:lang="ko"><![CDATA[상품]]></value>
+	</item>
+	<item name="product">
+		<value xml:lang="ko"><![CDATA[상품]]></value>
+	</item>
+	<item name="product_name">
+		<value xml:lang="ko"><![CDATA[상품명]]></value>
+	</item>
+	<item name="item_name">
+		<value xml:lang="ko"><![CDATA[상품명]]></value>
+	</item>
+	<item name="item_code">
+		<value xml:lang="ko"><![CDATA[상품코드]]></value>
+	</item>
+	<item name="price">
+		<value xml:lang="ko"><![CDATA[가격]]></value>
+	</item>
+	<item name="item_price">
+		<value xml:lang="ko"><![CDATA[상품가격]]></value>
+	</item>
+	<item name="description">
+		<value xml:lang="ko"><![CDATA[상세내용]]></value>
+	</item>
+	<item name="purchaser_cellphone">
+		<value xml:lang="ko"><![CDATA[구매자 휴대전화]]></value>
+	</item>
+	<item name="purchaser_email">
+		<value xml:lang="ko"><![CDATA[구매자 이메일]]></value>
+	</item>
+	<item name="purchaser_telnum">
+		<value xml:lang="ko"><![CDATA[구매자 유선전화]]></value>
+	</item>
+	<item name="recipient_cellphone">
+		<value xml:lang="ko"><![CDATA[수령인 휴대전화]]></value>
+	</item>
+	<item name="recipient_postcode">
+		<value xml:lang="ko"><![CDATA[수령인 우편번호]]></value>
+	</item>
+	<item name="discounted_price">
+		<value xml:lang="ko"><![CDATA[할인구매가]]></value>
+	</item>
+	<item name="order_quantity">
+		<value xml:lang="ko"><![CDATA[구매수량]]></value>
+	</item>
+	<item name="quantity">
+		<value xml:lang="ko"><![CDATA[수량]]></value>
+	</item>
+	<item name="description">
+		<value xml:lang="ko"><![CDATA[상세내용]]></value>
+	</item>
+	<item name="currency_settings">
+		<value xml:lang="ko"><![CDATA[통화설정]]></value>
+	</item>
+	<item name="select_currency">
+		<value xml:lang="ko"><![CDATA[통화선택]]></value>
+	</item>
+	<item name="currency_format">
+		<value xml:lang="ko"><![CDATA[통화부호 출력형식]]></value>
+	</item>
+	<item name="decimal_place">
+		<value xml:lang="ko"><![CDATA[소수점 자릿수]]></value>
+	</item>
+	
+	<item name="purchase_date">
+		<value xml:lang="ko"><![CDATA[구매일자]]></value>
+	</item>
+	<item name="amount">
+		<value xml:lang="ko"><![CDATA[금액]]></value>
+	</item>
+	<item name="total_discount">
+		<value xml:lang="ko"><![CDATA[할인금액]]></value>
+	</item>
+	<item name="payamount">
+		<value xml:lang="ko"><![CDATA[결제금액]]></value>
+	</item>
+	<item name="discounted_amount">
+		<value xml:lang="ko"><![CDATA[할인적용금액]]></value>
+	</item>
+	<item name="order_amount">
+		<value xml:lang="ko"><![CDATA[주문금액]]></value>
+	</item>
+	<item name="total_order_amount">
+		<value xml:lang="ko"><![CDATA[총주문금액]]></value>
+	</item>
+	<item name="payment_amount">
+		<value xml:lang="ko"><![CDATA[최종결제금액]]></value>
+	</item>
+	<item name="sales_price">
+		<value xml:lang="ko"><![CDATA[판매가]]></value>
+	</item>
+	<item name="discount">
+		<value xml:lang="ko"><![CDATA[할인]]></value>
+	</item>
+	<item name="discount_amount">
+		<value xml:lang="ko"><![CDATA[할인금액]]></value>
+	</item>
+	<item name="sum">
+		<value xml:lang="ko"><![CDATA[합계]]></value>
+	</item>
+	<item name="order">
+		<value xml:lang="ko"><![CDATA[주문]]></value>
+	</item>
+	<item name="stock">
+		<value xml:lang="ko"><![CDATA[재고]]></value>
+	</item>
+	<item name="checkbox">
+		<value xml:lang="ko"><![CDATA[체크박스]]></value>
+	</item>
+	<item name="delivery_fee">
+		<value xml:lang="ko"><![CDATA[배송비]]></value>
+	</item>
+	<item name="order_status">
+		<value xml:lang="ko"><![CDATA[주문상태]]></value>
+	</item>
+	<item name="manipulations">
+		<value xml:lang="ko"><![CDATA[작업]]></value>
+	</item>
+	<item name="receipt">
+		<value xml:lang="ko"><![CDATA[영수증]]></value>
+	</item>
+	<item name="order_complete">
+		<value xml:lang="ko"><![CDATA[주문완료]]></value>
+	</item>
+	<item name="bankaccount_info">
+		<value xml:lang="ko"><![CDATA[입금계좌안내]]></value>
+	</item>
+	<item name="account_number">
+		<value xml:lang="ko"><![CDATA[계좌번호]]></value>
+	</item>
+	<item name="bank_name">
+		<value xml:lang="ko"><![CDATA[은행명]]></value>
+	</item>
+	<item name="bank_code">
+		<value xml:lang="ko"><![CDATA[은행코드]]></value>
+	</item>
+	<item name="account_holder">
+		<value xml:lang="ko"><![CDATA[예금주]]></value>
+	</item>
+	<item name="deposit_amount">
+		<value xml:lang="ko"><![CDATA[입금액]]></value>
+	</item>
+	<item name="sender_name">
+		<value xml:lang="ko"><![CDATA[송금자명]]></value>
+	</item>
+	<item name="send_date">
+		<value xml:lang="ko"><![CDATA[송금만료일]]></value>
+	</item>
+	<item name="more_economic_title">
+		<value xml:lang="ko"><![CDATA[더 경제적으로!]]></value>
+	</item>
+	<item name="purchase_benefit">
+		<value xml:lang="ko"><![CDATA[구매혜택]]></value>
+	</item>
+	<item name="purchaser_info">
+		<value xml:lang="ko"><![CDATA[주문자정보]]></value>
+	</item>
+	<item name="title_delivery_info">
+		<value xml:lang="ko"><![CDATA[배송정보]]></value>
+	</item>
+	<item name="title_status_info">
+		<value xml:lang="ko"><![CDATA[상태정보]]></value>
+	</item>
+	<item name="delivery_info">
+		<value xml:lang="ko"><![CDATA[배송정보]]></value>
+	</item>
+	<item name="asis">
+		<value xml:lang="ko"><![CDATA[현재]]></value>
+	</item>
+	<item name="tobe">
+		<value xml:lang="ko"><![CDATA[변경할]]></value>
+	</item>
+	<item name="title_cs_info">
+		<value xml:lang="ko"><![CDATA[CS정보]]></value>
+	</item>
+	<item name="cs_memo">
+		<value xml:lang="ko"><![CDATA[상세 메모]]></value>
+	</item>
+	<item name="update_order_status_reason">
+		<value xml:lang="ko"><![CDATA[상태 변경 이유]]></value>
+	</item>
+	<item name="about_cs_memo">
+		<value xml:lang="ko"><![CDATA[이 주문 변경에 대한 CS 메모를 기록합니다.]]></value>
+	</item>
+	<item name="updater_info">
+		<value xml:lang="ko"><![CDATA[변경자 정보]]></value>
+	</item>
+	<item name="option_price">
+		<value xml:lang="ko"><![CDATA[옵션가격]]></value>
+	</item>
+	<item name="option_title">
+		<value xml:lang="ko"><![CDATA[옵션명]]></value>
+	</item>
+	<item name="product_info">
+		<value xml:lang="ko"><![CDATA[주문상품정보]]></value>
+	</item>
+	<item name="purchaser_name">
+		<value xml:lang="ko"><![CDATA[구매자명]]></value>
+	</item>
+	<item name="order_number">
+		<value xml:lang="ko"><![CDATA[주문번호]]></value>
+	</item>
+	<item name="order_date">
+		<value xml:lang="ko"><![CDATA[주문일자]]></value>
+	</item>
+	<item name="order_referral">
+		<value xml:lang="ko"><![CDATA[주문출처]]></value>
+	</item>
+	<item name="out_pay_product_order_id">
+		<value xml:lang="ko"><![CDATA[페이품목주문번호]]></value>
+	</item>
+	<item name="title">
+		<value xml:lang="ko"><![CDATA[품목명]]></value>
+	</item>
+	<item name="payment_method">
+		<value xml:lang="ko"><![CDATA[결제 방식]]></value>
+	</item>
+	<item name="remitter_name">
+		<value xml:lang="ko"><![CDATA[송금자명]]></value>
+	</item>
+	<item name="paymethod">
+		<value xml:lang="ko"><![CDATA[결제방식]]></value>
+	</item>
+	<item name="cart_number">
+		<value xml:lang="ko"><![CDATA[카트번호]]></value>
+	</item>
+	<item name="shipping_cost_postpaid">
+		<value xml:lang="ko"><![CDATA[배송비 착불]]></value>
+	</item>
+	<item name="shipping_cost_prepaid">
+		<value xml:lang="ko"><![CDATA[배송비 선불]]></value>
+	</item>
+	<item name="recipient_address">
+		<value xml:lang="ko"><![CDATA[수령인 주소]]></value>
+	</item>
+	<item name="default_address">
+		<value xml:lang="ko"><![CDATA[기본배송지]]></value>
+	</item>
+	<item name="is_mobile_access">
+		<value xml:lang="ko"><![CDATA[모바일 접속]]></value>
+	</item>
+	<item name="item_count">
+		<value xml:lang="ko"><![CDATA[구매 수량]]></value>
+	</item>
+	<item name="offered_price">
+		<value xml:lang="ko"><![CDATA[제시가격]]></value>
+	</item>
+	<item name="sum_price">
+		<value xml:lang="ko"><![CDATA[정상가격]]></value>
+	</item>
+	<item name="item_discounted_price">
+		<value xml:lang="ko"><![CDATA[품목별 할인배분액]]></value>
+	</item>
+	<item name="total_discounted_price">
+		<value xml:lang="ko"><![CDATA[총 결제액]]></value>
+	</item>
+	<item name="total_discount_amount">
+		<value xml:lang="ko"><![CDATA[총 할인금액]]></value>
+	</item>
+	<item name="taxation_amount">
+		<value xml:lang="ko"><![CDATA[세금]]></value>
+	</item>
+	<item name="supply_amount">
+		<value xml:lang="ko"><![CDATA[공급가]]></value>
+	</item>
+	<item name="taxfree_amount">
+		<value xml:lang="ko"><![CDATA[면세금액]]></value>
+	</item>
+	<item name="express_id">
+		<value xml:lang="ko"><![CDATA[배송업체]]></value>
+	</item>
+	<item name="delivfee_inadvance">
+		<value xml:lang="ko"><![CDATA[배송비 선불]]></value>
+	</item>
+	<item name="one_week">
+		<value xml:lang="ko"><![CDATA[1주일]]></value>
+	</item>
+	<item name="one_months">
+		<value xml:lang="ko"><![CDATA[1개월]]></value>
+	</item>
+	<item name="three_months">
+		<value xml:lang="ko"><![CDATA[3개월]]></value>
+	</item>
+	<item name="six_months">
+		<value xml:lang="ko"><![CDATA[6개월]]></value>
+	</item>
+	<item name="twelve_months">
+		<value xml:lang="ko"><![CDATA[12개월]]></value>
+	</item>
+	<item name="details">
+		<value xml:lang="ko"><![CDATA[상세정보]]></value>
+	</item>
+	<item name="order_details">
+		<value xml:lang="ko"><![CDATA[주문상세]]></value>
+	</item>
+	<item name="search_period">
+		<value xml:lang="ko"><![CDATA[조회기간]]></value>
+	</item>
+	<item name="freebie">
+		<value xml:lang="ko"><![CDATA[무료]]></value>
+	</item>
+	<item name="delivery_company">
+		<value xml:lang="ko"><![CDATA[배송업체]]></value>
+	</item>
+	<item name="individual_delivery_company">
+		<value xml:lang="ko"><![CDATA[(개별)배송업체]]></value>
+	</item>
+	<item name="invoice_count">
+		<value xml:lang="ko"><![CDATA[운송장 갯수]]></value>
+	</item>
+	<item name="input_invoice_no">
+		<value xml:lang="ko"><![CDATA[복수운송장번호 ,구분]]></value>
+	</item>
+	<item name="invoice_no">
+		<value xml:lang="ko"><![CDATA[운송장번호]]></value>
+	</item>
+	<item name="individual_invoice_no">
+		<value xml:lang="ko"><![CDATA[(개별)운송장번호]]></value>
+	</item>
+	<item name="cmd_update_order_status">
+		<value xml:lang="ko"><![CDATA[주문상태 변경]]></value>
+	</item>
+	<item name="cmd_goto_status">
+		<value xml:lang="ko"><![CDATA[로 상태변경]]></value>
+	</item>
+	<item name="cmd_goto_on_delivery">
+		<value xml:lang="ko"><![CDATA[발송]]></value>
+	</item>
+	<item name="go_back">
+		<value xml:lang="ko"><![CDATA[뒤로가기]]></value>
+	</item>
+	<item name="coupon_title">
+		<value xml:lang="ko"><![CDATA[쿠폰 정보]]></value>
+	</item>
+	<item name="coupon_serial">
+		<value xml:lang="ko"><![CDATA[쿠폰 번호]]></value>
+	</item>
+	<item name="coupon_usage_count">
+		<value xml:lang="ko"><![CDATA[사용/최대수]]></value>
+	</item>
+	<item name="coupon_expired_date">
+		<value xml:lang="ko"><![CDATA[쿠폰 만료일]]></value>
+	</item>
+	<item name="is_valid_coupon">
+		<value xml:lang="ko"><![CDATA[사용 가능한 쿠폰인가요?]]></value>
+	</item>
+	<item name="home">
+		<value xml:lang="ko"><![CDATA[홈]]></value>
+	</item>
+	<item name="guest">
+		<value xml:lang="ko"><![CDATA[비회원]]></value>
+	</item>
+	<item name="order_title">
+		<value xml:lang="ko"><![CDATA[%s 외 %d 품목]]></value>
+	</item>
+	<item name="csv_header">
+		<value xml:lang="ko"><![CDATA[주문일,상품명,수량,결제금액,구매자]]></value>
+	</item>
+	<item name="order_csv_header">
+		<value xml:lang="ko"><![CDATA[주문일,주문번호,주문상품,품목수,아이디,닉네임,결제방식,적립마일리지,적립여부,사용마일리지,총금액,합계금액,배송비,할인가,할인금액,과세금액,공급가,부가세,비과세,송장번호,배송업체,배송비선결제]]></value>
+	</item>
+	<item name="member_srl">
+		<value xml:lang="ko"><![CDATA[회원고유번호]]></value>
+	</item>
+	<item name="info_purchaser_input">
+		<value xml:lang="ko"><![CDATA[%s 외 구매자입력 정보]]></value>
+	</item>
+	<item name="tax_products">
+		<value xml:lang="ko"><![CDATA[과세물품]]></value>
+	</item>
+	<item name="vat">
+		<value xml:lang="ko"><![CDATA[부가세]]></value>
+	</item>
+	<item name="taxfree_products">
+		<value xml:lang="ko"><![CDATA[면세물품]]></value>
+	</item>
+	<item name="purchaser">
+		<value xml:lang="ko"><![CDATA[구매자]]></value>
+	</item>
+	<item name="title_order_payment">
+		<value xml:lang="ko"><![CDATA[주문/결제]]></value>
+	</item>
+	<item name="title_purchase_details">
+		<value xml:lang="ko"><![CDATA[구매상세내역]]></value>
+	</item>
+	<item name="title_payment_details">
+		<value xml:lang="ko"><![CDATA[결제정보]]></value>
+	</item>
+	<item name="title_ordered_items">
+		<value xml:lang="ko"><![CDATA[주문상품]]></value>
+	</item>
+	<item name="items_to_deliver">
+		<value xml:lang="ko"><![CDATA[배송 상품수]]></value>
+	</item>
+	<item name="title_conversion_media_info">
+		<value xml:lang="ko"><![CDATA[전환매체 정보]]></value>
+	</item>
+	<item name="title_order_info">
+		<value xml:lang="ko"><![CDATA[주문정보]]></value>
+	</item>
+	<item name="title_ordersheet">
+		<value xml:lang="ko"><![CDATA[주문확인서]]></value>
+	</item>
+	<item name="title_member_info">
+		<value xml:lang="ko"><![CDATA[회원정보]]></value>
+	</item>
+	<item name="title_purchase_details">
+		<value xml:lang="ko"><![CDATA[구매내역]]></value>
+	</item>
+	<item name="cmd_login">
+		<value xml:lang="ko"><![CDATA[로그인]]></value>
+	</item>
+	<item name="cmd_cart">
+		<value xml:lang="ko"><![CDATA[장바구니]]></value>
+	</item>
+	<item name="cmd_favorites">
+		<value xml:lang="ko"><![CDATA[관심상품]]></value>
+	</item>
+	<item name="cmd_coupon_view">
+		<value xml:lang="ko"><![CDATA[쿠폰 조회]]></value>
+	</item>
+	<item name="cmd_order_view">
+		<value xml:lang="ko"><![CDATA[주문/배송조회]]></value>
+	</item>
+	<item name="cmd_order">
+		<value xml:lang="ko"><![CDATA[주문하기]]></value>
+	</item>
+	<item name="cmd_trace_delivery">
+		<value xml:lang="ko"><![CDATA[배송추적]]></value>
+	</item>
+	<item name="cmd_previous_page">
+		<value xml:lang="ko"><![CDATA[이전페이지]]></value>
+	</item>
+	<item name="cmd_non_buy">
+		<value xml:lang="ko"><![CDATA[비회원 구매]]></value>
+	</item>
+	<item name="cmd_continue_shopping">
+		<value xml:lang="ko"><![CDATA[쇼핑 계속하기]]></value>
+	</item>
+	<item name="cmd_stock">
+		<value xml:lang="ko"><![CDATA[재고]]></value>
+	</item>
+	<item name="cmd_delivery_fee">
+		<value xml:lang="ko"><![CDATA[배송비]]></value>
+	</item>
+	<item name="cmd_purchaser_info">
+		<value xml:lang="ko"><![CDATA[구매자정보]]></value>
+	</item>
+	<item name="cmd_order_management">
+		<value xml:lang="ko"><![CDATA[주문관리]]></value>
+	</item>
+	<item name="cmd_download_by_product">
+		<value xml:lang="ko"><![CDATA[상품별 CSV 다운로드]]></value>
+	</item>
+	<item name="cmd_download_by_order">
+		<value xml:lang="ko"><![CDATA[주문별 CSV 다운로드]]></value>
+	</item>
+	<item name="cmd_download_transaction_master">
+		<value xml:lang="ko"><![CDATA[기간별 유효 거래원장 CSV 다운로드]]></value>
+	</item>
+	<item name="cmd_prepeare_shipping">
+		<value xml:lang="ko"><![CDATA[입금완료 다운 & 배송준비]]></value>
+	</item>
+	<item name="cmd_print_ordersheet">
+		<value xml:lang="ko"><![CDATA[주문서출력]]></value>
+	</item>
+	<item name="cmd_selected_order">
+		<value xml:lang="ko"><![CDATA[선택한 주문을]]></value>
+	</item>
+	<item name="cmd_save_delivery_info">
+		<value xml:lang="ko"><![CDATA[배송정보 저장]]></value>
+	</item>
+	<item name="cmd_continue_shopping">
+		<value xml:lang="ko"><![CDATA[쇼핑 계속하기]]></value>
+	</item>
+	<item name="cmd_move_to_member">
+		<value xml:lang="ko"><![CDATA[회원에게 이관하기]]></value>
+	</item>
+	<item name="go_home">
+		<value xml:lang="ko"><![CDATA[홈으로]]></value>
+	</item>
+	<item name="msg_login_required">
+		<value xml:lang="ko"><![CDATA[로그인 후 사용하실 수 있습니다]]></value>
+	</item>
+	<item name="msg_no_items">
+		<value xml:lang="ko"><![CDATA[상품이 없습니다]]></value>
+	</item>
+	<item name="msg_no_orders">
+		<value xml:lang="ko"><![CDATA[구매내역이 없습니다]]></value>
+	</item>
+	<item name="msg_input_order_number_password">
+		<value xml:lang="ko"><![CDATA[주문번호와 비밀번호를 입력해주세요.]]></value>
+	</item>
+	<item name="msg_invalid_password">
+		<value xml:lang="ko"><![CDATA[비밀번호가 일치하지 않습니다]]></value>
+	</item>
+	<item name="msg_not_displayed_item">
+		<value xml:lang="ko"><![CDATA[%s 상품은 현재 진열되지 않은 상품입니다. 구매하실 수 없습니다.]]></value>
+	</item>
+	<item name="msg_price_changed">
+		<value xml:lang="ko"><![CDATA[%s 상품은 가격변동이 있어서 구매하실 수 없습니다. 화면을 새로고침하세요.]]></value>
+	</item>
+	<item name="msg_promotion_changed">
+		<value xml:lang="ko"><![CDATA[%s 상품의 할인 혜택이 변경되어 구매하실 수 없습니다. 화면을 새로고침하세요.]]></value>
+	</item>
+	<item name="msg_item_not_found">
+		<value xml:lang="ko"><![CDATA[%s 상품은 삭제되었거나 판매중이 아니어서 구매하실 수 없습니다.]]></value>
+	</item>
+	<item name="msg_no_order_list">
+		<value xml:lang="ko"><![CDATA[주문내역이 없습니다.]]></value>
+	</item>
+	<item name="msg_no_items_to_order">
+		<value xml:lang="ko"><![CDATA[주문할 수량이 없습니다.]]></value>
+	</item>
+	<item name="msg_product_info_caption">
+		<value xml:lang="ko"><![CDATA[* 표시 상품은 부가세 면세품목입니다.]]></value>
+	</item>
+	<item name="msg_already_member">
+		<value xml:lang="ko"><![CDATA[혹시 회원이신가요?]]></value>
+	</item>
+	<item name="msg_invalid_pg_tr_id_cancel_reason">
+		<value xml:lang="ko"><![CDATA[PG사 결제 취소 사유를 입력해 주세요.]]></value>
+	</item>
+	<item name="msg_invalid_order_srl">
+		<value xml:lang="ko"><![CDATA[잘못된 주문번호입니다.]]></value>
+	</item>
+	<item name="msg_invalid_cart_item">
+		<value xml:lang="ko"><![CDATA[더이상 유효하지 않은 장바구니가 있습니다. 주문서를 새로고침하세요.]]></value>
+	</item>
+	<item name="msg_cancel_not_available_order_status">
+		<value xml:lang="ko"><![CDATA[PG사 결제 취소할 수 없는 주문상태입니다.]]></value>
+	</item>
+	<item name="msg_empty_detail_reason">
+		<value xml:lang="ko"><![CDATA[상세 사유를 입력해 주세요.]]></value>
+	</item>
+	<item name="msg_empty_cancel_reason_code">
+		<value xml:lang="ko"><![CDATA[결제 취소 사유 코드를 입력해 주세요.]]></value>
+	</item>
+	<item name="msg_error_free_item_not_allowed">
+		<value xml:lang="ko"><![CDATA[전액 할인 판매는 허용되자 않습니다.]]></value>
+	</item>
+	<item name="msg_master_table_dn_period_required">
+		<value xml:lang="ko"><![CDATA[거래 원장은 기간을 지정해야 다운로드할 수 있습니다.]]></value>
+	</item>
+	<item name="about_svorder">
+		<value xml:lang="ko"><![CDATA[주문 관리 및 관련 설정이 가능합니다. 외부 물류서버와 연결하려면 /config/func.inc.php::checkCSRF()에 다음 코드를 추가해야 합니다. $sTargetModule = Context::get('module');	if( $sTargetModule == 'svorder' ) return TRUE;]]></value>
+	</item>
+	<item name="about_item_delivery_fee">
+		<value xml:lang="ko"><![CDATA[체크시 이 상품의 배송금액은 0원이 됩니다.]]></value>
+	</item>
+	<item name="about_stock">
+		<value xml:lang="ko"><![CDATA[물품의 재고를 적어주세요. (미입력시 물품의 재고는 무한입니다.)]]></value>
+	</item>
+	<item name="about_delivery_company">
+		<value xml:lang="ko"><![CDATA[배송정보 입력시 기본 선택될 배송회사를 선택해 주세요]]></value>
+	</item>
+	<item name="about_default_shipping_serial_column_name">
+		<value xml:lang="ko"><![CDATA[배송번호 일괄등록시 기본 선택될 송장번호 컬럼 이름을 입력합니다. 값이 없으면 "송장번호"를 찾습니다.]]></value>
+	</item>
+	<item name="about_select_currency">
+		<value xml:lang="ko"><![CDATA[통화를 선택하세요.]]></value>
+	</item>
+	<item name="about_currency_format">
+		<value xml:lang="ko"><![CDATA[통화 선택 후 표기방식을 $과 USD 두가지 중에서 선택합니다.]]></value>
+	</item>
+	<item name="about_decimal_place">
+		<value xml:lang="ko"><![CDATA[입력된 가격을 소수점으로 처리할 자리수를 입력해 주세요. 달러의 경우 센트(cent)를 소수점 두자리로 표현하므로 2를 입력합니다.]]></value>
+	</item>
+	<item name="select_registered_address">
+		<value xml:lang="ko"><![CDATA[기존 배송지 선택]]></value>
+	</item>
+	<item name="cmd_addresslist">
+		<value xml:lang="ko"><![CDATA[배송주소록]]></value>
+	</item>
+	<item name="cmd_recent_addresses">
+		<value xml:lang="ko"><![CDATA[최근배송지]]></value>
+	</item>
+	<item name="msg_as_default_address">
+		<value xml:lang="ko"><![CDATA[이 주소를 기본배송지로 설정합니다]]></value>
+	</item>
+</lang>

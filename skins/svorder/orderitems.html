@@ -1,0 +1,931 @@
+<!--@if( $_COOKIE['mobile'] == 'false' )-->
+
+<!--- desktop screen begin ------>
+<link href="./modules/svcart/skins/svcheckout/css/forms.css" media="screen" rel="stylesheet" />
+<link href="./modules/svcart/skins/svcheckout/css/checkout_base.css" media="screen" rel="stylesheet" />
+<!--[if lt IE 7]>
+<link href="./modules/svcart/skins/svcheckout/css/ie-checkout.css" media="screen" rel="stylesheet" />
+<![endif]-->
+<link href="./modules/svcart/skins/svcheckout/css/checkout.css?14772" media="screen" rel="stylesheet" />
+<load target="css/btn.css" /
+<load target="../../tpl/skin.js/script.js" />
+<load target="../../tpl/skin.js/orderitems.js" />
+
+<!--%load_js_plugin("ui")-->
+<!--%load_js_plugin("ui.datepicker")-->
+
+{@$address = unserialize($default_address->address)}
+{@$address1 = $address[0]}
+{@$address2 = $address[1]}
+
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+
+
+<div id="orderitems" class="{$module_info->colorset}">
+	<table class="item-table">
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>{$lang->item}</th>
+				<th>{$lang->product_name}</th>
+				<th>{$lang->quantity}</th>
+				<th>{$lang->sales_price}</th>
+				<th>{$lang->total_discount}</th>
+				<th>{$lang->discounted_amount}</th>
+			</tr>
+		</thead>
+<!-- Google Analytics Code Begin (20141216) -->
+<script>
+var sPageUrl = '/settlement/?cartid=' + '{$cartnos}';
+ga('send', { 'hitType': 'pageview', 'page':sPageUrl, 'title': 'settlement screen' });
+
+ga('require', 'ec');
+</script>
+<!-- Google Analytics Code End (20141216) -->
+		<tbody>
+			<tr loop="$list=>$no,$val">
+<!-- Google Analytics Code Begin (20141216) -->
+<script>
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': '{$val->item_srl}',                   // Product ID (string).
+  'name': '{$val->item_name}', // Product name (string).
+  'category': '',            // Product category (string).
+  'brand': '',                // Product brand (string).
+  'variant': '',               // Product variant (string).
+  'price': '{$val->price}',                 // Product price (currency).
+  'quantity': '{$val->quantity}'                     // Product quantity (number).
+});    
+</script>
+<!-- Google Analytics Code End (20141216) -->
+				<td>{$no+1}</td>
+				<td>
+					<a href="{getUrl('','document_srl',$val->document_srl)}"><img src="{$val->thumbnail_url}" /></a>
+				</td>
+				<td>
+					<div>{$val->item_name}</div>
+					<div cond="$val->option_srl">{$val->option_title} ({$val->printPrice($val->option_price)})</div>
+				</td>
+				<td>{$val->quantity}</td>
+				<td>{number_format($val->sum_price)}</td>
+				<td>{number_format($val->sum_discount_amount)}<br />{$val->discount_info}</td>
+				<td>{number_format($val->sum_discounted_price)}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="total-price" class="newclearfix">
+			<table class="price-table">
+				<tbody>
+					<tr>
+						<td>
+							<span class="price-title">{$lang->total_amount}</span>
+							<span id="total_amount" class="price-section">{number_format($sum_price)}</span>
+						</td>
+						<td class="calculation"><img src="img/price_minus.png" style="width:31px; height:1px" /></td>
+						<td>
+							<span class="price-title">{$lang->total_discount}</span>
+							<span id="total_discount" class="price-section"><!--@if($total_discount_amount)-->{number_format($total_discount_amount)}<BR>{$promotion_title}<!--@else-->0<!--@endif--></span>
+						</td>
+						<block cond="$module_info->display_delivfee=='Y' || $delivery_fee">
+						<td class="calculation"><img src="img/price_plus.png" style="width:31px; height:31px" /></td>
+						<td>
+							<span class="price-title">{$lang->delivery_fee}</span>
+							<span id="delivery_fee" class="price-section"><!--@if($delivery_fee)-->{number_format($delivery_fee)}<!--@else-->0<!--@endif--></span>
+						</td>
+						</block>
+						<block cond="$logged_info && $reserves_info[use_reserves]=='Y'">
+						<td class="calculation"><img src="img/price_minus.png" style="width:31px; height:1px" /></td>
+						<td>
+							<span class="price-title">{$lang->reserves}</span>
+							<span id="reserves_amount" class="price-section">0</span>
+						</td>
+						</block>
+						<td class="calculation"><img src="img/price_equal.png" style="width:31px; height:11px" /></td>
+						<td id="payment_amount">
+							<span class="price-total">{number_format($total_price)}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+<!-- Google Analytics Code Begin (20141216) -->
+<script>
+// Add the step number and additional info about the checkout to the action.
+ga('ec:setAction','checkout');
+</script>
+<!-- Google Analytics Code End (20141216) -->
+	<!---div class="total">
+		<table class="total-table">
+			<thead>
+				<tr>
+					<th>{$lang->total_amount}</th>
+					<th></th>
+					<th>{$lang->total_discount}</th>
+					<th></th>
+					<block cond="$module_info->display_delivfee=='Y' || $delivery_fee">
+					<th>{$lang->delivery_fee}</th>
+					<th></th>
+					</block>
+					<th class="total_price">{$lang->total_order_amount}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{number_format($sum_price)}</td>
+					<td>-</td>
+					<td>{number_format($total_discount_amount)}</td>
+					<block cond="$module_info->display_delivfee=='Y' || $delivery_fee">
+					<td>+</td>
+					<td><span id="delivery_fee">{number_format($delivery_fee)}</span></td>
+					</block>
+					<td>=</td>
+					<td class="total_price" id="order_amount">{number_format($total_price)}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div--->
+
+	<!---h3 class="title_benefits" cond="$logged_info" >{$lang->purchase_benefit}</h3---->
+	<!----table class="order-table" cond="$logged_info">
+		<tbody>
+			<tr>
+				<th>{$lang->mileage}</th>
+				<td colspan="3">{round($total_price * ((float)$config->mileage_percent/100))} {$lang->purchase_benefit_postfix}</td>
+			</tr>
+		</tbody>
+	</table--->
+
+	<form id="fo_insert_order" action="./" method="post">
+		<input type="hidden" name="act" value="procSvcartMileagePayment">
+		<input type="hidden" name="target_module" value="svcart" />
+		<input type="hidden" name="cartnos" value="{$cartnos}" />
+		<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
+		<input type="hidden" name="xe_mid" value="{$mid}" />
+		<input type="hidden" name="issue_receipts" value="발급안함">
+		
+		<block cond="$logged_info && $module_info->display_delivfee=='Y' || !$logged_info">
+			<div class="fieldset">
+				<h3 class="title_ordererInfo">배송비 정보&nbsp;&nbsp;&nbsp;<font color='red'>* 인바디 공식몰은 배송비가 무료입니다.</font></h3>
+				<h3 class="title_ordererInfo">{$lang->purchaser_info}&nbsp;&nbsp;&nbsp;<font color='red'>{$lang->about_order_number}</font></h3>
+				<table>
+	<!--- user defined variables hard coding start ----->
+					<tbody id="section2">
+						<tr cond="$module_info->display_delivfee=='Y'">
+							<th>{$lang->delivery_fee_payment}</th>
+							<td>
+								<input name="delivfee_inadvance" id="delivfee_inadvance_1" type="radio" checked="checked" value="Y" /><label for="delivfee_inadvance_1">{$lang->prepay}</label>
+								<input name="delivfee_inadvance" id="delivfee_inadvance_2" type="radio" value="N" /><label for="delivfee_inadvance_2">{$lang->cash_on_delivery}</label>
+							</td>
+						</tr>
+						<tr cond="!$logged_info">
+							<th>{$lang->password}</th>
+							<td>
+								<span><input name="non_password1" id="non_password1" type="password" /></span>
+							</td>
+						</tr>
+						<tr cond="!$logged_info">
+							<th>{$lang->password3}</th>
+							<td>
+								<span><input name="non_password2" id="non_password2" type="password" /></span>
+							</td>
+						</tr>	
+					</tbody>
+				</table>
+			</div>
+		</block>
+		<!--// fieldset -->
+		<div class="fieldset">
+			<h3>주문자 정보</h3>
+			<table>
+				<thead cond="$module_info->display_delivdest=='Y' && $key==0" id="section1">
+					<tr cond="$logged_info" id="section1">
+						<th>
+							{$lang->select_address}
+						</th>
+						<td class="destination">
+							<ul>
+								<li loop="$address_list=>$addr_key,$addr_val"><input type="radio" name="sel_destination" id="sel_{$addr_val->address_srl}" onclick="apply_address_info({$addr_val->address_srl});" value="{$addr_val->address_srl}" checked="checked"|cond="$addr_val->default=='Y'" /><label for="sel_{$addr_val->address_srl}">{$addr_val->title}</label></li>
+								<li><a class="nuribtn light small" id="popAddressBook" href="#" onclick="return false;"><span>{$lang->cmd_addresslist}</span></a></li>
+								<li><a class="nuribtn light small" id="popRecentAddress" href="#" onclick="return false;"><span>{$lang->cmd_recent_addresses}</span></a></li>
+							</ul>
+						</td>	
+					</tr>
+				</thead>
+<!--- default variables coding start ----->
+				<tbody id="section2">
+					<tr>
+						<th>
+							<label for="purchaser_name">주문자 성명 <em style="color:red">*</em></label>
+						</th>
+						<td class="text"><input type="text" name="purchaser_name" id="purchaser_name" value="" /></td>
+					</tr>
+					<tr>
+						<th>
+							<label for="purchaser_email">주문자 이메일 <em style="color:red">*</em></label>
+						</th>
+						<td class="email_address"><input type="text" name="purchaser_email" id="purchaser_email" value="" /></td>
+					</tr>
+					<tr>
+						<th>
+							<label for="purchaser_cellphone">주문자 핸드폰 <em style="color:red">*</em></label>
+						</th>
+						<td class="tel">
+							<ul class="tel">
+								<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_1" value="" size="4" /></li>
+								<li class="dash">-</li>
+								<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_2" value="" size="4" /></li>
+								<li class="dash">-</li>
+								<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_3" value="" size="4" /></li>
+							</ul>
+						</td>
+					</tr>
+					<!--tr>
+						<th>
+							<label for="issue_receipts">계산서/영수증 <em style="color:red">*</em></label>
+						</th>
+						<td class="select">
+							<select name="issue_receipts" STYLE='background:url("./layouts/svcheckout/img/grey_arrow.png") no-repeat 97% 50%;'>
+								<option value=''>--선택--</option>
+								<option value="발급안함">발급안함</option>
+								<option value="현금영수증 발급">현금영수증 발급</option>
+								<option value="세금계산서 발급">세금계산서 발급</option>
+							</select>
+						</td>
+					</tr--->	
+				</tbody>
+			</table>
+		</div>
+		<div class="fieldset">
+			<h3>수령인 정보 &nbsp;&nbsp;&nbsp;<font color='red'><INPUT TYPE='checkbox' name="copyInfo" id="copyInfo" STYLE='height:15px; width:20px;'>주문자 정보와 동일</font></h3>
+			<table>
+				<tbody id="section2">
+					<tr>
+						<th>
+							<label for="recipient_name">받으실 분 성함 <em style="color:red">*</em></label>
+						</th>
+						<td class="text"><input type="text" name="recipient_name" id="recipient_name" value="" /></td>
+					</tr>
+					<tr>
+						<th>
+							<label for="recipient_telnum">유선전화</label>
+						</th>
+						<td class="tel">
+							<ul class="tel">
+								<li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+								<li class="dash">-</li>
+								<li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+								<li class="dash">-</li><li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label for="recipient_cellphone">휴대폰 번호 <em style="color:red">*</em></label>
+						</th>
+						<td class="tel">
+							<ul class="tel">
+								<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_1" value="" size="4" /></li>
+								<li class="dash">-</li>
+								<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_2" value="" size="4" /></li>
+								<li class="dash">-</li>
+								<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_3" value="" size="4" /></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label for="receipient_address">받으실 주소 <em style="color:red">*</em></label>
+						</th>
+						<td class="kr_zip">
+							<input type="text" class="postcodify" id="postcodify_addr1" name="receipient_address[]" value="" data-origin-value="" />
+							<label class="postcodify postcodify_address" for="postcodify_addr1">도로명주소</label>
+							<br />
+							<input type="text" class="postcodify" id="postcodify_addr2" name="receipient_address[]" value="" data-origin-value="" />
+							<label class="postcodify postcodify_details" for="postcodify_addr2">상세주소</label>
+							<br />
+							<input type="text" class="postcodify" id="postcodify_addr3" name="receipient_address[]" value="" data-origin-value="" />
+							<label class="postcodify postcodify_extra_info" for="postcodify_addr3">참고항목</label>
+							<br />
+							<input type="text" class="postcodify postcode" id="postcodify_addr4" name="receipient_postcode" readonly="readonly" value="" data-origin-value="" />
+							<label class="postcodify postcodify_postcode6 postcode" for="postcodify_addr4">우편번호</label>
+							<button type="button" id="postcodify_search_button" class="btn delete postcodify" data-url="//api.poesis.kr/post/search.php" data-map-provider="" data-popup="Y" data-use-full-jibeon="Y">검색</button>
+							<br />
+						</td>
+					</tr>
+				</tbody>
+<!--- default variables coding end ----->
+			</table>
+		</div>
+<!-- extra vars begin -->
+		<div loop="$fieldset_list=>$key,$val" class="fieldset">
+			<h3>{$val->fieldset_title}</h3>
+			<table>
+				<thead cond="$module_info->display_delivdest=='Y' && $key==0" id="section1">
+					<tr cond="$logged_info" id="section1">
+						<th>
+							{$lang->select_address}
+						</th>
+						<td class="destination">
+							<ul>
+								<li loop="$address_list=>$addr_key,$addr_val"><input type="radio" name="sel_destination" id="sel_{$addr_val->address_srl}" onclick="apply_address_info({$addr_val->address_srl});" value="{$addr_val->address_srl}" checked="checked"|cond="$addr_val->default=='Y'" /><label for="sel_{$addr_val->address_srl}">{$addr_val->title}</label></li>
+								<li><a class="nuribtn light small" id="popAddressBook" href="#" onclick="return false;"><span>{$lang->cmd_addresslist}</span></a></li>
+								<li><a class="nuribtn light small" id="popRecentAddress" href="#" onclick="return false;"><span>{$lang->cmd_recent_addresses}</span></a></li>
+							</ul>
+						</td>	
+					</tr>
+				</thead>
+				<tbody id="section2">
+					<tr loop="$val->fields=>$key2,$field">
+						<th>
+							<label for="column_title">{$field->html->title}</label>
+						</th>
+						<td class="{$field->column_type}">{$field->html->inputTag}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+<!-- extra vars end -->
+<!--// end of fieldset -->
+		<!--h3 class="title_mileage" style="display:none"|cond="!$logged_info">{$lang->use_mileage}</h3>
+		<table class="order-table" style="display:none"|cond="!$logged_info">
+			<tbody>
+				<tr>
+					<th>{$lang->use_mileage}</th>
+					<td colspan="3"><input type="hidden" name="use_mileage" value="0" /><input class="line_input" type="text" name="input_mileage" value="0" /> ({$lang->current_mileage} : {number_format($my_mileage)})</td>
+				</tr>
+			</tbody>
+		</table---->
+	</form>
+	<div class="total">
+		<table class="total-table">
+			<thead>
+				<tr>
+					<!--th>{$lang->total_order_amount}</th>
+					<th></th>
+					<th>{$lang->use_mileage}</th>
+					<th></th--->
+					<th class="total_price">{$lang->payment_amount}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<!---td><span id="order_amount2">{number_format($total_price)}<span></td>
+					<td>-</td>
+					<td><span id="mileage_amount">0</span></td>
+					<td>=</td--->
+					<td class="total_price" id="payment_amount">{number_format($total_price)}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h3 class="title_paymentInfo">{$lang->input_payment_info}</h3>
+	<div class="payment-table">
+		<p class="font_size11">{$lang->about_input_payment_info}</p><br />
+		{$svpg_form}
+	</div>
+</div>
+
+<div id="modal-dialog"></div>
+
+<block cond="$config->decimals">{@$decimals = $config->decimals}</block>
+<block cond="!$config->decimals">{@$decimals = 0}</block>
+<script type="text/javascript">
+        var g_decimals = {$decimals};
+</script>
+
+<block cond="$purchaser->cellphone">
+{@$purchaser->cellphone = implode('-',$purchaser->cellphone)}
+</block>
+<block cond="$purchaser->telnum">
+{@$purchaser->telnum = implode('-',$purchaser->telnum)}
+</block>
+<script>
+
+<block cond="$logged_info" >
+	var purchaser_name = '{$purchaser->name}';
+	<block cond="$config->address_input=='krzip'">
+		var purchaser_address = '{$purchaser->address[0]}';
+		var purchaser_address2 = '{$purchaser->address[1]}';
+		var purchaser_postcode = '';
+	</block>
+	<block cond="$config->address_input!='krzip'">
+		var purchaser_address = '{$purchaser->address}';
+		var purchaser_address2 = '{$purchaser->address2}';
+		var purchaser_postcode = '{$purchaser->postcode}';
+	</block>
+	var purchaser_cellphone = '{$purchaser->cellphone}';
+	var purchaser_telnum = '{$purchaser->telnum}';
+	var purchaser_chk = 'Y';
+</block>	
+<block cond="!$logged_info" >
+	var purchaser_chk= 'N';
+</block>
+
+var default_recipient = '{$default_address->recipient}';
+var default_cellphone = '{$default_address->cellphone}';
+var default_telnum = '{$default_address->telnum}';
+var default_postcode = '{$default_address->postcode}';
+var default_address = '{$address1}';
+var default_address2 = '{$address2}';
+var total_price = {$total_price};
+var my_mileage = {$my_mileage};
+var delivery_fee = {$delivery_fee};
+
+(function($) {
+	jQuery(function($) {
+		var address_srl = $('input[name=sel_destination]:checked').val();
+		if (address_srl) apply_address_info(address_srl);
+	});
+}) (jQuery);
+
+</script>
+<include target="fieldset.html" />
+<!--- desktop screen end ------>
+
+<!--@else-->
+
+<!--- mobile screen begin ------>
+<link href="./modules/svcart/skins/svcheckout/css/mobile_style.css" media="screen" rel="stylesheet" />
+<link href="./modules/svcart/skins/svcheckout/css/mobile_orderitems.css" media="screen" rel="stylesheet" />
+<link href="./modules/svcart/skins/svcheckout/css/mobile_nu_btn.css" media="screen" rel="stylesheet" />
+
+<STYLE>
+dl dt
+{
+	font-size: 0.7rem;
+	font-weight: bold;
+}
+
+dl dd
+{
+	font-size: 0.8rem;
+	font-weight: bold;
+}
+
+dl label
+{
+	font-size: 0.5rem;
+	font-weight: bold;
+}
+</STYLE>
+
+<load target="../../tpl/skin.js/script.js" />
+<load target="../../tpl/skin.js/orderitems.js" />
+<!--%load_js_plugin("ui")-->
+<!--%load_js_plugin("ui.datepicker")-->
+{@$address = unserialize($default_address->address)}
+{@$address1 = $address[0]}
+{@$address2 = $address[1]}
+<!--// add the proc_module of the purchased products -->
+{@$purchased_modules=array()}
+
+<div id="orderitems" class="{$module_info->colorset}">
+	<div class="order_top">
+	</div>
+	<div class="order_box" id="order_box_1" data="test_1">
+		<a href="#"><strong class="order_tit"><span>0{++$i} 주문상품정보</span><span>({count($list)}개)</span></strong><span class="rollbtn" id="arrow">주문상품정보 열기</span></a>
+	</div>
+	<ul class="item-table test_1">
+		{@$count=0}
+		<li loop="$list=>$no,$val" class="m_item_box" style="display:none;"|cond="$count>0">
+			<block cond="!in_array($val->module, $purchased_modules)">{@$purchased_modules[] = $val->module}</block>
+			<div class="order_thumbox">
+				<a class="order_thum" href="{getUrl('','document_srl',$val->document_srl)}"><img src="{$val->getThumbnail(140,$config->cart_thumbnail_height,$config->cart_thumbnail_type)}" /></a>
+			</div>
+			<dl class="m_order_info">
+				<div cond="$val->option_srl">{$val->option_title} ({$val->printPrice($val->option_price)})</div>
+				<dt class="m_order_tit">{$val->item_name}</dt>
+				<dd>
+					<dl>
+						<dt>{$lang->sales_price} ({$val->quantity}개)</dt>
+						<dd>{number_format($val->sum_price)}원</dd>
+						<!---dt>{$lang->total_discount}</dt>
+						<dd><span cond="$val->discount_info">({$val->discount_info})</span> {number_format($val->discount_amount)}원</dd>
+						<dt>{$lang->discounted_amount}</dt>
+						<dd>{number_format($val->discounted_price)}원</dd--->
+					</dl>
+				</dd>
+			</dl>
+			{@$count++}
+		</li>
+		<li cond="count($list)>1" class="more_text" id="more_items" onclick="jQuery(this).siblings().css('display','block'); jQuery(this).remove();">더보기...</li>
+	</ul>
+	<block cond="$mileage_flag != 'N'">
+	<div class="order_box title_benefits" id="order_box_2" data="test_2" cond="$logged_info">
+		<a href="#"><strong class="order_tit"><span>0{++$i} {$lang->purchase_benefit}</span></strong><span class="rollbtn" id="arrow">구매혜택정보 열기</span></a>
+	</div>
+	<div cond="$logged_info" class="test_2 m_point">
+		<dl>
+			<dt><label>{$lang->mileage}</label></dt>
+			<dd>{round($total_price * ((float)$config->mileage_percent/100),-1)} {$lang->purchase_benefit_postfix}</dd>
+		</dl>
+	</div>
+	</block>
+
+	<form id="fo_insert_order" action="./" method="post">
+		<input type="hidden" name="act" value="procSvcartMileagePayment">
+		<input type="hidden" name="target_module" value="svcart" />
+		<input type="hidden" name="cartnos" value="{$cartnos}" />
+		<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
+		<input type="hidden" name="xe_mid" value="{$mid}" />
+		<input type="hidden" name="issue_receipts" value="발급안함">
+
+		<block cond="$logged_info && $module_info->display_delivfee=='Y' || !$logged_info" cond="in_array('svorder', $purchased_modules)">
+			<div class="order_box title_ordererInfo" id="order_box_3" data="test_3">
+				<!---a href="#"><strong class="order_tit"><span>0 배송비 결제</span></strong><span class="rollbtn" id="arrow">배송비결제 열기</span></a--->
+				<a href="#"><strong class="order_tit"><span>0{++$i} 인바디 공식몰은 무료 배송입니다.</span></strong><span class="rollbtn" id="arrow">배송비결제 열기</span></a>
+			</div>
+			<!---div class="m_point test_3">
+				<dl cond="$module_info->display_delivfee=='Y'">
+					<dt><label for="delivfee_inadvance_1">{$lang->delivery_fee_payment}</label></dt>
+					<dd>
+						<input name="delivfee_inadvance" id="delivfee_inadvance_1" type="radio" checked="checked" value="Y" /><label for="delivfee_inadvance_1">선결제</label>
+						<input name="delivfee_inadvance" id="delivfee_inadvance_2" type="radio" value="N" /><label for="delivfee_inadvance_2">착불</label>
+					</dd>
+				</dl>
+			</div--->
+
+			<div class="order_box title_ordererInfo" id="order_box_3" data="test_3" cond="!$logged_info">
+				<a href="#"><strong class="order_tit"><span>0{++$i} 비밀번호 입력</span></strong><span class="rollbtn" id="arrow">비밀번호 입력</span></a>
+			</div>
+			<div class="m_point test_0 m_pass">
+				<dl cond="!$logged_info">
+					<dt>{$lang->password}</dt>
+					<dd>
+						<input name="non_password1" id="non_password1" type="password" /><p><font color='red'> * 주문배송조회시 필요합니다.</font></p>
+					</dd>
+					<dt>{$lang->password3}</dt>
+					<dd>
+						<input name="non_password2" id="non_password2" type="password" />
+					</dd>
+				</dl>
+			</div>
+		</block>
+
+<!--- default variables coding begin ----->
+		<div class="fieldset">
+			<div class="order_box title_ordererInfo" id="order_box_4" data="test_4">
+				<a href="#"><strong class="order_tit"><span>0{++$i} 주문자 정보</span></strong><span class="rollbtn" id="arrow">배송지 정보 열기</span></a>
+			</div>
+			<div class="m_point test_4">
+				<dl id="section2">
+					<dt><label for="column_title">주문자 성명 <em style="color:red">*</em></label></dt>
+					<dd class="text"><input type="text" name="purchaser_name" id="purchaser_name"  value="" /></dd>
+					<dt><label for="column_title">주문자 이메일 <em style="color:red">*</em></label></dt>
+					<dd class="email_address"><input type="text" name="purchaser_email" value="" /></dd>
+					<dt><label for="column_title">주문자 전화번호 <em style="color:red">*</em></label></dt>
+					<dd class="tel">
+						<ul class="tel">
+							<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_1" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_2" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="purchaser_cellphone[]" id="purchaser_cellphone_3" value="" size="4" /></li>
+						</ul>
+					</dd>
+					<!--dt><label for="column_title">계산서/영수증 <em style="color:red">*</em></label></dt>
+					<dd class="select">
+						<select name="issue_receipts">
+							<option value=''>--선택--</option>
+							<option value="발급안함">발급안함</option>
+							<option value="현금영수증 발급">현금영수증 발급</option>
+							<option value="세금계산서 발급"  >세금계산서 발급</option>
+						</select>
+					</dd--->
+				</dl>
+			</div>
+		</div>								
+		<div class="fieldset">
+			<div class="order_box title_ordererInfo" id="order_box_4" data="test_4">
+				<a href="#"><strong class="order_tit"><span>0{++$i} 수령인 정보</span></strong><span class="rollbtn" id="arrow">배송지 정보 열기</span></a>
+			</div>
+			<div class="m_point test_4">
+				<dl id="section2">
+					<dt><label for="column_title">주문자 정보와 동일</label></dt>
+					<dd class="checkbox">
+						<ul>
+							<li><input type="checkbox" id="copyInfo" name="copyInfo" value="주문자 정보와 동일"  /><label for="copyInfo">주문자 정보와 동일</label></li>
+						</ul>
+					</dd>
+					<dt><label for="column_title">받으실 분 성함 <em style="color:red">*</em></label></dt>
+					<dd class="text"><input type="text" name="recipient_name" id="recipient_name" value="" /></dd>
+					<dt><label for="column_title">유선전화</label></dt>
+					<dd class="tel">
+						<ul class="tel">
+							<li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="recipient_telnum[]" value="" size="4" /></li>
+						</ul>
+					</dd>
+					<dt><label for="column_title">휴대폰 번호 <em style="color:red">*</em></label></dt>
+					<dd class="tel">
+						<ul class="tel">
+							<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_1" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_2" value="" size="4" /></li>
+							<li class="dash">-</li>
+							<li><input type="text" name="recipient_cellphone[]" id="recipient_cellphone_3" value="" size="4" /></li>
+						</ul>
+					</dd>
+					<dt><label for="column_title">받으실 주소 <em style="color:red">*</em></label></dt>
+					<dd class="kr_zip">
+						<input type="text" class="postcodify" id="postcodify_addr1" name="receipient_address[]" value="" data-origin-value="" />
+						<label class="postcodify postcodify_address" for="postcodify_addr1">도로명주소</label>
+						<br />
+						<input type="text" class="postcodify" id="postcodify_addr2" name="receipient_address[]" value="" data-origin-value="" />
+						<label class="postcodify postcodify_details" for="postcodify_addr2">상세주소</label>
+						<br />
+						<input type="text" class="postcodify" id="postcodify_addr3" name="receipient_address[]" value="" data-origin-value="" />
+						<label class="postcodify postcodify_extra_info" for="postcodify_addr3">참고항목</label>
+						<br />
+						<input type="text" class="postcodify postcode" id="postcodify_addr4" name="receipient_postcode[]" readonly="readonly" value="" data-origin-value="" />
+						<label class="postcodify postcodify_postcode6 postcode" for="postcodify_addr4">우편번호</label>
+						<button type="button" id="postcodify_search_button" class="btn delete postcodify" data-url="//api.poesis.kr/post/search.php" data-map-provider="" data-popup="Y" data-use-full-jibeon="Y">검색</button>
+						<br />
+					</dd>
+				</dl>
+			</div>
+		</div>
+<!--- default variables coding end ----->
+
+<!-- extra vars begin -->
+		<block loop="$fieldset_list=>$key,$val">
+			{@$proc_modules = explode(',',$val->proc_modules)}
+			<!--// compare two arrays using array_diff -->
+			<div cond="count(array_diff($proc_modules, $purchased_modules))!=count($proc_modules)" class="fieldset">
+				<div class="order_box title_ordererInfo" id="order_box_4" data="test_4">
+					<a href="#"><strong class="order_tit"><span>0{++$i} {$val->fieldset_title}</span></strong><span class="rollbtn" id="arrow">배송지 정보 열기</span></a>
+				</div>
+				<div class="m_point test_4">
+					<div cond="$module_info->display_delivdest=='Y' && $key==0" id="section1">
+						<dl cond="$logged_info" id="section1">
+							<dt>
+								배송지선택
+							</dt>
+							<dd class="destination">
+								<ul>
+									<li loop="$address_list=>$addr_key,$addr_val"><input type="radio" name="sel_destination" id="sel_{$addr_val->address_srl}" onclick="apply_address_info({$addr_val->address_srl});" value="{$addr_val->address_srl}" checked="checked"|cond="$addr_val->default=='Y'" /><label for="sel_{$addr_val->address_srl}">{$addr_val->title}</label></li>
+									<li><a class="nuribtn light small" id="popAddressBook" href="#" onclick="return false;"><span>{$lang->cmd_addresslist}</span></a></li>
+									<li><a class="nuribtn light small" id="popRecentAddress" href="#" onclick="return false;"><span>{$lang->cmd_recent_addresses}</span></a></li>
+								</ul>
+							</dd>	
+						</dl>
+					</div>
+					<dl id="section2">
+						<block loop="$val->fields=>$key2,$field">
+							<dt>
+								<label for="column_title">{$field->html->title}</label>
+							</dt>
+							<dd class="{$field->column_type}">{$field->html->inputTag}</dd>
+						</block>
+					</dl>
+				</div>
+			</div>
+		</block>
+<!-- extra vars begin -->
+		<block cond="$mileage_flag != 'N'">
+		<div class="order_box title_mileage" id="order_box_5" style="display:none"|cond="!$logged_info" data="test_5">
+			<a href="#"><strong class="order_tit"><span>0{++$i} {$lang->use_mileage}</span></strong><span class="rollbtn" id="arrow">구매혜택정보 열기</span></a>
+		</div>		
+		<div class="m_point test_5" style="display:none"|cond="!$logged_info">
+			<dl>
+				<dt>{$lang->use_mileage}</dt>
+				<dd><input type="hidden" name="use_mileage" value="0" /><input class="line_input" type="text" name="input_mileage" value="0" /> <br />(사용가능 마일리지 : {number_format($my_mileage)})</dd>
+			</dl>
+		</div>
+		</block>
+	</form>
+	<div class="total_new2">
+		<!---ul class="total_border">
+			<li>
+				<strong>{$lang->total_amount}</strong>
+				<span class="pay_total">{number_format($sum_price)} 원</span>
+			</li>
+			<li>
+				<strong>{$lang->total_discount}</strong>
+				<span class="pay_total">- {number_format($total_discount_amount)} 원</span>
+			</li>
+			<li cond="$module_info->display_delivfee=='Y' || $delivery_fee">
+				<strong>{$lang->delivery_fee}</strong>
+				<span class="pay_total" id="delivery_fee">+ {number_format($delivery_fee)} 원</span>
+			</li>
+			<li cond="$mileage_flag != 'N'">
+				<strong>{$lang->use_mileage}</strong>
+				<span class="pay_total" id="mileage_amount"> - 0 원</span>
+			</li>
+			<li>
+				<strong cond="0">{$lang->total_order_amount}</strong>
+				<span class="pay_total" id="order_amount" cond="0">{number_format($total_price)} 원</span>
+			</li>
+		</ul--->
+		<p class="total_payment">
+			<strong class="total_m">{$lang->payment_amount}</strong>
+			<span class="total_m pay_total" id="payment_amount" STYLE='font-size:0.8rem;'>{number_format($total_price)} 원</span>
+		</p>
+	</div> 
+
+	<div class="order_box title_paymentInfo" id="order_box_6" style="display:none"|cond="!$logged_info" data="test_6">
+		<a href="#">
+			<strong class="order_tit"><span>0{++$i} {$lang->input_payment_info}</span> 
+				<span class="font_size11">{$lang->about_input_payment_info}</span>
+			</strong>
+			<span class="rollbtn" id="arrow">적립금 정보 열기</span>
+		</a>
+	</div>
+	<div class="test_6 payment-table">
+		{$svpg_form}
+	</div>
+</div>
+
+<div id="modal-dialog"></div>
+
+<block cond="$config->decimals">{@$decimals = $config->decimals}</block>
+<block cond="!$config->decimals">{@$decimals = 0}</block>
+<script type="text/javascript">
+        var g_decimals = {$decimals};
+</script>
+
+<block cond="$purchaser->cellphone">
+{@$purchaser->cellphone = implode('-',$purchaser->cellphone)}
+</block>
+<block cond="$purchaser->telnum">
+{@$purchaser->telnum = implode('-',$purchaser->telnum)}
+</block>
+<script>
+
+<block cond="$logged_info" >
+	var purchaser_name = '{$purchaser->name}';
+	<block cond="$config->address_input=='krzip'">
+		var purchaser_address = '{$purchaser->address[0]}';
+		var purchaser_address2 = '{$purchaser->address[1]}';
+		var purchaser_postcode = '';
+	</block>
+	<block cond="$config->address_input!='krzip'">
+		var purchaser_address = '{$purchaser->address}';
+		var purchaser_address2 = '{$purchaser->address2}';
+		var purchaser_postcode = '{$purchaser->postcode}';
+	</block>
+	var purchaser_cellphone = '{$purchaser->cellphone}';
+	var purchaser_telnum = '{$purchaser->telnum}';
+	var purchaser_chk = 'Y';
+</block>	
+<block cond="!$logged_info" >
+	var purchaser_chk= 'N';
+</block>
+
+var default_recipient = '{$default_address->recipient}';
+var default_cellphone = '{$default_address->cellphone}';
+var default_telnum = '{$default_address->telnum}';
+var default_postcode = '{$default_address->postcode}';
+var default_address = '{$address1}';
+var default_address2 = '{$address2}';
+var total_price = {$total_price};
+var my_mileage = {$my_mileage};
+var delivery_fee = {$delivery_fee};
+
+(function($) {
+	jQuery(function($) {
+		var address_srl = $('input[name=sel_destination]:checked').val();
+		if (address_srl) apply_address_info(address_srl);
+	});
+}) (jQuery);
+
+jQuery(function($) {
+
+	$(".order_box").click(function ()
+	{
+		order_box = $(this).attr('id');
+		order_box = "#" + order_box;
+		arrow_id = $(order_box).find('#arrow');
+		arrow_class = arrow_id.attr('class');
+
+		arrow_id.removeClass("arrow_top");
+		arrow_id.removeClass("rollbtn");
+		if(arrow_class == "arrow_top") $(arrow_id).addClass("rollbtn");
+		if(arrow_class == "rollbtn") $(arrow_id).addClass("arrow_top");
+
+		toggle_box = '.' + $(this).attr('data');
+		$(toggle_box).toggle();
+		return false;
+	});
+});
+</script>
+<include target="fieldset.html" />
+<!--- mobile screen end ------>
+<!--@end-->
+
+<script type="text/javascript">
+$(document).ready(function ()
+{
+	$('#purchaser_email').blur(function()
+	{
+		if( !isValidEmail( $('#purchaser_email').val() ) )
+			alert( '유효한 이메일이 아닙니다.' );
+	});
+
+	$('#purchaser_cellphone_1').blur(function()
+	{
+		if( $('#purchaser_cellphone_1').val().length > 1 )
+			if( !$.isNumeric( $('#purchaser_cellphone_1').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#purchaser_cellphone_1').focus()
+			}
+	});
+
+	$('#purchaser_cellphone_2').blur(function()
+	{
+		if( $('#purchaser_cellphone_2').val().length > 1 )
+			if( !$.isNumeric( $('#purchaser_cellphone_2').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#purchaser_cellphone_2').focus()
+			}
+	});
+
+	$('#purchaser_cellphone_3').blur(function()
+	{
+		if( $('#purchaser_cellphone_3').val().length > 1 )
+			if( !$.isNumeric( $('#purchaser_cellphone_3').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#purchaser_cellphone_3').focus()
+			}
+	});
+
+	$('#recipient_cellphone_1').blur(function()
+	{
+		if( $('#recipient_cellphone_1').val().length > 1 )
+			if( !$.isNumeric( $('#recipient_cellphone_1').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#recipient_cellphone_1').focus()
+			}
+	});
+
+	$('#recipient_cellphone_2').blur(function()
+	{
+		if( $('#recipient_cellphone_2').val().length > 1 )
+			if( !$.isNumeric( $('#recipient_cellphone_2').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#recipient_cellphone_2').focus()
+			}
+	});
+
+	$('#recipient_cellphone_3').blur(function()
+	{
+		if( $('#recipient_cellphone_3').val().length > 1 )
+			if( !$.isNumeric( $('#recipient_cellphone_3').val() ) )
+			{
+				alert('유효한 전화번호가 아닙니다.');
+				$('#recipient_cellphone_3').focus()
+			}
+	});
+
+	$('#copyInfo').click(function()
+	{
+		if( $('#copyInfo').is(':checked') )
+		{
+			if( $('#purchaser_name').val().length > 0 && $('#purchaser_cellphone_1').val().length > 0 && 
+					$('#purchaser_cellphone_2').val().length > 0 && $('#purchaser_cellphone_3').val().length > 0 )
+			{
+				$('#recipient_name').val( $('#purchaser_name').val() );
+				$("#recipient_name").attr('readonly', 'readonly');
+				$('#recipient_cellphone_1').val( $('#purchaser_cellphone_1').val() );
+				$('#recipient_cellphone_2').val( $('#purchaser_cellphone_2').val() );
+				$('#recipient_cellphone_3').val( $('#purchaser_cellphone_3').val() );
+				$("#recipient_cellphone_1").attr('readonly', 'readonly');
+				$("#recipient_cellphone_2").attr('readonly', 'readonly');
+				$("#recipient_cellphone_3").attr('readonly', 'readonly');
+			}
+			else
+			{
+				alert( '먼저 주문자 정보를 완성해 주세요.' );
+				$('#copyInfo').removeAttr('checked');
+			}
+		}
+		else
+		{
+			$('#recipient_name').val('');
+			$("#recipient_name").removeAttr('readonly');
+			$('#recipient_cellphone_1').val('');
+			$('#recipient_cellphone_2').val('');
+			$('#recipient_cellphone_3').val('');
+			$("#recipient_cellphone_1").removeAttr('readonly');
+			$("#recipient_cellphone_2").removeAttr('readonly');
+			$("#recipient_cellphone_3").removeAttr('readonly');
+		}
+	});	
+});
+
+function isValidEmail(emailText) {
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    return pattern.test(emailText);
+};
+</script>

@@ -1,0 +1,29 @@
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_ON_DEPOSIT)}" class="active"|cond="$status==svorder::ORDER_STATE_ON_DEPOSIT">{$lang->wait_deposit}</a> 
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_PAID)}" class="active"|cond="$status==svorder::ORDER_STATE_PAID">{$lang->deposit_done}</a> 
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_PREPARE_DELIVERY)}" class="active"|cond="$status==svorder::ORDER_STATE_PREPARE_DELIVERY">{$lang->prepare_delivery}</a> 
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_ON_DELIVERY)}" class="active"|cond="$status==svorder::ORDER_STATE_ON_DELIVERY">{$lang->on_delivery}</a> 
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_DELIVERED)}" class="active"|cond="$status==svorder::ORDER_STATE_DELIVERED">{$lang->delivery_done}</a> 
+<i>&nbsp;||&nbsp;</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_RETURN_REQUESTED)}" class="active"|cond="$status==svorder::ORDER_STATE_RETURN_REQUESTED">{$lang->return_requested}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_RETURNED)}" class="active"|cond="$status==svorder::ORDER_STATE_RETURNED">{$lang->returns}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_EXCHANGE_REQUESTED)}" class="active"|cond="$status==svorder::ORDER_STATE_EXCHANGE_REQUESTED">{$lang->exchange_requested}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_EXCHANGE_REDELIVERY_READY)}" class="active"|cond="$status==svorder::ORDER_STATE_EXCHANGE_REDELIVERY_READY">{$lang->exchange_redelivery_ready}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_EXCHANGED)}" class="active"|cond="$status==svorder::ORDER_STATE_EXCHANGED">{$lang->exchanged}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_CANCEL_REQUESTED)}" class="active"|cond="$status==svorder::ORDER_STATE_CANCEL_REQUESTED">{$lang->on_cancelling}</a>
+<i>&nbsp;||&nbsp;</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_CANCELLED)}" class="active"|cond="$status==svorder::ORDER_STATE_CANCELLED">{$lang->cancelled}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_COMPLETED)}" class="active"|cond="$status==svorder::ORDER_STATE_COMPLETED">{$lang->transaction_done}</a> 
+<i>&nbsp;||&nbsp;</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement','status',svorder::ORDER_STATE_DELETED)}" class="active"|cond="$status==svorder::ORDER_STATE_DELETED">{$lang->deleted}</a>
+<i>|</i>
+<a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderRawDataDownload','status','')}" class="active"|cond="$act=='dispSvorderAdminOrderRawDataDownload'">{$lang->order_rawdata_download}</a> <i>|</i>

@@ -1,0 +1,13 @@
+<query id="updateCartItemOffered" action="update">
+	<tables>
+		<table name="svorder_cart_offered" />
+	</tables>
+	<columns>
+		<column name="item_srl" var="item_srl" notnull="notnull" />
+		<column name="item_price_offered" var="item_price_offered" notnull="notnull" />
+		<column name="promotion_info" var="promotion_info" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="cart_srl" var="cart_srl" />
+	</conditions>
+</query>

@@ -1,0 +1,20 @@
+<h1>반품 접수 요청 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>반품 접수 요청 사유 코드</th>
+			<th>반품 접수 요청 상세 사유</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="return_reason">
+				<option value="">반품접수사유선택</option>
+				<option loop="$return_reason=>$sReasonCode,$sSymbol" value="{$sSymbol}">{$sReasonCode}</option>
+				</select>
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>

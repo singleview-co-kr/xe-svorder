@@ -1,0 +1,15 @@
+<query id="insertAddress" action="insert">
+	<tables>
+		<table name="svorder_address" />
+	</tables>
+	<columns>
+		<column name="address_srl" var="address_srl" notnull="notnull" />
+		<column name="member_srl" var="member_srl" notnull="notnull" />
+		<column name="addr_type" var="addr_type" notnull="notnull" />
+		<column name="is_abroad" var="is_abroad"/>
+		<column name="postcode" var="postcode" notnull="notnull" />
+		<column name="address" var="serialized_address" notnull="notnull" />
+		<column name="list_order" var="list_order" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

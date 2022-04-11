@@ -1,0 +1,23 @@
+<h1>개별 발송 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>택배사</th>
+			<th>운송장 번호</th>
+			<th>운송장 별도 등록 상세 사유</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="cart_express_id">
+				<option loop="$delivery_companies=>$key,$val" value="{$key}" selected="selected"|cond="$key == $item->express_id || (!$item->express_id && $key == $config->default_delivery_company)">{$val}</option>
+				</select>
+			</td>
+			<td>
+				<input type="text" name="cart_invoice_no" value="{$item->invoice_no}" />
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>

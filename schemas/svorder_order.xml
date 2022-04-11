@@ -1,0 +1,34 @@
+<table name="svorder_order">
+	<column name="order_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="order_referral" type="char" size="1" default="0" />
+	<column name="member_srl" type="number" size="11" notnull="notnull" index="idx_member_srl" />
+	<column name="module_srl" type="number" size="11" default="0" notnull="notnull" index="idx_module_srl" />
+	<column name="addr_srl" type="number" size="11" default="0" notnull="notnull" />
+	<column name="reserves_consume_srl" type="number" size="11" default="0" notnull="notnull" />
+	<column name="reserves_receive_srl" type="number" size="11" default="0" notnull="notnull" />
+	<column name="order_status" type="char" size="1" default="0" notnull="notnull" index="idx_order_status" />
+	<column name="purchaser_name" type="varchar" size="80" notnull="notnull" />
+	<column name="purchaser_cellphone" type="varchar" size="80" notnull="notnull" />
+	<column name="purchaser_email" type="varchar" size="250" notnull="notnull" />
+	<column name="non_password" type="varchar" size="250" />
+	<column name="recipient_name" type="varchar" size="80" notnull="notnull" />
+	<column name="recipient_cellphone" type="varchar" size="80" notnull="notnull" />
+	<column name="recipient_telnum" type="varchar" size="80" notnull="notnull" />
+	<column name="use_escrow" type="char" size="1" default="N" />
+	<column name="title" type="varchar" size="250" notnull="notnull" />
+	<column name="offered_price" type="number" size="11" default="0" notnull="notnull" />
+	<column name="delivery_fee" type="number" size="11" default="0" notnull="notnull" />
+	<column name="total_discount_amount" type="number" size="11" default="0" notnull="notnull" />
+	<!-- Y: in advance, N: after delivery -->
+	<column name="delivfee_inadvance" type="char" size="1" default="Y" notnull="notnull" />
+	<!-- Y means "has promotion info -->
+	<column name="is_promoted" type="char" size="1" default="N" />
+	<column name="utm_source" type="varchar" size="30" />
+	<column name="utm_medium" type="varchar" size="15" />
+	<column name="utm_campaign" type="varchar" size="90" />
+	<column name="utm_term" type="varchar" size="25" />
+	<column name="http_user_agent" type="varchar" size="200" notnull="notnull" />
+	<column name="is_mobile_access" type="char" size="1" default="0" notnull="notnull" />
+	<column name="last_changed_date" type="date" index="idx_last_changed_date"/>
+	<column name="regdate" type="date" notnull="notnull" index="idx_regdate"/>
+</table>

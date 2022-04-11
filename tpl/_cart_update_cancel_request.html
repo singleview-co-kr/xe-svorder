@@ -1,0 +1,75 @@
+<h1>상품 결제 취소 요청 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>결제 취소 요청사유 코드</th>
+			<th>결제 취소 요청 상세 사유</th>
+			<th>취소 완료 예정일</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="cancel_req_reason" id="cancel_req_reason">
+				<option value="">결제취소요청사유선택</option>
+				<option loop="$cancel_reason=>$sReasonCode,$sSymbol" value="{$sSymbol}">{$sReasonCode}</option>
+				</select>
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+			<td>
+				<input type="text" name="cancel_due_date" value="" placeholder='YYYYMMDD 형식' style='padding: 5px 5px; line-height: 28px;'/>
+			</td>
+		</tr>
+<block cond="$order_info->payment_method=='VA' || $order_info->payment_method=='BT' || $order_info->payment_method=='IB'">
+		<tr>
+			<th>{$lang->refund_bank_name}</th>
+			<th>{$lang->refund_bank_account}</th>
+			<th>{$lang->refund_account_holder}</th>
+		</tr>
+		<tr>
+			<td><input type="text" name="refund_bank_name" id='refund_bank_name' placeholder="씨앗은행" value=""/></td>
+			<td><input type="text" name="refund_bank_account" id='refund_bank_account' placeholder="234-1345-789" value=""/></td>
+			<td><input type="text" name="refund_account_holder" id='refund_account_holder' placeholder="예금주" value=""/></td>
+		</tr>
+</block>
+	</tbody>
+</table>
+
+<table class="x_table">
+	<thead>
+		<tr>
+			<th>차감 항목명</th>
+			<th>금액</th>
+			<th><input type="button" value="추가" id="add_deduction"/></th>
+		</tr>
+	</thead>
+	<tbody id="deduction_detail">
+		<tr>
+			<td><input type='text' name='deduction_title[]' id='deduction_title[]' class='deduction_title' value='배송비' /></td>
+			<td><input type='text' name='deduction_amnt[]' id='deduction_amnt[]' class='deduction_amnt' value='{$config->delivery_fee}' /></td>
+			<td><input type='button' name='remove_deduction' class='remove_deduction' value=' X ' /></td>
+		</tr>
+	</tbody>
+</table>
+<script>
+jQuery('#add_deduction').click(function(){
+	var contents = '';
+	contents += '<tr>';
+	contents +=     "<td><input type='text' name='deduction_title[]' id='deduction_title[]' class='deduction_title' value='' /></td>";
+	contents +=     "<td><input type='text' name='deduction_amnt[]' id='deduction_amnt[]' class='deduction_amnt' value='' /></td>";
+	contents +=     "<td><input type='button' name='remove_deduction' class='remove_deduction' value=' X ' /></td>";
+	contents += '</tr>';
+
+	jQuery('#deduction_detail').append(contents); /* 추가기능*/
+	jQuery('.remove_deduction').click(function(){ /* 삭제기능*/
+		jQuery(this).parent().parent().remove(); 
+	});
+	jQuery('.deduction_amnt').keyup(function(){          
+		jQuery(this).val( $(this).val().replace(/[^0-9]/gi,'') ); /*숫자만 입력가능*/
+	});
+});
+
+jQuery('.remove_deduction').click(function(){ /* 삭제기능*/
+	jQuery(this).parent().parent().remove(); 
+});
+</script>

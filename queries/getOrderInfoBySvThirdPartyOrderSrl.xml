@@ -1,0 +1,12 @@
+<query id="getOrderInfoBySvThirdPartyOrderSrl" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_status" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" />
+		<condition operation="equal" column="thirdparty_order_id" var="thirdparty_order_id" pipe="and" />
+	</conditions>
+</query>

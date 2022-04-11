@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<grants>
+	</grants>
+	<permissions>
+	</permissions>
+	<actions>
+		<action name="dispSvorderAdminConfig" type="view" />
+		<action name="dispSvorderAdminModInstList" type="view" />
+		<action name="dispSvorderAdminInsertModInst" type="view" />
+		<action name="dispSvorderAdminSkinInfo" type="view" />
+		<action name="dispSvorderAdminMobileSkinInfo" type="view" />
+		<action name="dispSvorderAdminOrderManagement" type="view" admin_index="false" />
+		<action name="dispSvorderAdminOrderSheet" type="view" />
+		<action name="dispSvorderAdminOrderDetail" type="view" />
+		<action name="dispSvorderAdminCartItemManagement" type="view" />
+		<action name="dispSvorderAdminEscrowDelivery" type="view" />
+		<action name="dispSvorderAdminEscrowDenyConfirm" type="view" />
+		<action name="dispSvorderAdminOrderRawDataDownload" type="view" />
+		<action name="dispSvorderAdminRecoverTransaction" type="view" />
+		<action name="dispSvorderAdminExtraVars" type="view" />
+		<action name="dispSvorderAdminNpayApiConfig" type="view" />
+		
+		<action name="procSvorderAdminConfig" type="controller" />
+		<action name="procSvorderAdminUpdateDataFormat" type="controller" />
+		<action name="procSvorderAdminRegisterShippingSerial" type="controller" />
+		<action name="procSvorderAdminInsertModInst" type="controller" />
+		<action name="procSvorderAdminDeleteModInst" type="controller" />
+		<action name="procSvorderAdminUpdateStatusMultiple" type="controller" />
+		<action name="procSvorderAdminUpdateOrderDetail" type="controller" />
+		<action name="procSvorderAdminUpdateCartItems" type="controller" />
+		<action name="procSvorderAdminDeleteOrders" type="controller" />
+		<action name="procSvorderAdminPermanentDeleteOrders" type="controller" />
+		<action name="procSvorderAdminInsertListConfig" type="controller" />
+		<action name="procSvorderAdminAddShipInvoiceQuick" type="controller" />
+		<action name="procSvorderAdminCSVDownloadByOrder" type="controller" />
+		<action name="procSvorderAdminCSVDownloadByOrderAll" type="controller" />
+		<action name="procSvorderAdminTransmitTransaction" type="controller" />
+		<action name="procSvorderAdminInsertExtraVar" type="controller" />
+		<action name="procSvorderAdminDeleteExtraVar" type="controller" />
+		<action name="procSvorderAdminMoveExtraVar" type="controller" />
+		<action name="procSvorderAdminTransferToMember" type="controller" />
+		<action name="procSvorderAdminNpayApiConfig" type="controller" />
+		<action name="procSvorderAdminCollectNpayManually" type="controller" />
+		<action name="procSvorderAdminResetNpayOrderInfo" type="controller" />
+		
+		<action name="getSvorderAdminDeleteModInst" type="model" />
+		<action name="getSvorderAdminEscrowInfo" type="model" />
+		<action name="getSvorderAdminModifyDataFormat" type="model" />
+		<action name="getSvorderAdminOrderStatusUpdateForm" type="model" />
+		<action name="getSvorderAdminRegisterShippingSerial" type="model" />		
+		<action name="dispSvorderOrderList" type="view" index="true" />
+		<action name="dispSvorderOrderForm" type="view" />
+		<action name="dispSvorderOrderComplete" type="view" />
+		<action name="dispSvorderOrderDetail" type="view" />
+		<action name="dispSvorderLogin" type="view" />
+		<action name="dispSvorderNonOrderList" type="view" />
+
+		<action name="dispSvorderAddressList" type="view" />
+		<action name="dispSvorderEscrowConfirm" type="view" />
+
+		<action name="getSvorderEscrowInfo" type="model" />
+		<action name="getSvorderConfirmInvoice" type="model" />
+		<action name="getSvorderUpdateAddrAllowable" type="model" />
+		<action name="getSvorderOrderStatusUpdateForm" type="model" />
+
+		<action name="procSvorderExtCommand" type="controller" method="GET|POST"/>
+		<action name="procSvorderUpdateOrderStatus" type="controller" />
+		<action name="procSvorderUpdateAddress" type="controller" />
+		<action name="procSvorderUpdateDelivMemo" type="controller" />
+	</actions>
+</module>

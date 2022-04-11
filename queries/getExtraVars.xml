@@ -1,0 +1,12 @@
+<query id="getExtraVars" action="select">
+    <tables>
+        <table name="svorder_extra_vars" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="module_srl" var="module_srl" default="-1" notnull="notnull" pipe="and" />
+        <condition operation="equal" column="order_srl" var="order_srl" notnull="notnull" pipe="and" />
+    </conditions>
+</query>

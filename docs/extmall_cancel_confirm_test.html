@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+  <form action="//<?=$_SERVER['HTTP_HOST']?>/index.php" method="post">
+<input type='hidden' name='module' id='module' value='svorder'/>
+<input type='hidden' name='act' id='act' value='procSvorderExtCommand'/>
+<input type='hidden' name='mode' id='mode' value='confirm_cancel_invoice'/>
+
+<?
+$aOrderSrls = array('909','912');
+$sSerializeOrderSrls=serialize( $aOrderSrls );
+
+$aExtraOrderSrls = array('B160603104138Yt','B160603104726Zc');
+$sSerializeExtraOrderSrls=serialize( $aExtraOrderSrls );
+?>
+
+<input type='hidden' name='sv_tr_no' id='sv_tr_no' value='<?=$sSerializeOrderSrls?>'/> <!----- 테스트 용으로 생성한 주문 -------->
+<input type='hidden' name='extra_tr_no' id='extra_tr_no' value='<?=$sSerializeExtraOrderSrls?>'/>
+<input type='submit' value='입력'/>
+
+</form>
+ </body>
+</html>

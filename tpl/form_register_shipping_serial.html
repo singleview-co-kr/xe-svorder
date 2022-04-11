@@ -1,0 +1,17 @@
+<BR>
+<form class="x_form-horizontal" action="./" method="post" enctype="multipart/form-data" >
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="procSvorderAdminRegisterShippingSerial" />
+	<input type="hidden" name="success_return_url" value="{getCurrentPageUrl()}?module=svshopmaster&act=dispSvorderAdminOrderManagement&status=4" />
+	<div class="x_control-group">
+		<label class="x_control-label" for="shipping_invoice_info">{$lang->register_invoice_info_file}</label>
+		<div class="x_controls">
+			<input type="file" name="shipping_invoice_info" />
+			<a href="#invoice_info_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="invoice_info_help" class="x_help-block" hidden>{$lang->about_register_invoice_info_file}</p>
+		</div>
+	</div>
+	<div class="x_clearfix btnArea">
+		<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+	</div>
+</form>

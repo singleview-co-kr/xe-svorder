@@ -1,0 +1,176 @@
+<!-- Google Analytics Code Begin (20160306) singleview.co.kr -->
+<script type='text/javascript' src='https://svapi.co.kr:5018/gatk.js'></script>
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+gatkHeader.init( '{$config->ga_tracking_id}' );
+gatkMypage.init();
+</script>
+<!-- Google Analytics Code End (20160306) singleview.co.kr -->
+<include target="_header.html" />
+<div id="orderlist">
+	<form action="./" method="post" id='frm-cart-item_mgmt'>
+		<input type="hidden" name="module" value="{$module}" />
+		<input type="hidden" name="act" value="procSvorderAdminUpdateCartItems" />
+		<input type="hidden" name="tgt_status" value="{$tgt_status}" />
+		<input type="hidden" name="order_srl" value="{$order_srl}" />
+		<section class="section">
+			<h1>{$lang->title_order_info}</h1>
+			<table class="x_table">
+				<tbody>
+					<tr>
+						<th>{$lang->order_date}</th>
+						<td>{zdate($order_info->regdate)}</td>
+						<th>{$lang->items}</th>
+						<td>{$order_info->item_count}</td>
+					</tr>
+					<tr>
+						<th>{$lang->order_referral}</th>
+						<td>{$order_referral[$order_info->order_referral]}
+<block cond="$order_info->ext_pg_order_id">
+						- {$order_info->ext_pg_order_id}
+</block>
+						</td>
+						<th></th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>{$lang->order_number}</th>
+						<td>
+							{$order_info->order_srl} (<span class="ko_text red">{$lang->asis} {$lang->order_status}: {$order_status[$order_info->order_status]}</span>)
+						</td>
+						<th><div cond="$config->external_server!=''">{$config->external_server} 주문번호</div></th>
+						<td><div cond="$config->external_server!=''">{$order_info->thirdparty_order_id}</div></td>
+					</tr>
+					<tr>
+						<th>{$lang->purchaser_name}</th>
+						<td>{$order_info->purchaser_name} &nbsp; 
+<block cond="$order_info->member_srl">
+						( <a href="#popup_menu_area" class="member_{$order_info->member_srl}">{$order_info->item_list[0]->nick_name}</a> )
+</block>
+						</td>
+<block cond="$order_info->recipient_name">
+						<th>{$lang->recipient}</th>
+						<td>{$order_info->recipient_name} &nbsp;</td>
+</block>
+					</tr>
+					<tr cond="$order_info->recipient_cellphone">
+						<th>{$lang->recipient} {$lang->cellphone}</th>
+						<td colspan="3">{$order_info->recipient_cellphone}</td>
+					</tr>
+					<tr cond="$order_info->recipient_telnum">
+						<th>{$lang->recipient} {$lang->telnum}</th>
+						<td colspan="3">{$order_info->recipient_telnum}</td>
+					</tr>
+					<tr cond="$address1">
+						<th> {$lang->recipient}{$lang->address}</th>
+						<td colspan="3"><span cond="$order_info->recipient_postcode">({$order_info->recipient_postcode})</span>{$address1} {$address2} {$address3} {$address4}</td>
+					</tr>
+					<tr loop="$extra_vars=>$key,$val">
+						<th>{$val->name}</th>
+						<td colspan="3"><span>{$val->value}</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="section">
+			<h1>{$lang->title_ordered_items}</h1>
+			<table class="x_table">
+				<thead>
+					<tr>
+						<th>{$lang->cart_number}</th>
+						<th>{$lang->order_status}</th>
+						<th>{$lang->product}</th>
+						<th>{$lang->product_name}</th>
+						<th>{$lang->quantity}</th>
+						<th>{$lang->price}</th>
+						<th>{$lang->discount}</th>
+						<th>{$lang->order_amount}</th>
+						<th>{$lang->delivery_memo}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr loop="$cart_list=>$no,$item">
+<!-- Google Analytics Code Begin (3/4/2016 9:48 AM) singleview.co.kr -->
+<script>
+gatkMypage.queueItemInfo( '{$item->item_srl}', '{$item->item_name}', '', '', '{$item->option_title}', '{$item->price+$item->option_price}', '{$item->quantity}', '' );
+</script>
+<!-- Google Analytics Code End (3/4/2016 9:48 AM) singleview.co.kr -->
+						<td>
+							<input type="hidden" name="cart_srls[]" value="{$item->cart_srl}" />{$item->cart_srl}
+							<BR>
+							{$item->npay_product_order_id}
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCEL_REQUESTED">
+							<font color='red'><strong>
+</block>
+							{$order_status[$item->order_status]}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCEL_REQUESTED">
+							</strong></font>
+</block>
+						</td>
+						<td><a href="{getUrl('','module',$module,'act','dispSvitemAdminUpdateItem','module_srl',$item->module_srl,'item_srl',$item->item_srl)}"><img src="{svitemView::_dispThumbnailUrl($item->thumb_file_srl,40)}" /></a></td>
+						<td>
+							<div>{$item->item_name}</div>
+							<div cond="$item->option_srl">{$item->option_title} ({$item->printPrice($item->option_price)})</div>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{$item->quantity}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->price)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->discount_amount)}<br />
+								<block loop="$item->discount_info=>$promotionkey,$promotionval">
+								{$promotionval->title}<BR>
+								</block>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						</td>
+						<td>
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							<strike>
+</block>
+								{number_format($item->discounted_price)}
+<block cond="$item->order_status == svorder::ORDER_STATE_CANCELLED">
+							</strike>
+</block>
+						<td>{$item->delivery_memo}</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section class="section">
+			{$sCartUpdateForm}
+		</section>
+		<div class="btnArea">
+			<button type="submit" id='btn-form-submit' class="x_btn x_btn-primary" cond="$allow_modification" >{$lang->cmd_save}</button>
+		</div>
+	</form>
+</div>
+<script>
+jQuery('#btn-form-submit').click(function(e) {
+	e.preventDefault();
+	jQuery('#frm-cart-item_mgmt')[0].submit();
+});
+</script>

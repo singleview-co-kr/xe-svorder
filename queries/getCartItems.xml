@@ -1,0 +1,27 @@
+<query id="getCartItems" action="select">
+	<tables>
+		<table name="svorder_cart" />
+	</tables>
+	<columns>
+		<column name="item_srl" alias="item_srl" />
+		<column name="npay_product_order_id" alias="npay_product_order_id" />
+		<column name="order_srl" alias="order_srl" />
+		<column name="cart_srl" alias="cart_srl" />
+		<column name="order_status" alias="order_status" />
+		<column name="quantity" alias="quantity" />
+		<column name="price" alias="price" />
+		<column name="taxfree" alias="taxfree" />
+		<column name="is_promoted" alias="is_promoted" />
+		<column name="option_srl" alias="option_srl" />
+		<column name="option_price" alias="option_price" />
+		<column name="option_title" alias="option_title" />
+		<column name="bundling_order_info" alias="bundling_order_info" />
+		<column name="delivery_memo" alias="delivery_memo" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="price" order="desc" />
+	</navigation>
+</query>

@@ -1,0 +1,12 @@
+<query id="getSvCartInfoByProdOrderId" action="select">
+	<tables>
+		<table name="svorder_cart" />
+	</tables>
+	<columns>
+		<column name="cart_srl" />
+		<column name="order_status" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="npay_product_order_id" var="npay_product_order_id" />
+	</conditions>
+</query>

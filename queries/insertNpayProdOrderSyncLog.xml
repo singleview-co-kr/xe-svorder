@@ -1,0 +1,16 @@
+<query id="insertNpayProdOrderSyncLog" action="insert">
+	<tables>
+		<table name="svorder_npay_prod_order_log" />
+	</tables>
+	<columns>
+		<column name="npay_product_order_id" var="npay_product_order_id" notnull="notnull" />
+		<column name="npay_order_id" var="npay_order_id" notnull="notnull" />
+		<column name="order_srl" var="order_srl" filter="number" notnull="notnull" />
+		<column name="mode" var="mode" />
+		<column name="npay_order_status" var="npay_order_status" />
+		<column name="npay_product_order_info" var="npay_product_order_info" notnull="notnull" />
+		<column name="npay_last_changed_date" var="npay_last_changed_date" notnull="notnull" />
+		<column name="npay_orderdate" var="npay_orderdate" notnull="notnull" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

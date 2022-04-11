@@ -1,0 +1,7 @@
+<table name="svorder_deduction">
+	<column name="deduction_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<column name="order_srl" type="number" size="11" notnull="notnull" unique="unique_order_cart_srl" />
+	<column name="cart_srl" type="number" size="11" notnull="notnull" unique="unique_order_cart_srl" />
+	<column name="deduction_info" type="varchar" size="256" notnull="notnull" />
+	<column name="regdate" type="date" notnull="notnull" />
+</table>

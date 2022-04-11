@@ -1,0 +1,17 @@
+<query id="getNpayLatestOrderInfo" action="select">
+	<tables>
+		<table name="svorder_npay_prod_order_log" />
+	</tables>
+	<columns>
+		<column name="npay_log_srl" />
+		<column name="regdate" />
+	</columns>
+	<conditions>
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="npay_log_srl" order="desc" />
+		<list_count var="list_count" default="1" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

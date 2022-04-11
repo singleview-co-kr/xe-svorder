@@ -1,0 +1,26 @@
+<query id="insertCartItem" action="insert">
+	<tables>
+		<table name="svorder_cart" />
+	</tables>
+	<columns>
+		<column name="cart_srl" var="cart_srl" filter="number" notnull="notnull" />
+		<column name="order_srl" var="order_srl" filter="number" notnull="notnull" />
+		<column name="order_status" var="order_status" />
+		<column name="npay_product_order_id" var="npay_product_order_id" />
+		<column name="item_srl" var="item_srl" notnull="notnull" />
+		<column name="member_srl" var="member_srl" notnull="notnull" />
+		<column name="module_srl" var="module_srl" notnull="notnull" />
+		<column name="quantity" var="quantity" default="1" />
+		<column name="price" var="price" notnull="notnull" />
+		<column name="taxfree" var="taxfree" notnull="notnull" />
+		<column name="is_promoted" var="is_promoted" default="N" />
+		<column name="option_srl" var="option_srl" default="0" />
+		<column name="option_price" var="option_price" default="0" />
+		<column name="option_title" var="option_title" default="" />
+		<column name="bundling_order_info" var="bundling_order_info" />
+		<column name="delivery_memo" var="delivery_memo" />
+		<column name="cart_date" var="cart_date" />
+		<column name="regdate" var="regdate" default="curdate()" />
+		<column name="last_changed_date" var="last_changed_date" default="curdate()" />
+	</columns>
+</query>

@@ -1,0 +1,17 @@
+<query id="getNpayLatestInquiryInfo" action="select">
+	<tables>
+		<table name="svorder_npay_inquiry_log" />
+	</tables>
+	<columns>
+		<column name="log_srl" />
+		<column name="regdate" />
+	</columns>
+	<conditions>
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="log_srl" order="desc" />
+		<list_count var="list_count" default="1" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

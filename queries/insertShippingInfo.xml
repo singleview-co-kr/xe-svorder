@@ -1,0 +1,13 @@
+<query id="insertShippingInfo" action="insert">
+	<tables>
+		<table name="svorder_cart_shipping" />
+	</tables>
+	<columns>
+		<column name="cart_srl" var="cart_srl" filter="number" notnull="notnull" />
+		<column name="order_srl" var="order_srl" filter="number" notnull="notnull" />		
+		<column name="express_id" var="express_id" />
+		<column name="invoice_no" var="invoice_no" />
+		<column name="delivery_memo" var="delivery_memo" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

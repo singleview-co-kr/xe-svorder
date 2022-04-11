@@ -1,0 +1,13 @@
+<query id="updateAddress" action="update">
+	<tables>
+		<table name="svorder_address" />
+	</tables>
+	<columns>
+		<column name="title" var="title" />
+		<column name="default" var="default" default="N"/>
+	</columns>
+	<conditions>
+		<condition operation="equal" column="address_srl" var="address_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and" />
+	</conditions>
+</query>

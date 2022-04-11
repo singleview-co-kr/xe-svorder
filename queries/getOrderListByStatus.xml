@@ -1,0 +1,23 @@
+<query id="getOrderListByStatus" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_srl" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_status" var="order_status" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" pipe="and"/>
+		<condition operation="equal" column="order_srl" var="order_srl" pipe="and" />
+		<condition operation="equal" column="purchaser_email" var="email_address" pipe="and" />
+		<condition operation="equal" column="purchaser_name" var="purchaser_name" pipe="and" />
+		<condition operation="equal" column="purchaser_cellphone" var="purchaser_cellphone" pipe="and" />
+		<condition operation="like_prefix" column="regdate" var="regdate" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="regdate" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

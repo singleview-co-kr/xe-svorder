@@ -1,0 +1,20 @@
+<query id="insertNpayInquirySyncLog" action="insert">
+	<tables>
+		<table name="svorder_npay_inquiry_log" />
+	</tables>
+	<columns>
+		<column name="npay_inquiry_id" var="npay_inquiry_id" notnull="notnull" />
+		<column name="npay_product_order_id" var="npay_product_order_id" notnull="notnull" />
+		<column name="npay_order_id" var="npay_order_id" notnull="notnull" />
+		<column name="item_srl" var="item_srl" />
+		<column name="npay_customer_id" var="npay_customer_id" />
+		<column name="npay_customer_name" var="npay_customer_name" />
+		<column name="npay_inquiry_title" var="npay_inquiry_title" />
+		<column name="npay_inquiry_category" var="npay_inquiry_category" />
+		<column name="npay_inquiry_content" var="npay_inquiry_content" />
+		<column name="npay_is_answered" var="npay_is_answered" />
+		<column name="npay_answer_content" var="npay_answer_content" />
+		<column name="inquiry_date" var="inquiry_date" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

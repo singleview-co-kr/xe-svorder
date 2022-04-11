@@ -1,0 +1,30 @@
+<div class="x_page-header">
+	<h1>
+		{$lang->order_management}
+		<span class="path" cond="$module_info->mid">
+			&gt; <a href="{getSiteUrl($module_info->domain,'','mid',$module_info->mid)}" target="_blank"|cond="$module=='admin'">{$module_info->mid}<block cond="$module_info->is_default=='Y'">({$lang->is_default})</block></a>
+		</span>
+		<a href="#aboutModule" data-toggle class="x_icon-question-sign">{$lang->help}</a>
+	</h1>
+</div>
+<p class="x_alert x_alert-info" id="aboutModule" hidden>{$lang->about_svorder}</p>
+<ul class="x_nav x_nav-tabs" cond="$module_info">
+	<li class="x_active"|cond="$act=='dispSvorderAdminOrderManagement'" ><a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderManagement')}">{$lang->order_management}</a></li>
+	<li cond="$order_srl" class="x_active"|cond="$act=='dispSvorderAdminOrderDetail'" ><a href="{getUrl('','module',$module,'act','dispSvorderAdminOrderDetail','order_srl',$order_srl)}">{$lang->order_details}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminModInstList'" ><a href="{getUrl('','module',$module,'act','dispSvorderAdminModInstList')}">{$lang->page_list}</a></li>
+	<li cond="$module_srl" class="x_active"><a href="{getUrl('act','dispSvorderAdminInsertModInst','module_srl',$module_srl)}">{$module_info->mid} {$lang->page_management}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminInsertModInst' && !$module_srl"><a href="{getUrl('','module',$module,'act','dispSvorderAdminInsertModInst')}">{$lang->page_creation}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminRecoverTransaction'"><a href="{getUrl('','module',$module,'act','dispSvorderAdminRecoverTransaction')}">{$lang->recover_transaction}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminNpayApiConfig'"><a href="{getUrl('','module',$module,'act','dispSvorderAdminNpayApiConfig')}">{$lang->npay_api_setting}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminConfig'"><a href="{getUrl('','module',$module,'act','dispSvorderAdminConfig')}">{$lang->basic_setting}</a></li>
+</ul>
+<ul cond="$module_srl" class="x_nav x_nav-tabs">
+	<li class="x_active"|cond="$act=='dispSvorderAdminInsertModInst'"><a href="{getUrl('act','dispSvorderAdminInsertModInst')}">{$lang->page_configuration}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminExtraVars'"><a href="{getUrl('act','dispSvorderAdminExtraVars', 'selected_var_idx','' )}">{$lang->extra_vars}</a></li>
+	<li class="x_active"|cond="$act=='dispSvorderAdminSkinInfo' && $module_info->skin"><a href="{getUrl('act','dispSvorderAdminSkinInfo')}">{$lang->skin_settings}</a></li>
+	<li cond="$module_info->use_mobile=='Y' && $module_info->mskin" class="x_active"|cond="$act=='dispSvorderAdminMobileSkinInfo'"><a href="{getUrl('act','dispSvorderAdminMobileSkinInfo')}">{$lang->mobile_skin}</a></li>
+</ul>
+
+<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == ''" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>

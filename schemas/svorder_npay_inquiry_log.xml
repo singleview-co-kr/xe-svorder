@@ -1,0 +1,16 @@
+<table name="svorder_npay_inquiry_log">
+	<column name="log_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<column name="npay_inquiry_id" type="varchar" size="20" notnull="notnull" index="idx_npay_inquiry_id" />
+	<column name="npay_product_order_id" type="varchar" size="20" notnull="notnull" index="idx_npay_product_order_id" />
+	<column name="npay_order_id" type="varchar" size="20" notnull="notnull" />
+	<column name="item_srl" type="number" size="11" index="idx_item_srl" />
+	<column name="npay_customer_id" type="varchar" size="20"  />
+	<column name="npay_customer_name" type="varchar" size="20"  />
+	<column name="npay_inquiry_title" type="varchar" size="20" />
+	<column name="npay_inquiry_category" type="varchar" size="20" />
+	<column name="npay_inquiry_content" type="text" />
+	<column name="npay_is_answered" type="char" size="1" />
+	<column name="npay_answer_content" type="text"/>
+	<column name="inquiry_date" type="date" notnull="notnull" />
+	<column name="regdate" type="date" notnull="notnull" />
+</table>

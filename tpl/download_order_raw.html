@@ -1,0 +1,93 @@
+<include target="_header.html" />
+<block cond="count($list)">
+	{@$list_keys = array_keys($list)}
+	{@$first_order = $list[$list_keys[0]]}
+	{@$extra_vars = $first_order->extra_vars}
+	<block cond="$extra_vars">
+		{@$keys = array_keys($extra_vars)}
+		{@$representative = $keys[0]}
+	</block>
+</block>
+<div style="margin-bottom:20px;">
+	<include target="ordermanagement_header.html" />
+</div>
+<form id="searchForm" action="./" method="get" class="x_input-append" >
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<input type="hidden" name="status" value="{$status}" />
+	<input type="hidden" name="error_return_url" value="" />
+	<div>
+		<select name="s_yr_mo" id="s_yr_mo" style="width:80px;">
+			<option value="" selected="selected"|cond="!$s_yr_mo">{$lang->all}기간</option>
+			<option loop="$aAvailablePeriod => $nIdx,$nPeriod" value="{$nPeriod}" selected="selected"|cond="$s_yr_mo==$nPeriod">{$nPeriod}</option>
+		</select>
+		<button class="x_btn x_btn-inverse" type="submit">{$lang->inquiry}</button>
+	</div>
+</form>
+<B>{$lang->sum_price}</B>: 제품별 정가<BR>
+<B>{$lang->offered_price}</B>: 구매자가 주문서에서 확인한 제품별 청약가<BR>
+<B>{$lang->item_discounted_price}</B>: 거래의 총 할인금액을 제품가격 비중으로 배분하여 차감한 제품별 할인가격<BR>
+<B>{$lang->delivery_fee}</B>: 주문 고객에 청구된 배송비<BR>
+<B>{$lang->total_discount_amount}</B>: 주문 고객이 해당 거래에서 할인받은 총액
+<B>{$lang->total_discounted_price}</B>: 주문 고객이 거래를 성립시키기 위해 PG사에 최종 지불한 금액<BR>
+<div id="orderlist" class="table even easyList">
+	<table class="x_table x_table-striped x_table-hover" summary="{$lang->order_management_details}">
+		<caption style="text-align:right; margin-bottom:10px;">
+			<input type='checkbox' name='privacy_mode' id='privacy_mode'>개인정보 보호 모드
+			<a href='#' onClick='downloadCsv();'>{$lang->cmd_download_transaction_master}</a>
+		</caption>
+		<thead style="clear:both;">
+			<tr>
+				<th scope="col">{$lang->order_status}</th>
+				<th scope="col">{$lang->order_date}</th>
+				<th scope="col">{$lang->product_name}</th>
+				<th scope="col">{$lang->items}</th>
+				<th scope="col">{$lang->payamount}</th>
+				<th loop="$usedIdentifiers=>$key,$val" scope="col">{Context::getLang($key)}</th>
+				<th scope="col">{$lang->purchaser_name}</th>
+				<th scope="col">{$lang->escrow}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr loop="$list=>$no,$order">
+				{@$order_arr = get_object_vars($order)}
+				<td>{$order_status[$order->order_status]}</td>
+				<td>
+					<div>{zdate($order->regdate,'Y-m-d')}</div>
+					<div>(<a href="{getUrl('act','dispSvorderAdminOrderDetail','order_srl',$order->order_srl)}">{$order->order_srl}</a>)</div>
+				</td>
+				<td><span title="{$order->title}">{cut_str($order->title, 34)}</span></td>
+				<td>{number_format($order->item_count)}</td>
+				<td>{number_format($order->offered_price)}</td>
+				<td loop="$usedIdentifiers=>$key,$val"><a href="#popup_menu_area" class="member_{$order->member_srl}" title="{$order_arr[$key]}">{cut_str($order_arr[$key],6)}</a></td>
+				<td>{$order->purchaser_name}</td>
+				<td class="escrow">{$order->use_escrow}</td>
+			</tr>
+			<tr cond="!count($list)">
+				<td colspan="9">{$lang->msg_no_order_list}</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- //orderlist -->
+
+<include target="_page_navigation.html" />
+
+<!--- hidden form to download CSV begin ----->
+<form action="./" method="post" id='frmCsvDownloadByOrder' name="frmCsvDownloadByOrder">
+<input type='hidden' name='module' id='module' value='svshopmaster'/>
+<input type='hidden' name='act' id='act' value='procSvorderAdminCSVDownloadByOrderAll'/>
+<input type='hidden' name='s_yr_mo_dl' id='s_yr_mo_dl' value=''/>
+<input type='hidden' name='s_privacy_mode' id='s_privacy_mode' value=''/>
+</form>
+<script type="text/javascript">
+function downloadCsv()
+{
+// select box ID로 접근하여 선택된 값 읽기
+	var nYrMo = jQuery("#s_yr_mo option:selected").val();
+	jQuery('#s_yr_mo_dl').val(nYrMo);
+	var bPrivacyMode = jQuery("input:checkbox[id='privacy_mode']").is(":checked");
+	jQuery('#s_privacy_mode').val(bPrivacyMode);
+	document.frmCsvDownloadByOrder.submit();
+}
+</script>
+<!--- hidden form to download CSV end ----->

@@ -1,0 +1,11 @@
+<query id="insertDeductionInfo" action="insert">
+	<tables>
+		<table name="svorder_deduction" />
+	</tables>
+	<columns>
+		<column name="order_srl" var="order_srl" filter="number" notnull="notnull" />		
+		<column name="cart_srl" var="cart_srl" filter="number" />
+		<column name="deduction_info" var="deduction_info" notnull="notnull" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

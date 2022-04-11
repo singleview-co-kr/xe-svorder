@@ -1,0 +1,14 @@
+<query id="getFirstOrderInfo" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="regdate" />
+	</columns>
+	<navigation>
+		<index var="sort_index" default="order_srl" order="asc" />
+		<list_count var="list_count" default="1" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

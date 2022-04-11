@@ -1,0 +1,8 @@
+<query id="deleteNpayOrderInfoByOrderSrl" action="delete">
+	<tables>
+		<table name="svorder_npay_prod_order_log" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" filter="number" notnull="notnull" />
+	</conditions>
+</query>

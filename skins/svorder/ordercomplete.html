@@ -1,0 +1,131 @@
+<link href="//cdn.shopify.com/s/assets/forms-d04a18eb7b1711777e604878c02f0589.css" media="screen" rel="stylesheet" />
+<link href="//cdn.shopify.com/s/assets/checkout-0df33d9e5c4327f3c5678bb1b4f63be4.css" media="screen" rel="stylesheet" />
+<!--[if lt IE 7]>
+<link href="//cdn.shopify.com/s/assets/ie-checkout-6c5e64818f146cb2800385c7edebf08f.css" media="screen" rel="stylesheet" />
+<![endif]-->
+<link href="//cdn.shopify.com/s/files/1/0208/5970/t/70/assets/checkout.css?14772" media="screen" rel="stylesheet" />
+
+<!-- Google Analytics Code Begin(20141216) -->
+<script>
+var sPageUrl = '/ordercomplete/?orderid=' + '{$payment_info->order_srl}';
+ga('send', { 'hitType': 'pageview', 'page':sPageUrl, 'title': 'ordercomplete screen' });
+
+ga('require', 'ec');
+</script>
+<!-- Google Analytics Code End(20141216) -->
+
+<div id="container" class="step1">
+	<div id="main">
+<!-- begin overview -->
+		<div id="overview" class="clearfix">
+			<div id="products">
+				<h2><block cond="!$logged_info"><STRONG>{$lang->order_number}&nbsp;{$order_info->order_srl}</STRONG>의 </block>결제 내역입니다.</h2>
+				<table id="thumbs" cellspacing="0" cellpadding="0">
+{@
+$nIdx = 1;
+}
+<block cond="count($order_info->item_list)" loop="$order_info->item_list=>$no,$val">
+{@
+$item_sum = $val->price * $val->quantity;
+}
+<block cond="$no % 2 == 0" >
+					<tr>
+</block>
+						<td>
+<!-- Google Analytics Code Begin(20141216) -->
+<script>
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': '{$val->item_srl}',                   // Product ID (string).
+  'name': '{$val->item_name}', // Product name (string).
+  'category': '',            // Product category (string).
+  'brand': '',                // Product brand (string).
+  'variant': '',               // Product variant (string).
+  'price': '{$val->price}',                 // Product price (currency).
+  'coupon': '',          // Product coupon (string).
+  'quantity': {$val->quantity}                     // Product quantity (number).
+});
+</script>
+<!-- Google Analytics Code End(20141216) -->
+							<div style="height:100px;width:100px;"><img alt="Bloom Necklace" class="images" src="{$val->getThumbnail(100,79)}" /></div>
+							<h3 class="plisthead" title="{$val->item_name}">{$val->item_name}</h3>
+							<span class="plist-variant-title"><BR></span>
+							<span class="plist-line-price">{number_format($val->quantity)} x {$val->printDiscountedPrice()}</span>
+						</td>
+<block cond="$nIdx == 2" >
+					</tr>
+</block>
+{@
+if( $nIdx == 2 )
+	$nIdx = 1;
+else
+	$nIdx += 1;
+}
+</block>
+					<tr cond="$module_info->display_delivfee=='Y' || $order_info->delivery_fee">
+						<td id="delivery_fee">{$lang->delivery_fee} + {number_format($order_info->delivery_fee)}</td>
+					</tr>
+				</table>
+			</div>
+			<div id="wallet"  cond="$payment_info->payment_method=='VA' || $payment_info->payment_method=='BT'">
+				<span id="steps">{$lang->bankaccount_info}</span>
+				<span id="steps">{$payment_info->vact_num} <SPAN STYLE='font-size:0.7em;'>({$payment_info->vact_bankname})</SPAN></span>
+				<span id="steps"> {$lang->account_holder} : {$payment_info->vact_name} </span>
+				<span id="cost">{number_format($payment_info->payment_amount)}</span>
+				<span cond="$payment_info->vact_inputname" id="steps">{$lang->sender_name} : {$payment_info->vact_inputname}</span>
+				<span cond="$payment_info->vact_date" id="steps">{$lang->send_date} : {zdate($payment_info->vact_date,'Y-m-d')}</span>
+			</div>
+			<div style="clear:left"></div>
+		</div>
+<!-- /end overview -->
+		<div id="content" cond="$payment_info->state == '3'">
+			<h3 class="title_benefits"><span>Payment Error Report</span></h3>
+			<div class="message error"><p>{$payment_info->result_code} : {$payment_info->result_message}</p></div>
+		</div>
+		<div id="email" cond="$logged_info">
+			<label for="order_email">{$lang->purchase_benefit}</label>
+			<table class="order-table" cond="$logged_info">
+				<tbody>
+					<tr>
+						<th>{$lang->mileage}</th>
+						<td colspan="3">{number_format($order_info->mileage)} {$lang->purchase_benefit_postfix}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>		
+<!-- begin addresses -->
+<!-- /end addresses -->
+		<div id="buttons">
+			<block cond="!$logged_info"><span id="cancel-purchase" STYLE='font-size:2em;'><a href="/my_order?order_srl={$order_info->order_srl}">꼭 기억하세요! 귀하의 비회원 주문번호는 <strong>{$order_info->order_srl}</strong>입니다.</a></span><BR></block>
+			<span id="cancel-purchase" STYLE='font-size:2em;'><a href="/">쇼핑을 계속하시겠습니까?</a></span><BR>
+			<!---small id="cancel-purchase">아니면</small---->
+			<span id="next_plan" STYLE='font-size:2em;'>{$module_info->store_bottom}</span>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(window).load(function(){
+	$(".loading_screen").fadeOut();
+});
+</script>
+
+<!-- Google Analytics Code Begin(20141216) -->
+<script>
+var nTaxAmnt = {$payment_info->payment_amount} * 0.1;
+ga('ec:setAction', 'purchase', {          // Transaction details are provided in an actionFieldObject.
+  'id': '{$payment_info->order_srl}',                         // (Required) Transaction id (string).
+  'affiliation': '', // Affiliation (string).
+  'revenue': '{$payment_info->payment_amount}',                     // Revenue (currency).
+  'tax': nTaxAmnt,                          // Tax (currency).
+  'shipping': 0,                     // Shipping (currency).
+  'coupon': ''                  // Transaction coupon (string).
+});
+    //ga('ecommerce:send');
+</script>
+
+<!-- 네이버 전환페이지 설정 -->
+<script type="text/javascript" src="http://wcs.naver.net/wcslog.js"> </script> 
+<script type="text/javascript">
+//var _nasa={};
+//_nasa['cnv'] = wcs.cnv('1','{$payment_info->payment_amount}'); // 전환유형, 전환가치 설정해야함. 설치매뉴얼 참고
+</script>

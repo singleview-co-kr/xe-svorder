@@ -1,0 +1,11 @@
+<query id="getOrderListByReferral" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_srl" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_referral" var="order_referral" />
+	</conditions>
+</query>

@@ -1,0 +1,13 @@
+<query id="getSalesInfoDaily" action="select">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_srl" />
+		<column name="order_status" />
+		<column name="offered_price" />
+	</columns>
+	<conditions>
+		<condition operation="like_prefix" column="regdate" var="regdate" />
+	</conditions>
+</query>

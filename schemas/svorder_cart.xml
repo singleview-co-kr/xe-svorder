@@ -1,0 +1,22 @@
+<table name="svorder_cart">
+	<column name="cart_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="order_srl" type="number" size="11" default="0" index="idx_order_srl" />
+	<column name="npay_product_order_id" type="varchar" size="20" index="idx_npay_product_order_id" />
+	<column name="member_srl" type="number" size="11" notnull="notnull" index="idx_member_srl" />
+	<column name="module_srl" type="number" size="11" default="0" notnull="notnull" index="idx_module_srl" />
+	<column name="item_srl" type="number" size="11" notnull="notnull" index="idx_item_srl" />
+	<column name="quantity" type="number" size="11" default="0" notnull="notnull" />
+	<column name="price" type="number" size="11" default="0" notnull="notnull" />
+	<column name="taxfree" type="char" size="1" default="N" notnull="notnull" />
+	<column name="order_status" type="char" size="1" default="0" notnull="notnull" index="idx_order_status" />
+	<!-- Y means "has promotion info -->
+	<column name="is_promoted" type="char" size="1" default="N" />
+	<column name="option_srl" type="number" size="11" default="0" notnull="notnull" />
+	<column name="option_price" type="number" size="11" default="0" notnull="notnull" />
+	<column name="option_title" type="varchar" size="250" />
+	<column name="delivery_memo" type="varchar" size="255" />
+	<column name="bundling_order_info" type="text" />
+	<column name="cart_date" type="date" notnull="notnull"  />
+	<column name="regdate" type="date" notnull="notnull" index="idx_regdate"/>
+	<column name="last_changed_date" type="date" index="idx_last_changed_date"/>
+</table>

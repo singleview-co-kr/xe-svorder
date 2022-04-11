@@ -1,0 +1,183 @@
+<!--%import("js/config_npay_api.js")-->
+
+<include target="_header.html" />
+
+<form action="./" class="x_form-horizontal" method="post" enctype="multipart/form-data" ruleset="insertConfig">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="procSvorderAdminNpayApiConfig" />
+	<section class="section">
+		<h1>{$lang->common_settings}</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_use">{$lang->npay_api_use}</label>
+			<div class="x_controls">
+				<select name="npay_api_use">
+					<option value="N" selected="selected"|cond="$config->npay_api_use == 'N'">{$lang->notuse}</option>
+					<option value="Y" selected="selected"|cond="$config->npay_api_use == 'Y'">{$lang->use}</option>
+				</select>
+				<a href="#npay_api_use_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_use_help" class="x_help-block" hidden>{$lang->about_npay_api_use}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_server">{$lang->npay_api_server}</label>
+			<div class="x_controls">
+				<input type="radio" name="npay_api_server" id="npay_api_server" value="sandbox" checked="checked"|cond="$config->npay_api_server == '' || $config->npay_api_server == 'sandbox'" /> Sandbox
+				<input type="radio" name="npay_api_server" id="npay_api_server" value="ec" checked="checked"|cond="$config->npay_api_server == 'ec'" /> Ec
+				<a href="#npay_api_server_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_server_help" class="x_help-block" hidden>{$lang->about_npay_api_server}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_shop_debug_mode">{$lang->npay_shop_debug_mode}</label>
+			<div class="x_controls">
+				<input type="radio" name="npay_shop_debug_mode" id="npay_shop_debug_mode" value="debug" checked="checked"|cond="$config->npay_shop_debug_mode == '' || $config->npay_shop_debug_mode == 'debug'" /> Debug
+				<input type="radio" name="npay_shop_debug_mode" id="npay_shop_debug_mode" value="release" checked="checked"|cond="$config->npay_shop_debug_mode == 'release'" /> Release
+				<a href="#npay_shop_debug_mode_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_shop_debug_mode_help" class="x_help-block" hidden>{$lang->about_npay_shop_debug_mode}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_shop_order_collect_from">{$lang->npay_shop_order_collect_from}</label>
+			<div class="x_controls">
+				<input type="radio" name="npay_shop_order_collect_from" id="npay_shop_order_collect_from" value="payed" checked="checked"|cond="$config->npay_shop_order_collect_from == '' || $config->npay_shop_order_collect_from == 'payed'" /> {$lang->npay_shop_collect_from_payed}
+				<input type="radio" name="npay_shop_order_collect_from" id="npay_shop_order_collect_from" value="dispatched" checked="checked"|cond="$config->npay_shop_order_collect_from == 'dispatched'" /> {$lang->npay_shop_collect_from_dispatched}
+				<a href="#npay_shop_order_collect_from_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_shop_order_collect_from_help" class="x_help-block" hidden>{$lang->about_npay_shop_order_collect_from}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->npay_connected_svorder_mid}</label>
+			<div class="x_controls">
+				<label loop="$svorder_page=>$key,$val" for="npay_connected_svorder_mid" class="x_inline"><input type="radio" name="npay_connected_svorder_mid" id="npay_connected_svorder_mid" value="{$val->module_srl}" checked="checked"|cond="$config->npay_connected_svorder_mid == $val->module_srl" /> {$val->mid}</label>
+				<a href="#svpromotion_promotion_mall_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="svpromotion_promotion_mall_help" class="x_help-block" hidden>{$lang->about_svpromotion_promotion_mall}</p></label>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->npay_connected_svitem_mid}</label>
+			<div class="x_controls">
+				<label loop="$svitem_page=>$key,$val" for="npay_connected_svitem_mid" class="x_inline"><input type="radio" name="npay_connected_svitem_mid" id="npay_connected_svitem_mid" value="{$val->module_srl}" checked="checked"|cond="$config->npay_connected_svitem_mid == $val->module_srl" /> {$val->mid}</label>
+				<a href="#svpromotion_promotion_mall_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="svpromotion_promotion_mall_help" class="x_help-block" hidden>{$lang->about_svpromotion_promotion_mall}</p></label>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->npay_return_deliv_fee}</label>
+			<div class="x_controls">
+				<input type="text" name="npay_return_deliv_fee" id="npay_return_deliv_fee" value="{$config->npay_return_deliv_fee}" />
+				<a href="#npay_return_deliv_fee_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_return_deliv_fee_help" class="x_help-block" hidden>{$lang->about_npay_return_deliv_fee}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_shop_id">{$lang->npay_shop_id}</label>
+			<div class="x_controls">
+				<input type="text" name="npay_shop_id" id="npay_shop_id" value="{$config->npay_shop_id}" />
+				<a href="#npay_shop_id_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_shop_id_help" class="x_help-block" hidden>{$lang->about_npay_shop_id}</p>
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<h1>{$lang->gather_data_via_api}</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_order_collection">{$lang->npay_api_order_collection}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_order_start_ymd" name="npay_api_order_start_ymd" value="{$config->npay_api_order_start_ymd}" />
+				<a href="#" id='btnCollectOrderForm' class="x_btn">{$lang->collect_manually}</a>
+				<a href="#npay_api_order_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_order_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_order_collection}</p>
+				<a href="#" id='btnResetOrderInfoForm' class="x_btn">{$lang->reset_npay_order_info}</a>
+				<a href="#reset_npay_order_info_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="reset_npay_order_info_help" class="x_help-block" hidden>{$lang->about_reset_npay_order_info}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_review_collection">{$lang->npay_api_review_collection}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_review_start_ymd" name="npay_api_review_start_ymd" value="{$config->npay_api_review_start_ymd}" />
+				<a href="#" id='btnCollectReviewForm' class="x_btn">{$lang->collect_manually}</a>
+				<a href="#npay_api_review_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_review_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_review_collection}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_inquiry_collection">{$lang->npay_api_inquiry_collection}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_inquiry_start_ymd" name="npay_api_inquiry_start_ymd" value="{$config->npay_api_inquiry_start_ymd}" />
+				<a href="#" id='btnCollectInquiryForm' class="x_btn">{$lang->collect_manually}</a>
+				<a href="#npay_api_inquiry_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_inquiry_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_inquiry_collection}</p>
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<h1>{$lang->debug_settings}</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_accesslicense">debug {$lang->npay_api_accesslicense}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_accesslicense_debug" name="npay_api_accesslicense_debug" value="{$config->npay_api_accesslicense_debug}" />
+				<a href="#npay_api_accesslicense_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_accesslicense_help" class="x_help-block" hidden>{$lang->about_npay_api_accesslicense}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_secretkey">test {$lang->npay_api_secretkey}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_secretkey_debug" name="npay_api_secretkey_debug" value="{$config->npay_api_secretkey_debug}" />
+				<a href="#npay_api_secretkey_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_secretkey_help" class="x_help-block" hidden>{$lang->about_npay_api_secretkey}</p>
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<h1>{$lang->release_settings}</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_accesslicense">{$lang->npay_api_accesslicense}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_accesslicense_release" name="npay_api_accesslicense_release" value="{$config->npay_api_accesslicense_release}" />
+				<a href="#npay_api_accesslicense_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_accesslicense_help" class="x_help-block" hidden>{$lang->about_npay_api_accesslicense}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="npay_api_secretkey">{$lang->npay_api_secretkey}</label>
+			<div class="x_controls">
+				<input type="text" id="npay_api_secretkey_release" name="npay_api_secretkey_release" value="{$config->npay_api_secretkey_release}" />
+				<a href="#npay_api_secretkey_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="npay_api_secretkey_help" class="x_help-block" hidden>{$lang->about_npay_api_secretkey}</p>
+			</div>
+		</div>
+	</section>
+	<div class="x_clearfix btnArea">
+		<div class="x_pull-right">
+			<button class="x_btn x_btn-primary" type="submit" accesskey="s">{$lang->cmd_registration}</button>
+		</div>
+	</div>
+</form>
+
+<form action="./" method="post" id="collect_order_form" class="form">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvorderAdminCollectNpayManually" />
+<input type="hidden" name="mode" value="order" />
+<input type="hidden" name="start_ymd_order" id="start_ymd_order" value="" />
+</form>
+
+<form action="./" method="post" id="reset_order_info_form" class="form">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvorderAdminResetNpayOrderInfo" />
+</form>
+
+<form action="./" method="post" id="collect_review_form" class="form">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvorderAdminCollectNpayManually" />
+<input type="hidden" name="mode" value="review" />
+<input type="hidden" name="start_ymd_review" id="start_ymd_review" value="" />
+</form>
+
+<form action="./" method="post" id="collect_inquiry_form" class="form">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvorderAdminCollectNpayManually" />
+<input type="hidden" name="mode" value="inquiry" />
+<input type="hidden" name="start_ymd_inquiry" id="start_ymd_inquiry" value="" />
+</form>

@@ -1,0 +1,35 @@
+<h1>반품 접수 요청 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>반품 접수 요청 사유 코드</th>
+			<th>반품 접수 요청 상세 사유</th>
+			<th>반품 배송 방법</th>
+			<th>반품 접수 송장 정보</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="return_req_reason">
+				<option value="">반품접수사유선택</option>
+				<option loop="$return_req_reason=>$sReasonCode,$sSymbol" value="{$sSymbol}">{$sReasonCode}</option>
+				</select>
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+			<td>
+				<select name="return_delivery_method">
+				<option value="">반품배송방법선택</option>
+				<option loop="$return_method=>$sMethodCode,$sSymbol" value="{$sSymbol}">{$sMethodCode}</option>
+				</select>
+			</td>
+			<td>
+				<select name="cart_express_id">
+				<option loop="$delivery_companies=>$key,$val" value="{$key}" selected="selected"|cond="$key == $item->express_id || (!$item->express_id && $key == $config->default_delivery_company)">{$val}</option>
+				</select>
+				<BR>
+				<input type="text" name="cart_invoice_no" placeholder='반품송장번호' value="" />
+			</td>
+		</tr>
+	</tbody>
+</table>

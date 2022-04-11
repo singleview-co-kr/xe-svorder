@@ -1,0 +1,1130 @@
+v 3.0.9
+6th, Mar 2020
+1. npay api 리뷰 수집을 crontab 서비스 가능하게 개선
+./ext_class/npay/respond_body/GetPurchaseReviewList.php에 아래의 코드 추가
+$aProcessedRst = [];
+
+if( !$oLogRst->toBool() )
+	$aProcessedRst[$oSingleReviewInfo->PurchaseReviewId] = 0; // failed to collect
+else
+	$aProcessedRst[$oSingleReviewInfo->PurchaseReviewId] = 1; // succeeded to collect
+
+$oRst->add('aProcessedRst', $aProcessedRst );
+
+./ext_class/npay/npay_api.class.php::getLatestReview()에서 아래의 코드를
+$oReqParam->sOperation = 'GetPurchaseReviewList';
+$oReqParam->sReviewClass = 'GENERAL'; // 텍스트 리뷰(일반, 한 달 사용)
+$oGeneralRst = $this->procOperation($oReqParam);
+if (!$oGeneralRst->toBool())
+	return $oGeneralRst;
+unset( $oGeneralRst );
+$oReqParam->sReviewClass = 'PREMIUM'; // 포토/동영상(일반, 한 달 사용)
+$oPremiumRst = $this->procOperation($oReqParam);
+return $oPremiumRst;
+
+아래와 같이 변경
+$oReqParam->sOperation = 'GetPurchaseReviewList';
+$oReqParam->sReviewClass = 'GENERAL'; // 텍스트 리뷰(일반, 한 달 사용)
+$oGeneralRst = $this->procOperation($oReqParam);
+$aGeneralRst = $oGeneralRst->get('aProcessedRst');
+unset( $oGeneralRst );
+$oReqParam->sReviewClass = 'PREMIUM'; // 포토/동영상(일반, 한 달 사용)
+$oPremiumRst = $this->procOperation($oReqParam);
+$aPremiumRst = $oPremiumRst->get('aProcessedRst');
+unset( $oPremiumRst );
+
+$aMergedRst = $aGeneralRst + $aPremiumRst; //The + operator is not an addition, it's a union. If the keys don't overlap then all is good //////////
+unset( $aGeneralRst );
+unset( $aPremiumRst );
+$aMergedRst['start from'] = $oReqParam->sInquiryTimeFrom;
+$aMergedRst['end to'] = $oReqParam->sInquiryTimeTo;
+$oRst = new Object();
+$oRst->add('aMergedRst', $aMergedRst );
+return $oRst;
+
+./ext_class/npay/respond_body/GetPurchaseReviewList.php에서 아래의 코드 제거
+$oRst->add('nOrderTobeProcessed', count($aOrderTobeProcessed ));
+
+./ext_class/npay/npay_api.class.php::getLatestOrder()에서 아래의 코드 제거
+$nOrderTobeProcessed = $oNpayOrderRst->get('nOrderTobeProcessed');
+
+v 3.0.10
+8th, Mar 2020
+1. dispSvorderNpayOrderSync 제거
+./svorder.view.php::dispSvorderNpayOrderSync() 제거
+
+2. dispSvorderNpayOrderSync, dispSvorderNpayOReviewSync 관리자 UI 추가
+
+./tpl/config_napy_api.html에 아래의 코드 추가
+<section class="section">
+	<h1>{$lang->gather_data_via_api}</h1>
+	<div class="x_control-group">
+		<label class="x_control-label" for="npay_api_order_collection">{$lang->npay_api_order_collection}</label>
+		<div class="x_controls">
+			<input type="text" id="npay_api_order_start_ymd" name="npay_api_order_start_ymd" value="{$config->npay_api_order_start_ymd}" />
+			<a href="#" id='btnCollectOrderForm' class="x_btn">{$lang->collect_manually}</a>
+			<a href="#npay_api_order_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="npay_api_order_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_order_collection}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="npay_api_review_collection">{$lang->npay_api_review_collection}</label>
+		<div class="x_controls">
+			<input type="text" id="npay_api_review_start_ymd" name="npay_api_review_start_ymd" value="{$config->npay_api_review_start_ymd}" />
+			<a href="#" id='btnCollectReviewForm' class="x_btn">{$lang->collect_manually}</a>
+			<a href="#npay_api_review_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="npay_api_review_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_review_collection}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="npay_api_inquiry_collection">{$lang->npay_api_inquiry_collection}</label>
+		<div class="x_controls">
+			<input type="text" id="npay_api_inquiry_start_ymd" name="npay_api_inquiry_start_ymd" value="{$config->npay_api_inquiry_start_ymd}" />
+			<a href="#" id='btnCollectInquiryForm' class="x_btn">{$lang->collect_manually}</a>
+			<a href="#npay_api_inquiry_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="npay_api_inquiry_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_inquiry_collection}</p>
+		</div>
+	</div>
+</section>
+
+./tpl/config_npay_api.js 추가
+
+./svorder.admin.controller.php::procSvorderAdminNpayApiConfig()에서 아래의 코드를
+$aParams = array( 'npay_api_use', 'npay_api_accesslicense_release', 'npay_api_secretkey_release', 'npay_shop_order_collect_from', 'npay_api_accesslicense_debug', 'npay_api_secretkey_debug', 'npay_shop_id', 'npay_shop_debug_mode', 'npay_connected_svitem_mid', 'npay_connected_svorder_mid' );
+
+아래와 같이 변경
+$aParams = array( 'npay_api_use', 'npay_api_accesslicense_release', 'npay_api_secretkey_release', 'npay_shop_order_collect_from', 'npay_api_accesslicense_debug', 'npay_api_secretkey_debug', 'npay_shop_id', 'npay_shop_debug_mode', 'npay_connected_svitem_mid', 'npay_connected_svorder_mid', 'npay_api_order_start_ymd', 'npay_api_review_start_ymd', 'npay_api_inquiry_start_ymd' );
+
+./svorder.admin.controller.php::procSvorderAdminCollectNpayManually() 추가
+./ext_class/npay/npay_api.class.php::_insertInquirySyncLog() 추가
+./ext_class/npay/response_body/GetCustomerInquiryList.php 추가
+
+./schemas/svorder_npay_inquiry_log.xml 추가
+./queries/getNpayLatestInquiryInfo.xml 추가
+./queries/insertNpayInquirySyncLog.xml 추가
+
+3. npay api order 수집 후 svestudio daily sales cache 삭제 기능 추가
+./ext_class/npay/npay_api.class.php::getLatestOrder()에서 아래의 코드를
+return $this->procOperation($oReqParam);
+
+아래와 같이 변경
+$oRst = $this->procOperation($oReqParam);
+if($oRst->toBool()) // 수집 성공하면 매출 계산된 캐쉬 초기화
+{
+	$aRemoveCache[] = 'ga_sales';
+	Context::set('remove_cache', $aRemoveCache);
+	$oSvestudioAdminController = &getAdminController('svestudio');
+	$oSvestudioAdminController->procSvestudioAdminRemoveCache();
+}
+return $oRst;
+
+v 3.0.11
+11th, Mar 2020
+1. npay api inquiry 수집 기능 개선
+./ext_class/npay/npay_api.class.php::_insertInquirySyncLog()에 아래의 코드 추가
+if( $oArgs->npay_inquiry_id )
+{
+	$oArgs->npay_customer_id = $oParam->npay_customer_id;
+	$oArgs->npay_customer_name = $oParam->npay_customer_name;
+	$oArgs->npay_inquiry_title = $oParam->npay_inquiry_title;
+	$oArgs->npay_inquiry_category = $oParam->npay_inquiry_category;
+	$oArgs->npay_inquiry_content = strip_tags( $oParam->npay_inquiry_content );
+	$oArgs->npay_is_answered = $oParam->npay_is_answered == 'true' ? 1 : 0;
+	$oArgs->npay_answer_content = strip_tags( $oParam->npay_answer_content );
+	$oArgs->inquiry_date = $oParam->inquiry_date;
+}
+
+./ext_class/npay/npay_api.class.php::getLatestInquiry()에서 아래의 코드를
+$this->_g_sServiceType = 'CustomerInquiryService';
+$this->_g_sServiceVersion = '1.0';
+$oReqParam->sOperation = 'GetCustomerInquiryList';
+$oReqParam->bAnswered = 'true';
+
+아래와 같이 변경
+$this->_g_sServiceType = 'CustomerInquiryService';
+$this->_g_sServiceVersion = '1.0';
+$oReqParam->sOperation = 'GetCustomerInquiryList';
+$oReqParam->bAnswered = 'true'; // 답변 완료 수집
+$oAnsweredRst = $this->procOperation($oReqParam);
+$aAnsweredRst = $oAnsweredRst->get('aProcessedRst');
+unset( $oAnsweredRst );
+$oReqParam->bAnswered = 'false'; // 답변 미완료 수집
+$oUnansweredRst = $this->procOperation($oReqParam);
+$aUnansweredRst = $oUnansweredRst->get('aProcessedRst');
+unset( $oPremiumRst );
+$aMergedRst = $aAnsweredRst + $aUnansweredRst; //The + operator is not an addition, it's a union. If the keys don't overlap then all is good //////////
+unset( $aAnsweredRst );
+unset( $aUnansweredRst );
+
+$oRst = new Object();
+$oRst->add('aProcessedRst', $aMergedRst );
+return $oRst;
+
+./ext_class/npay/respond_body/GetCustomerInquiryList.php 수정
+
+v 3.0.12
+14th, Mar 2020
+1. npay api에서 디버그 모드와 테트스 npay 서버 선택 기능을 분리함
+./tpl/config_npay_api.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="npay_api_server">{$lang->npay_api_server}</label>
+	<div class="x_controls">
+		<input type="radio" name="npay_api_server" id="npay_api_server" value="debug" checked="checked"|cond="$config->npay_api_server == '' || $config->npay_shop_debug_mode == 'debug'" /> Debug
+		<input type="radio" name="npay_api_server" id="npay_api_server" value="release" checked="checked"|cond="$config->npay_api_server == 'release'" /> Release
+		<a href="#npay_api_server_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="npay_api_server_help" class="x_help-block" hidden>{$lang->about_npay_api_server}</p>
+	</div>
+</div>
+
+./svorder.admin.controller.php::procSvorderAdminNpayApiConfig()에서 아래의 코드를
+'npay_api_secretkey_debug', 'npay_shop_id', 'npay_shop_debug_mode', 'npay_connected_svitem_mid', 'npay_connected_svorder_mid', 
+
+아래와 같이 변경
+'npay_api_secretkey_debug', 'npay_shop_id', 'npay_shop_debug_mode', 'npay_api_server', 'npay_connected_svitem_mid', 'npay_connected_svorder_mid', 
+
+./ext_class/npay/npay_order.class.php에 아래의 코드 추가
+private $_g_bDebugMode = null;
+
+./ext_class/npay/npay_order.class.php::npayOrder()에 아래의 코드 추가
+if( $this->_g_oSvOrderConfig->npay_shop_debug_mode == 'release' )
+	$this->_g_bDebugMode = false;
+else
+	$this->_g_bDebugMode = true;
+
+./ext_class/npay/npay_api.class.php에 아래의 코드 추가
+var $_g_sApiServerType = null;
+
+./ext_class/npay/npay_order.class.php::npayApi()에서 아래의 코드를
+if( $this->_g_bDebugMode )
+	$sServiceType = 'Alpha2MallService41';
+else
+	$sServiceType = 'MallService41';
+
+아래와 같이 변경
+if( $oNpayConfigParam->_g_sApiServerType == 'ec' )
+	$this->_g_sApiServerType = 'ec';
+elseif( $oNpayConfigParam->_g_sApiServerType == 'sandbox' )
+	$this->_g_sApiServerType = 'sandbox';
+
+./ext_class/npay/npay_order.class.php::npayApi()에서 아래의 코드를
+$this->_g_sServiceType = $sServiceType;
+
+아래와 같이 변경
+if( $this->_g_sApiServerType == 'ec' )
+	$this->_g_sServiceType = 'MallService41';
+elseif( $this->_g_sApiServerType == 'sandbox' )
+	$this->_g_sServiceType = 'Alpha2MallService41';
+
+./ext_class/npay/npay_order.class.php::_parseRequestMsg()에서 아래의 코드를
+if( $this->_g_bDebugMode )
+
+아래와 같이 변경
+if( $this->_g_sApiServerType == 'sandbox' )
+
+./ext_class/npay/npay_order.class.php::_sendRequestMsg()에서 아래의 코드를
+if( $this->_g_bDebugMode )
+	$sServerType = 'sandbox'; 
+else
+	$sServerType = 'ec';
+
+아래와 같이 변경
+if( $this->_g_sApiServerType == 'ec' )
+	$sServerType = 'ec';
+elseif( $this->_g_sApiServerType == 'sandbox' )
+	$sServerType = 'sandbox'; 
+
+./svorder.admin.model.php::getNpayOrderApi()에서 아래의 코드를
+$oNpayConfigParam->npay_shop_debug_mode = $oConfig->npay_shop_debug_mode;
+
+if( $oNpayConfigParam->npay_shop_debug_mode == 'debug' )
+{
+	$oNpayConfigParam->npay_api_accesslicense = $oConfig->npay_api_accesslicense_debug;
+	$oNpayConfigParam->npay_api_secretkey = $oConfig->npay_api_secretkey_debug;
+}
+elseif( $oNpayConfigParam->npay_shop_debug_mode == 'release' )
+{
+	$oNpayConfigParam->npay_api_accesslicense = $oConfig->npay_api_accesslicense_release;
+	$oNpayConfigParam->npay_api_secretkey = $oConfig->npay_api_secretkey_release;
+}
+$oNpayConfigParam->npay_shop_id = $oConfig->npay_shop_id;
+
+아래와 같이 변경
+$oNpayConfigParam->npay_api_server = $oConfig->npay_api_server;
+if( $oNpayConfigParam->npay_api_server == 'sandbox' )
+{
+	$oNpayConfigParam->npay_api_accesslicense = $oConfig->npay_api_accesslicense_debug;
+	$oNpayConfigParam->npay_api_secretkey = $oConfig->npay_api_secretkey_debug;
+}
+elseif( $oNpayConfigParam->npay_api_server == 'ec' )
+{
+	$oNpayConfigParam->npay_api_accesslicense = $oConfig->npay_api_accesslicense_release;
+	$oNpayConfigParam->npay_api_secretkey = $oConfig->npay_api_secretkey_release;
+}
+$oNpayConfigParam->npay_shop_id = $oConfig->npay_shop_id;
+$oNpayConfigParam->npay_shop_debug_mode = $oConfig->npay_shop_debug_mode;
+
+./ext_class/npay/npay_order.class.php::_decideSingleChangedProdOrderMode()에서 아래의 코드를
+elseif( $nRecCnt > 0 )
+{
+	if( $this->_g_oSvOrderConfig->npay_shop_order_collect_from == 'dispatched' ) // 이 설정에서는 입금완료 주문을 npay_log에도 기록하지 않고 svorder tbl에도 존재하지 않음
+		$sMode = 'add';
+	else
+	{
+		$oFirstRec = array_values($oRst->data)[0];
+		$oRst->add( 'nSvOrderSrl', $oFirstRec->order_srl );
+		if( $oParam->sLastChangedDate && $oParam->sLastChangedStatus ) 
+		{
+			// Order level proc mode 판단에서는 검사하지 않음
+			foreach( $oRst->data as $nIdx => $oRec )
+			{
+				if( $oRec->npay_last_changed_date == $oParam->sLastChangedDate &&
+					$oRec->npay_order_status == $this->_g_aNpayOrderStatus[$oParam->sLastChangedStatus] )
+				{
+					$sMode = 'ignore';
+					break;
+				}
+				elseif( $oRec->npay_last_changed_date > $oParam->sLastChangedDate )
+				{
+					//$sMode = 'weird'; // 1주문 다품목 상황에서 시차를 두고 구매확정하면, weird가 아닌데 weird로 분류되는 문제 발생
+					break;
+				}
+			}
+		}
+	}
+}
+
+아래와 같이 변경
+elseif( $nRecCnt > 0 )
+{
+	$oFirstRec = array_values($oRst->data)[0];
+	$oRst->add( 'nSvOrderSrl', $oFirstRec->order_srl );
+	if( $oParam->sLastChangedDate && $oParam->sLastChangedStatus ) 
+	{
+		// Order level proc mode 판단에서는 검사하지 않음
+		foreach( $oRst->data as $nIdx => $oRec )
+		{
+			if( $oRec->npay_last_changed_date == $oParam->sLastChangedDate &&
+				$oRec->npay_order_status == $this->_g_aNpayOrderStatus[$oParam->sLastChangedStatus] )
+			{
+				$sMode = 'ignore';
+				break;
+			}
+			elseif( $oRec->npay_last_changed_date > $oParam->sLastChangedDate )
+			{
+				//$sMode = 'weird'; // 1주문 다품목 상황에서 시차를 두고 구매확정하면, weird가 아닌데 weird로 분류되는 문제 발생
+				break;
+			}
+		}
+	}
+}
+
+./ext_class/npay/npay_order.class.php::_decideSingleChangedProdOrderMode()에서 아래의 코드를
+if( $oProductOrderInfo->sSvCartLatestStatus == $oProductOrderInfo->LastChangedStatus ) // svcart의 원래 상태와 npay api의 목적 상태가 동일하면
+{
+	// 배송 정보 변경인지 검사
+	if( $oProductOrderInfo->IsReceiverAddressChanged = 'true' )
+	{
+		$oLoadRst = $this->_g_oSvOrderUpdate->loadSvOrder($this->_g_oOrderHeader->nSvOrderSrl);
+		if (!$oLoadRst->toBool()) 
+			return $oLoadRst;
+		unset( $oLoadRst );
+
+		$oUpdateHeader = $this->_g_oSvOrderUpdate->getHeader();
+		$aUpdateRecipientAddr = $oUpdateHeader->recipient_address;
+		$sUpdateRecipientPostcode = $oUpdateHeader->recipient_postcode;
+		$aUpdateCart = $this->_g_oSvOrderUpdate->getCartItemList();
+
+		if( $aUpdateRecipientAddr[0] != $this->_g_oOrderHeader->BaseAddress || 
+			$aUpdateRecipientAddr[1] != $this->_g_oOrderHeader->DetailedAddress || 
+			$sUpdateRecipientPostcode != $this->_g_oOrderHeader->ZipCode )
+			$bChangeAddr = true;
+
+		// 배송 메모 변경은 바로 적용
+		$nSvCartSrl = $oProductOrderInfo->nSvCartSrl;
+		$sMemoFromNpay = trim($oProductOrderInfo->ShippingMemo);
+		$sCurMemoFromUpdate = trim($aUpdateCart[$nSvCartSrl]->delivery_memo);
+		if( $sMemoFromNpay != $sCurMemoFromUpdate )
+		{
+			$oMemoRst = $this->_g_oSvOrderUpdate->updateDeliveryMemoBySvCartSrl($nSvCartSrl, $sMemoFromNpay);
+			if(!$oMemoRst->toBool())
+				return $oMemoRst;
+		}
+	}
+}
+
+아래와 같이 변경
+$oLoadRst = $this->_g_oSvOrderUpdate->loadSvOrder($this->_g_oOrderHeader->nSvOrderSrl);
+if (!$oLoadRst->toBool()) 
+	return $oLoadRst;
+unset( $oLoadRst );
+
+if( $oProductOrderInfo->sSvCartLatestStatus == $oProductOrderInfo->LastChangedStatus ) // svcart의 원래 상태와 npay api의 목적 상태가 동일하면
+{
+	// 배송 정보 변경인지 검사
+	if( $oProductOrderInfo->IsReceiverAddressChanged = 'true' )
+	{
+		$oUpdateHeader = $this->_g_oSvOrderUpdate->getHeader();
+		$aUpdateRecipientAddr = $oUpdateHeader->recipient_address;
+		$sUpdateRecipientPostcode = $oUpdateHeader->recipient_postcode;
+		$aUpdateCart = $this->_g_oSvOrderUpdate->getCartItemList();
+
+		if( $aUpdateRecipientAddr[0] != $this->_g_oOrderHeader->BaseAddress || 
+			$aUpdateRecipientAddr[1] != $this->_g_oOrderHeader->DetailedAddress || 
+			$sUpdateRecipientPostcode != $this->_g_oOrderHeader->ZipCode )
+			$bChangeAddr = true;
+
+		// 배송 메모 변경은 바로 적용
+		$nSvCartSrl = $oProductOrderInfo->nSvCartSrl;
+		$sMemoFromNpay = trim($oProductOrderInfo->ShippingMemo);
+		$sCurMemoFromUpdate = trim($aUpdateCart[$nSvCartSrl]->delivery_memo);
+		if( $sMemoFromNpay != $sCurMemoFromUpdate )
+		{
+			$oMemoRst = $this->_g_oSvOrderUpdate->updateDeliveryMemoBySvCartSrl($nSvCartSrl, $sMemoFromNpay);
+			if(!$oMemoRst->toBool())
+				return $oMemoRst;
+		}
+	}
+}
+
+./ext_class/npay/npay_order.class.php::_decideSingleChangedProdOrderMode()에서 아래의 코드를
+if( $nRecCnt == 0 )
+	$sMode = 'add';
+
+아래와 같이 변경
+if( $nRecCnt == 0 )
+{
+	$sMode = 'add';
+	if( $this->_g_oSvOrderConfig->npay_shop_order_collect_from == 'dispatched' ) // 발송처리부터 수집 방식이면 그 이전 상태의 주문이 감지되도 무시함
+	{
+		$sCurOrderStatusCode = $this->_g_aNpayOrderStatus[$oParam->sLastChangedStatus];
+		if( $this->_g_aIgnoreStatus[$sCurOrderStatusCode] )
+			$sMode = 'ignore';
+	}
+}
+
+./ext_class/npay/npay_order.class.php::commmit()에서 아래의 코드를
+if( $sOrderProcMode == 'add' )
+{
+	$sCurOrderStatus = $this->_g_aNpayOrderStatus[$this->_g_oOrderHeader->LastChangedStatus];
+	if( $this->_g_aIgnoreStatus[$sCurOrderStatus] )
+		$this->_g_oOrderHeader->nSvOrderSrl = -1; // 감지됬지만 무시한 주문 정보는 nSvOrderSrl을 -1 표시
+	else
+		$oProcRst = $this->_insertNpayOrder();
+}
+
+아래와 같이 변경
+if( $sOrderProcMode == 'ignore' )
+	$this->_g_oOrderHeader->nSvOrderSrl = -1; // 감지됬지만 무시한 주문 정보는 nSvOrderSrl을 -1 표시 //////////////////////////////////
+elseif( $sOrderProcMode == 'add' )
+	$oProcRst = $this->_insertNpayOrder();
+
+./ext_class/npay/response_body/GetChangedProductOrderList.php 에서 아래의 코드 제거
+if( $oArgs->nSvOrderSrl == -1 ) // npay_shop_order_collect_from 설정에 의해 무시헤야 하는 주문 상태
+	continue;
+
+./schemas/svorder_npay_prod_order_log.xml에 아래의 코드 추가
+<column name="mode" type="varchar" size="6" />
+
+./queries/insertNpayProdOrderSyncLog.xml에 아래의 코드 추가
+<column name="mode" var="mode" />
+
+./ext_class/npay/npay_order.class.php::_insertProdOrderSyncLog()에 아래의 코드 추가
+if( $oParam->sSvProcMode )
+	$oArgs->mode = $oParam->sSvProcMode;
+
+2. 코드 오류 수정
+./svorder.admin.controller.php::procSvorderAdminCollectNpayManually()에서 아래의 코드를
+case 'order':
+	$sStartDate = Context::get( 'start_ymd_order' );
+	$oNpayApiRst = $oNpayOrderApi->getLatestOrder($sStartDate);
+	if(!$oNpayApiRst->toBool())
+		return $oNpayApiRst;
+	
+	$aFinalRst = $oNpayApiRst->get('aProcessedRst');
+	$bWarningMode = false;
+	$sErrMsg = null;
+	foreach( $aFinalRst as $nNpaySomeId => $oSingleRst )
+	{
+		if(!$oSingleRst->bProcessed)
+		{
+			$bWarningMode = true;
+			$sErrMsg .= 'npay '.$nNpaySomeId.' 주문 번호의 오류: '.$oSingleRst->sMsg.'<BR>';
+		}
+	}
+
+아래와 같이 변경
+case 'order':
+	$sStartDate = Context::get( 'start_ymd_order' );
+	$oNpayApiRst = $oNpayOrderApi->getLatestOrder($sStartDate);
+	if(!$oNpayApiRst->toBool())
+		return $oNpayApiRst;
+	
+	$aFinalRst = $oNpayApiRst->get('aProcessedRst');
+	$bWarningMode = false;
+	$sErrMsg = null;
+	foreach( $aFinalRst as $nNpaySomeId => $oSingleRst )
+	{
+		if(!$oSingleRst->bProcessed)
+		{
+			$bWarningMode = true;
+			$sErrMsg .= 'npay '.$nNpaySomeId.' 주문 번호의 오류: '.$oSingleRst->sMsg.'<BR>';
+		}
+	}
+	break;
+
+3.
+npay 주문 정보 초기화 기능 추가
+./tpl/config_npay_api.html에서 아래의 코드를
+<div class="x_controls">
+	<input type="text" id="npay_api_order_start_ymd" name="npay_api_order_start_ymd" value="{$config->npay_api_order_start_ymd}" />
+	<a href="#" id='btnCollectOrderForm' class="x_btn">{$lang->collect_manually}</a>
+	<a href="#npay_api_order_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	<p id="npay_api_order_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_order_collection}</p>
+</div>
+
+아래와 같이 변경
+<div class="x_controls">
+	<input type="text" id="npay_api_order_start_ymd" name="npay_api_order_start_ymd" value="{$config->npay_api_order_start_ymd}" />
+	<a href="#" id='btnCollectOrderForm' class="x_btn">{$lang->collect_manually}</a>
+	<a href="#npay_api_order_collection_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	<p id="npay_api_order_collection_help" class="x_help-block" hidden>{$lang->about_npay_api_order_collection}</p>
+	<a href="#" id='btnResetOrderInfoForm' class="x_btn">{$lang->reset_npay_order_info}</a>
+	<a href="#reset_npay_order_info_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	<p id="reset_npay_order_info_help" class="x_help-block" hidden>{$lang->about_reset_npay_order_info}</p>
+</div>
+
+./tpl/config_npay_api.html에 아래의 코드 추가
+<form action="./" method="post" id="reset_order_info_form" class="form">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvorderAdminResetNpayOrderInfo" />
+</form>
+
+./tpl/js/config_npay_api.js아래의 코드 추가
+jQuery( "#btnResetOrderInfoForm" ).click(function() {
+	jQuery( "#reset_order_info_form" ).submit();
+});
+
+./svorder.admin.controller.php::procSvorderAdminResetNpayOrderInfo() 추가
+./ext_class/npay/npay_api.class.php::resetOrderInfo() 추가
+./queries/getOrderListByReferral.xml 추가
+./queries/deleteShippingInfoByCartSrl.xml 추가
+./queries/deleteDeductionInfoByOrderSrl.xml 추가
+./queries/deleteNpayOrderInfoByOrderSrl.xml 추가
+
+./ext_class/npay/npay_order.class.php::_decideSingleChangedProdOrderMode()에 아래의 코드를 추가
+$oArgs->mode = 'ignore';
+
+./queries/getNpayLogByProdOrderId.xml에 아래의 코드를 추가
+<condition operation="notequal" column="mode" var="mode" pipe="AND" />
+
+v 3.0.13
+17th, Mar 2020
+1. 관리자가 수기로 결제 취소 시 환불 계좌 정보가 없어도 [수기취소] 체크박스 표시되도록 변경
+./svorder.admin.model.php::getSvorderAdminOrderStatusUpdateForm()에서 아래의 코드를
+$sCartUpdateForm = $this->getOrderStatusUpdateForm($sTgtOrderStatus,$nOrderSrl);
+
+아래와 같이 변경
+$sAcutalAct = Context::get('real_act');
+$sCartUpdateForm = $this->getOrderStatusUpdateForm($sTgtOrderStatus,$nOrderSrl, $sAcutalAct);
+
+./svorder.admin.model.php::getOrderStatusUpdateForm()에 아래의 코드 추가
+Context::set('act', $sAcutalAct);
+
+./tpl/orderdetail.html에 아래의 코드 추가
+params['real_act'] = '{$act}'; // for cancel_request and cancelled only
+
+./tpl/_cart_update_cancelled.html에 아래의 코드 추가
+<block cond="$act=='dispSvorderAdminOrderDetail'">
+<table class="x_table">
+	<thead>
+		<tr>
+			<th>장바구니 번호</th>
+			<th>차감 항목명</th>
+			<th>금액</th>
+		</tr>
+	</thead>
+
+{@
+$aDeductInfo = $order_info->aSingleDeductionInfo[$cart_srl];
+}
+	<tbody id="deduction_detail">
+		<tr loop="$aDeductInfo=>$sTitle,$nDeductAmnt" cond="$sTitle!='bank_name' && $sTitle!='bank_acct' && $sTitle!='acct_holder' && $sTitle!='resultant_refund_amnt' && $sTitle!='deduction_level' && $sTitle!='pg_manual_cancel'">
+			<td>{$nSvCartSrl}</td>
+			<td>{$sTitle}</td>
+			<td>{number_format($nDeductAmnt)}</td>
+		</tr>
+	</tbody>
+	<tfoot align="center" cond="$aDeductInfo['bank_acct']">
+		<tr>
+			<td>환불 계좌 정보<BR>{$aDeductInfo['bank_name']} {$aDeductInfo['bank_acct']} ({$aDeductInfo['acct_holder']})</td>
+			<td>환불 요청액 {number_format($aDeductInfo['resultant_refund_amnt'])}</td>
+{@
+if( $aDeductInfo['pg_manual_cancel'] == 'y' )
+$bPgManualCancelChecked = 'CHECKED onclick="return false;"';
+}
+			<td><input type="checkbox" name="pg_manual_cancel" value="y" {$bPgManualCancelChecked}> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+	<tfoot align="center" cond="!$aDeductInfo['bank_acct']">
+		<tr>
+			<td><input type="checkbox" name="pg_manual_cancel" value="y"> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+</table>
+</block>
+
+2. 고객이 직접 취소 요청 시 환불계좌 정보를 입력하도록 개선
+./svorder.model.php::getOrderStatusUpdateForm()에 아래의 코드 추가
+$oOrder = $this->_getSvOrderClass();
+$oLoadRst = $oOrder->loadSvOrder($nOrderSrl);
+if (!$oLoadRst->toBool()) 
+	return $oLoadRst;
+unset( $oLoadRst );
+$oOrderHeader = $oOrder->getHeader();
+Context::set('order_info', $oOrderHeader);
+
+./skins/~/_cart_update_cancel_request.html에 아래의 코드 추가
+<block cond="$order_info->payment_method=='VA' || $order_info->payment_method=='BT' || $order_info->payment_method=='IB'">
+	<tr>
+		<th>{$lang->refund_bank_name}</th>
+		<th>{$lang->refund_bank_account}</th>
+		<th>{$lang->refund_account_holder}</th>
+	</tr>
+	<tr>
+		<td><input type="text" name="refund_bank_name" id='refund_bank_name' placeholder="씨앗은행" value=""/></td>
+		<td><input type="text" name="refund_bank_account" id='refund_bank_account' placeholder="234-1345-789" value=""/></td>
+		<td><input type="text" name="refund_account_holder" id='refund_account_holder' placeholder="예금주" value=""/></td>
+	</tr>
+</block>
+
+./svorder.controller.php::getOrderStatusUpdateForm()에 아래의 코드 추가
+$aDeductionInfo = [];
+$aDeductionInfo['bank_name'] = Context::get('refund_bank_name');
+$aDeductionInfo['bank_acct'] = Context::get('refund_bank_account');
+$aDeductionInfo['acct_holder'] = Context::get('refund_account_holder');
+foreach( $aDeductionTitle as $nIdx => $sTitle )
+	$aDeductionInfo[$sTitle] = $aDeductionAmnt[$nIdx];
+$oInArgs->aDeductionInfo = $aDeductionInfo;
+
+./tpl/skin.js/orderdetail.js::updateOrderStatus()에 아래의 코드 추가
+sRefundBankName = jQuery('#refund_bank_name').val(); // cancel_request
+sRefundBankAccount = jQuery('#refund_bank_account').val(); // cancel_request
+sRefundAccountHolder = jQuery('#refund_account_holder').val(); // cancel_request
+
+params['refund_bank_name'] = sRefundBankName; // cancel_request
+params['refund_bank_account'] = sRefundBankAccount; // cancel_request
+params['refund_account_holder'] = sRefundAccountHolder; // cancel_request
+
+./svorder.svorder_update.php::_getEtcDemandAmount() 추가
+
+./svorder.svorder_update.php::_getDeductInfo()에서 아래의 코드를
+else
+
+	$aTmpDeductionInfo['deduction_level'] = 'order';
+
+아래와 같이 변경
+else
+{
+	$aTmpDeductionInfo['deduction_level'] = 'order';
+	$aTmpDeductionInfo['resultant_refund_amnt'] = $this->_g_oOrderHeader->offered_price - $this->_getEtcDemandAmount($aTmpDeductionInfo);
+}
+
+3. 주문 수준 환불 정보가 등록되면 장바구니 수준 정보 등록 요청은 무시함
+./svorder.svorder_update.php::_registerDeductInfo()에 아래의 코드 추가
+$oOrderArgs->order_srl = $this->_g_oOrderHeader->order_srl;
+$oOrderLeverRst = executeQueryArray( 'svorder.getDeductionInfo', $oOrderArgs );
+if( count( $oOrderLeverRst->data ) )
+{
+	foreach( $oOrderLeverRst->data as $nIdx=>$oRec )
+	{
+		if( $oRec->cart_srl == 0 )
+			return new Object();
+	}
+}
+unset($oOrderArgs);
+unset($oOrderLeverRst);
+
+4. mobile에서도 구매자가 취소 요청 가능하도록 개선
+./svorder.model.php::getOrderStatusUpdateForm()에서 아래의 코드를
+$sTpl = $oTemplate->compile($this->module_path.'skins/'.$oModuleInfo->skin, $sTgtStatusForm);
+
+아래와 같이 변경
+if(	Mobile::isMobileCheckByAgent() )
+	$sTpl = $oTemplate->compile($this->module_path.'m.skins/'.$oModuleInfo->mskin, $sTgtStatusForm);
+else
+	$sTpl = $oTemplate->compile($this->module_path.'skins/'.$oModuleInfo->skin, $sTgtStatusForm);
+
+v 3.0.14
+19th, Mar 2020
+1. 한진택배 추가
+./svorder.class.php에서 아래의 코드를
+var $delivery_inquiry_urls = array(
+	'20'=>'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no='
+);
+
+
+아래와 같이 변경
+var $delivery_inquiry_urls = array(
+	'20'=>'https://www.doortodoor.co.kr/parcel/doortodoor.do?fsp_action=PARC_ACT_002&fsp_cmd=retrieveInvNoACT&invc_no=',
+	'25'=>'https://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num='
+);
+
+./svorder.admin.model.php::getOrderListByStatus()에 아래의 코드 추가
+$aOrderList[$nIdx]->express_id =  $oShipVal->express_id;
+
+v 3.0.15
+26th, Mar 2020
+1. 비회원 신용카드 결제시 [로그인 후 사용하실 수 있습니다] 에러 해결
+./svorder.order_update.php::loadSvOrder()에서 아래의 코드를
+if( $this->_g_nRightLevel <= svorderUpdateOrder::PRIVI_CONSUMER_MEMBER )
+{
+	if( $this->_g_oOrderHeader->member_srl == 0 ) // guest buy
+	{
+		if($_COOKIE['svorder_guest_buy_pw'])
+		{
+			$sGuestPwd = $_COOKIE['svorder_guest_buy_pw'];
+
+			if($sGuestPwd != $this->_g_oOrderHeader->non_password)
+				return new Object(-1,'msg_invalid_password');
+		}
+		else
+			return new Object(-1, 'msg_login_required');
+	}
+	elseif($this->_g_oUpdaterLoggedInfo->member_srl != $this->_g_oOrderHeader->member_srl ) // member buy
+		return new Object(-1, 'msg_login_required');
+}
+
+아래와 같이 변경
+if( !$this->_g_bApiMode ) // completePgProcess(), npay api에서 호출할 경우에는 pw 점검하지 않음
+{
+	if( $this->_g_nRightLevel <= svorderUpdateOrder::PRIVI_CONSUMER_MEMBER )
+	{
+		if( $this->_g_oOrderHeader->member_srl == 0 ) // guest buy
+		{
+			if($_COOKIE['svorder_guest_buy_pw'])
+			{
+				$sGuestPwd = $_COOKIE['svorder_guest_buy_pw'];
+
+				if($sGuestPwd != $this->_g_oOrderHeader->non_password)
+					return new Object(-1,'msg_invalid_password');
+			}
+			else
+				return new Object(-1, 'msg_login_required');
+		}
+		elseif($this->_g_oUpdaterLoggedInfo->member_srl != $this->_g_oOrderHeader->member_srl ) // member buy
+			return new Object(-1, 'msg_login_required');
+	}
+}
+
+2. 주문조회 시 주문목록 비정상 표시 문제 해결
+./svorder.view.php::dispSvorderNonOrderList()에 아래의 코드 추가
+$_SESSION['svorder_guest_buy_pw'] = $sGuestPassword;
+
+./svorder.order_create.php::createSvOrder()에 아래의 코드 추가
+$_SESSION['svorder_guest_buy_pw'] = $this->_g_oOrderHeader->non_password;
+
+./svorder.order_update.php::loadSvOrder()에서 아래의 코드를
+if($_COOKIE['svorder_guest_buy_pw'])
+{
+	$sGuestPwd = $_COOKIE['svorder_guest_buy_pw'];
+
+	if($sGuestPwd != $this->_g_oOrderHeader->non_password)
+		return new Object(-1,'msg_invalid_password');
+}
+else
+	return new Object(-1, 'msg_login_required');
+
+아래와 같이 변경
+if($_SESSION['svorder_guest_buy_pw'])
+	$sGuestPwd = $_SESSION['svorder_guest_buy_pw'];
+elseif($_COOKIE['svorder_guest_buy_pw'])
+	$sGuestPwd = $_COOKIE['svorder_guest_buy_pw'];
+
+if(strlen( $sGuestPwd ) == 0 )
+	return new Object(-1, 'msg_login_required');
+
+if($sGuestPwd != $this->_g_oOrderHeader->non_password)
+	return new Object(-1,'msg_invalid_password');
+
+v 3.0.16
+8th, Apr 2020
+1. 반품 요청 취소 기능 추가
+./svorder.order_update.php::_getChangeableStatusAdmin()에서 아래의 코드를
+case svorder::ORDER_STATE_RETURN_REQUESTED:
+	if( $this->_g_oOrderHeader->order_referral == svorder::ORDER_REFERRAL_LOCALHOST ) 
+	{
+		$aChangeableOrderStatus[svorder::ORDER_STATE_RETURNED] = 1; //'반품완료';
+		$aChangeableOrderStatus[svorder::ORDER_STATE_PREPARE_DELIVERY] = 1; //'배송준비' 반품 거부 혹은 철회되는 경우를 위해 배송준비로 변경 허용
+	}
+
+아래와 같이 변경
+case svorder::ORDER_STATE_RETURN_REQUESTED:
+	if( $this->_g_oOrderHeader->order_referral == svorder::ORDER_REFERRAL_LOCALHOST ) 
+	{
+		$aChangeableOrderStatus[svorder::ORDER_STATE_DELIVERED] = 1; //'배송완료';	반품 요청 rollback
+		$aChangeableOrderStatus[svorder::ORDER_STATE_RETURNED] = 1; //'반품완료';
+		$aChangeableOrderStatus[svorder::ORDER_STATE_PREPARE_DELIVERY] = 1; //'배송준비' 반품 거부 혹은 철회되는 경우를 위해 배송준비로 변경 허용
+	}
+
+./svorder.order_update.php::updateOrderStatusQuick()에 아래의 코드 추가
+case svorder::ORDER_STATE_RETURN_REQUESTED: // 반품요청->배송완료; 반품 요청을 취소함
+	if( $sTgtOrderStatus == svorder::ORDER_STATE_DELIVERED )
+		$bUnsetPurchaserSmsNotify = true;
+
+v 3.0.17
+14th, Apr 2020
+1. 회원이 모바일로 PG 모듈 실행 과정에서 로그인이 풀려버릴 경우에 결제 완료 못시키는 문제 대응
+./svorder.controller.php::completePgProcess()에 아래의 코드를
+if($oPgParam->calling_method == 'svpg::procSvpgReport()' )
+
+아래와 같이 변경
+if($oPgParam->calling_method == 'svpg::procSvpgReport()' || $oPgParam->calling_method == 'svpg::procSvpgDoPayment()' )
+
+v 3.0.18
+28th, Apr 2020
+1. 관리자 UI에서 품목별 반품 확인 기능 구현 추가
+./svorder.admin.controller.php::procSvorderAdminUpdateCartItems()에 아래의 코드 추가
+elseif( $sTargetCartItemStatus == svorder::ORDER_STATE_RETURNED) // 반품 확인
+{
+	foreach( $aCartSrl as $nIdx => $nCartSrl )
+	{
+		$oRst = $oOrder->updateCartItemStatusBySvCartSrl($nCartSrl, $sTargetCartItemStatus, $oUpdateParams );
+		if(!$oRst->toBool())
+			$bOrderStatusChangeable = false;
+	}
+}
+
+2. 개별 품목 취소 요청 시 관리자 UI 에러 수정
+./svorder.admin.model.php::getOrderStatusUpdateForm()에서 아래의 코드를
+Context::set('act', $sAcutalAct);
+
+아래와 같이 변경
+if( $sAcutalAct )
+	Context::set('act', $sAcutalAct);
+
+./tpl/_cart_update_cancel_request.html에서 아래의 코드를
+<tr>
+	<th>{$lang->refund_bank_name}</th>
+	<th>{$lang->refund_bank_account}</th>
+	<th>{$lang->refund_account_holder}</th>
+</tr>
+<tr>
+	<td><input type="text" name="refund_bank_name" id='refund_bank_name' placeholder="씨앗은행" value=""/></td>
+	<td><input type="text" name="refund_bank_account" id='refund_bank_account' placeholder="234-1345-789" value=""/></td>
+	<td><input type="text" name="refund_account_holder" id='refund_account_holder' placeholder="예금주" value=""/></td>
+</tr>
+
+아래와 같이 변경
+<block cond="$order_info->payment_method=='VA' || $order_info->payment_method=='BT' || $order_info->payment_method=='IB'">
+		<tr>
+			<th>{$lang->refund_bank_name}</th>
+			<th>{$lang->refund_bank_account}</th>
+			<th>{$lang->refund_account_holder}</th>
+		</tr>
+		<tr>
+			<td><input type="text" name="refund_bank_name" id='refund_bank_name' placeholder="씨앗은행" value=""/></td>
+			<td><input type="text" name="refund_bank_account" id='refund_bank_account' placeholder="234-1345-789" value=""/></td>
+			<td><input type="text" name="refund_account_holder" id='refund_account_holder' placeholder="예금주" value=""/></td>
+		</tr>
+</block>
+
+./svorder.order_update.php::_reevaluateOrder()에서 아래의 코드를
+if(  $this->_g_oOrderHeader->order_status != svorder::ORDER_STATE_PAID && 
+	 $this->_g_oOrderHeader->order_status != svorder::ORDER_STATE_DELIVERED )
+
+아래와 같이 변경
+if(  $this->_g_oOrderHeader->order_status != svorder::ORDER_STATE_PAID && 
+	 $this->_g_oOrderHeader->order_status != svorder::ORDER_STATE_DELIVERED && 
+	 $this->_g_oOrderHeader->order_status != svorder::ORDER_STATE_RETURN_REQUESTED )
+
+./svorder.order_update.php::_registerDeductInfo()에서 아래의 코드 제거
+if( $aDeductionInfo['bank_name'] == NULL && $aDeductionInfo['bank_acct'] == NULL && $aDeductionInfo['acct_holder'] == NULL )
+	return new Object();
+
+./svorder.order_update.php::_getSvCartItems()에서 아래의 코드를
+$nNormalGrossPrice += $oCartItem->price * $oCartItem->quantity;
+
+아래와 같이 변경
+if( $oCartItem->order_status != svorder::ORDER_STATE_CANCELLED )
+	$nNormalGrossPrice += $oCartItem->price * $oCartItem->quantity;
+
+./svorder.order_update.php::updateOrderHeader()에서 아래의 코드를
+foreach( $oInArgs as $sTitle => $sVal)
+{
+	if($sVal)
+		$aFieldToUpdate[$sTitle] = $sVal;
+}
+
+아래와 같이 변경
+foreach( $oInArgs as $sTitle => $sVal)
+	$aFieldToUpdate[$sTitle] = $sVal;
+
+v 3.0.19
+4th, May 2020
+1. 관리자 UI에서 쿠폰 사용한 결제 취소 시 오류 해결
+./svorder.order_update.php::_cancelSettlement()에서 아래의 코드를
+$sSvCartItemStatusOriginal = $this->_g_aCartItem[$oInArg->nSvCartSrl]->order_status; // reserved to evaulate $nPartialCancelDifference 
+$this->_g_aCartItem[$oInArg->nSvCartSrl]->order_status = svorder::ORDER_STATE_CANCELLED;
+$oSvorderModel = &getModel('svorder');
+$bApiMode = true;
+if( $this->_g_oOrderHeader->order_referral == svorder::ORDER_REFERRAL_LOCALHOST )
+	$bApiMode = false;
+$oRst = $oSvorderModel->confirmOffer( $oParam, 'replace', $bApiMode );
+if(!$oRst->toBool())
+	return $oRst;
+$oReevalCart = $oRst->get('oCart');
+unset( $oRst );
+unset( $oParam );
+
+아래와 같이 변경
+if( $oInArg->nSvCartSrl ) // confirmOffer() 재실행 위해서 개별 품목 주문 상태를 미리 변경
+{
+	$sSvCartItemStatusOriginal = $this->_g_aCartItem[$oInArg->nSvCartSrl]->order_status; // reserved to evaulate $nPartialCancelDifference 
+	$this->_g_aCartItem[$oInArg->nSvCartSrl]->order_status = svorder::ORDER_STATE_CANCELLED;
+	$oSvorderModel = &getModel('svorder');
+	$bApiMode = true;
+	if( $this->_g_oOrderHeader->order_referral == svorder::ORDER_REFERRAL_LOCALHOST )
+		$bApiMode = false;
+	$oRst = $oSvorderModel->confirmOffer( $oParam, 'replace', $bApiMode );
+	if(!$oRst->toBool())
+		return $oRst;
+	$oReevalCart = $oRst->get('oCart');
+	unset( $oRst );
+	unset( $oParam );
+}
+
+v 3.0.20
+15th, Aug 2020
+1. svitem v4.0.0에 대응
+./svorder.model.php::getModuleConfig()에서 아래의 코드를
+if( getClass('svitem') )
+{
+	$oSvitemModel = &getModel('svitem');
+	$currency = $oSvitemModel->getCurrencyInfo();
+}
+else
+	return new Object(-1,'msg_svitem_uninstalled');
+
+$oConfig->currency = $currency->currency;
+$oConfig->as_sign = $currency->as_sign;
+$oConfig->decimals = $currency->decimals;
+
+아래와 같이 변경
+$oConfig->currency = 'KRW';
+$oConfig->as_sign = 'Y';
+$oConfig->decimals = 0;
+
+2. 코드 오류 수정
+./svorder.view.php::dispSvorderOrderList()에서 아래의 코드를
+$val->received_reserves = $oSvpromotionModel->getExpectedReserves( $val->total_price - $val->delivery_fee);
+
+아래와 같이 변경
+$val->tobe_received_reserves = $oSvpromotionModel->getExpectedReserves( $val->offered_price - $val->delivery_fee);
+
+./tpl/orderlist.html에서 아래의 코드를
+<span cond="$val->received_reserves" class="block"><block cond="$val->order_status < svorder::ORDER_STATE_COMPLETED">거래완료 시<BR></block>{number_format($val->received_reserves)} 지급</span>
+
+아래와 같이 변경
+<span cond="$val->tobe_received_reserves" class="block"><block cond="$val->order_status < svorder::ORDER_STATE_COMPLETED">거래완료 시<BR></block>{number_format($val->tobe_received_reserves)} 지급</span>
+
+./tpl/orderlist.html에서 아래의 코드를
+<span cond="$val->received_reserves" class="block"><block cond="$val->order_status < svorder::ORDER_STATE_COMPLETED">거래완료 시</block>{number_format($val->received_reserves)} 지급</span></div>
+
+아래와 같이 변경
+<span cond="$val->tobe_received_reserves" class="block"><block cond="$val->order_status < svorder::ORDER_STATE_COMPLETED">거래완료 시</block>{number_format($val->tobe_received_reserves)} 지급</span></div>
+
+./svorder.order_update.php::_getSvOrderHeader()에 아래의 코드 추가
+if(count($oRst->data)!=1)
+	return new Object(-1, 'msg_invalid_order_srl');
+
+v 3.0.21
+27th, Aug 2020
+1. ./excel을 ./ext_class/excel로 이동
+./svorder.admin.controller.php::procSvorderAdminRegisterShippingSerial()에서 아래의 코드를
+$sExcelClass = sprintf( _XE_PATH_.'modules/svorder/excel/Classes/PHPExcel/IOFactory.php' );
+require_once $sExcelClass;
+
+아래와 같이 변경
+require_once _XE_PATH_.'modules/svorder/ext_class/excel/Classes/PHPExcel/IOFactory.php';
+
+2. PHPExcel로 다운로드 적용
+./svorder.admin.controller.php::procSvorderAdminCSVDownloadByOrderAll() 개선
+
+3. 주문 원장 다운로드에 cloud BI 분석용 필드 추가
+./svorder.admin.model.php에서 아래의 코드를
+var $_g_aRawDataFormat = Array( 'order_srl', 'cart_srl', 'order_referral', 'out_pay_product_order_id', 'order_status', 'purchaser_name', 'purchaser_cellphone', 'purchaser_telnum', 'purchaser_email', 'recipient_name', 'recipient_cellphone', 'recipient_telnum', 'recipient_postcode', 'recipient_address', 'is_mobile_access', 'payment_method', 'remitter_name', 'consumed_reserves', 'received_reserves', 'title', 'item_code', 'option_price', 'option_title', 'item_count', 'sum_price', 'offered_price', 'item_discounted_price', 'delivery_fee', 'total_discount_amount', 'total_discounted_price', 'invoice_no', 'express_id', 'delivfee_inadvance', 'delivery_memo', 'regdate');
+
+아래와 같이 변경
+var $_g_aRawDataFormat = ['order_srl', 'cart_srl', 'cart_count', 'order_referral', 'out_pay_product_order_id', 'order_status', 'purchaser_name', 'purchaser_cellphone', 'purchaser_telnum', 'purchaser_email', 'recipient_name', 'recipient_cellphone', 'recipient_telnum', 'recipient_postcode', 'recipient_address', 'is_mobile_access', 'payment_method', 'remitter_name', 'consumed_reserves', 'received_reserves', 'title', 'item_code', 'option_price', 'option_title', 'item_count', 'sum_price', 'offered_price', 'item_discounted_price', 'delivery_fee', 'total_discount_amount', 'total_discounted_price', 'invoice_no', 'express_id', 'delivfee_inadvance', 'delivery_memo', 'date_fk', 'hour_idx', 'regdate'];
+
+4. 미사용 코드 제거
+./svorder.admin.model.php::getDataFormatConfig()에서 아래의 코드 제거
+$sConfigFile = _XE_PATH_.'files/config/svorder.config.php';
+FileHandler::writeFile( $sConfigFile, $sBuff );
+
+5. business intelligence에서 사용할 수 있는 주문 주소 해석 클래스 추가
+./svorder/svorder.addr.php 추가
+
+./svorder.class.php에 아래의 코드 추가
+const S_NULL_SYMBOL = '|@|';
+
+v 3.0.22
+9th, Sep 2020
+1. 주문 원장 다운로드 시 개인정보 보호 모드 추가
+./svorder.admin.model.php에 아래의 코드 추가
+var $_g_aIgnore4Privacy = ['purchaser_name'=>true, 'purchaser_telnum'=>true, 'purchaser_email'=>true, 'recipient_name'=>true, 'recipient_cellphone'=>true, 'recipient_telnum'=>true, 'recipient_postcode'=>true, 'remitter_name'=>true];
+
+./svorder.admin.model.php::getDataFormatConfig($nModuleSrl, $bDumpMode=false)에서 아래의 코드를
+{
+	$aDataFieldConfig = unserialize( FileHandler::readFile( _XE_PATH_.'files/config/svorder.config.php' ) );
+	if( !$aDataFieldConfig || !count( $aDataFieldConfig ) )
+		$aDataFieldConfig = $this->_g_aRawDataFormat;
+	if( $bDumpMode ) // 거래원장 다운로드 시 모든 항목 출력
+		$aDataFieldConfig = $this->_g_aRawDataFormat;
+	$aRet = [];
+	foreach( $aDataFieldConfig as $sColTitle )
+		$aRet[$sColTitle] = new ExtraItem( $nModuleSrl, -1, Context::getLang($sColTitle), $sColTitle, 'N', 'N', 'N', null );
+	return $aRet;
+}
+
+아래와 같이 변경
+public function getDataFormatConfig($oParam)
+{
+	$nModuleSrl = $oParam->nModuleSrl;
+	if( $oParam->bDumpMode == true )
+		$bDumpMode = true;
+
+	if( $oParam->bPrivacyMode == true )
+		$aIgnore4Privacy = $this->_g_aIgnore4Privacy;
+	else
+		$aIgnore4Privacy = [];
+
+	// 저장된 목록 설정값을 구하고 없으면 빈값을 줌.
+	$aDataFieldConfig = unserialize( FileHandler::readFile( _XE_PATH_.'files/config/svorder.config.php' ) );
+	if( !$aDataFieldConfig || !count( $aDataFieldConfig ) )
+		$aDataFieldConfig = $this->_g_aRawDataFormat;
+	if( $bDumpMode ) // 거래원장 다운로드 시 모든 항목 출력
+		$aDataFieldConfig = $this->_g_aRawDataFormat;
+	$aRet = [];
+	foreach( $aDataFieldConfig as $sColTitle )
+	{
+		if( !$aIgnore4Privacy[$sColTitle] )
+			$aRet[$sColTitle] = new ExtraItem( $nModuleSrl, -1, Context::getLang($sColTitle), $sColTitle, 'N', 'N', 'N', null );
+	}
+	return $aRet;
+}
+
+./svorder.admin.controller.php::procSvorderAdminCSVDownloadByOrderAll() 코드 변경
+./tpl/download_order_raw.html 코드 변경
+
+v 3.1.0
+20th, Dec 2020
+1. php v7.4.13에 대응
+모든 new Object()를 new BaseObject()로 변경
+
+v 3.1.1
+20th, Feb 2021
+1. php7에서 mysql_connect() 함수 폐기에 대응
+./svorder.controller.php::_issueAddrSrl()에서 아래 코드를
+$oDB_class = new DBMysql;
+
+아래와 같이 변경
+$oDB_class = new DBMysqli;
+
+./svorder.order_create.php::_issueOrderSrl()에서 아래 코드를
+$oDB_class = new DBMysql;
+
+아래와 같이 변경
+$oDB_class = new DBMysqli;
+
+./ext_class/npay/npay_api.class.php::resetOrderInfo()에서 아래 코드를
+$oDB_class = new DBMysql;
+
+아래와 같이 변경
+$oDB_class = new DBMysqli;
+
+2. php v7.4.13에 대응
+./svorder.order_create.php에서 아래 코드를
+public function svorderCreateOrder($oParams)
+
+아래와 같이 변경
+public function svorderCreateOrder($oParams=null)
+
+3. 모듈 최초 생성 직후 [기본설정] 값이 생성되지 않으면 주문 목록만 표시되고 품목이 표시되지 않는 오류 개선
+./svorder.loadSvOrder.php에서 아래 코드 제거
+if( !$this->_g_oSvorderConfig )
+	return new BaseObject(-1,'msg_svorder_config_required');
+
+v 3.1.2
+26th, Jun 2021
+1. svCrm v 1.3.0에 대응
+./svorder.order_create.php::svorderCreateOrder::_registerCsLog()에서 아래 코드를
+$oCsLog = new svcrmLogTrigger($oCsArg);
+
+아래와 같이 변경
+$oCsLog = new svcrmOrderCsLogTrigger($oCsArg);
+
+./svorder.order_update.php::svorderUpdateOrder::_registerCsLog()에서 아래 코드를
+$oCsLog = new svcrmLogTrigger($oCsArg);
+
+아래와 같이 변경
+$oCsLog = new svcrmOrderCsLogTrigger($oCsArg);
+
+v 3.1.3
+28th, Jul 2021
+1. GAv4용 gaectk.js 대응
+./skins/에서 아래의 코드를
+gatkCart
+
+아래와 같이 변경
+gaectkCart
+
+2. 스킨 코드 오류 수정
+./skins/Trendshop/addr_mgmt.html에서 아래의 코드 제거
+<load target="../../tpl/skin.js/script.js" />
+
+./skins/Trendshop/addressmanagement.html에서 아래의 코드 제거
+<load target="../../tpl/skin.js/script.js" />
+
+./skins/Trendshop/orderitems.html에서 아래의 코드 제거
+<load target="../../tpl/skin.js/script.js" />
+
+v 3.1.4
+10th, Sep 2021
+1. 스킨 명령어 오류 수정
+./skins/Trendshop/orderitems.html에서 아래의 코드를
+gaectkSettlement.queueItemInfo( '{$val->item_srl}', '{$val->item_name}', '{$val->enhanced_item_info->ga_category_name}', '{$val->enhanced_item_info->ga_brand_name}', '{$val->enhanced_item_info->ga_variation_name}', '{$val->sum_discounted_price}', '{$val->quantity}' );
+
+아래와 같이 변경
+gaectkSettlement.queueItemInfo( '{$val->item_srl}', '{$val->item_name}', '{$val->enhanced_item_info->ga_category_name}', '{$val->enhanced_item_info->ga_brand_name}', '{$val->enhanced_item_info->ga_variation_name}', '{$val->price}', '{$val->quantity}' );
+
+------------- todo ----------------------
+./svorder.admin.model.php의 _g_aRawDataFormat에서 sum_price -> normal_price 변경해야 함
+
+./svorder.view.php::dispSvorderNonOrderList()에 아래의 코드 제거
+setCookie('svorder_guest_buy_pw', $sGuestPassword);
+
+./svorder.order_create.php::createSvOrder()에 아래의 코드 추가
+setcookie('svorder_guest_buy_pw', $this->_g_oOrderHeader->non_password, $nExpirationTimestamp);
+
+./svorder.order_create.php::createSvOrder()에서 아래의 코드 제거
+if($_SESSION['svorder_guest_buy_pw'])
+	$sGuestPwd = $_SESSION['svorder_guest_buy_pw'];
+
+./svorder.admin.model.php::getDataFormatConfig()에서 설정 파일 위치 변경
+$sConfigFile = sprintf( _XE_PATH_.'files/config/svorder.config.php' );
+
+퀵배송이면 송장번호 없어도 배송중 상태로 이동
+LGU+ 에스크로 API 적용
+
+svcart svitem svorder의 엉망진창 lang.xml 정리해야 함
+
+./svorder.model.php::confirmOffer()를 svpromotion.model.php::getCheckoutPrice()로 이전해야 함.
+
+./svorder.admin.model.php::procSvorderAdminCSVDownloadByOrderAll()와 procSvorderAdminCSVDownloadByOrder() 코드 병합해야 함.
+
+회원주문보기와 비회원주문보기 코드 정리해야 함 -> dispSvorderNonOrderList가 독립적으로 호출되는 경우가 없음
+
+svpg plugin과 연동되는 에스크로 관리 기능 dispSvorderAdminEscrowDenyConfirm 정상화
+svpg plugin과 연동되는 에스크로 관리 기능 dispSvorderAdminEscrowDelivery 정상화
+./tpl/ordermanagement.html에서 $('.escrow').escrow(); 정상화

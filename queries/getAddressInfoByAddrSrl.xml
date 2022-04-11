@@ -1,0 +1,15 @@
+<query id="getAddressInfoByAddrSrl" action="select">
+	<tables>
+		<table name="svorder_address" />
+	</tables>
+	<columns>
+		<column name="addr_type" />
+		<column name="postcode" />
+		<column name="address" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="address_srl" var="addr_srl" />
+	</conditions>
+	<navigation>
+	</navigation>
+</query>

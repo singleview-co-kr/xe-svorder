@@ -1,0 +1,21 @@
+<query id="getAddressList" action="select">
+	<tables>
+		<table name="svorder_address" />
+	</tables>
+	<columns>
+		<column name="address_srl" />
+		<column name="postcode" />
+		<column name="address" />
+		<column name="regdate" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" />
+		<condition operation="equal" column="addr_type" var="addr_type" notnull="notnull" pipe="and" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="address_srl" order="desc" />
+		<list_count var="list_count" default="5" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

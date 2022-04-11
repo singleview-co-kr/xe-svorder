@@ -1,0 +1,11 @@
+<query id="updateTmpOrderLastChagedDate" action="update">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="last_changed_date" var="last_changed_date" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="order_srl" var="order_srl" notnull="notnull" />
+	</conditions>
+</query>

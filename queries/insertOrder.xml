@@ -1,0 +1,35 @@
+<query id="insertOrder" action="insert">
+	<tables>
+		<table name="svorder_order" />
+	</tables>
+	<columns>
+		<column name="order_srl" var="order_srl" filter="number" notnull="notnull" />
+		<column name="module_srl" var="module_srl" notnull="notnull" />
+		<column name="order_status" var="order_status" />
+		<column name="order_referral" var="order_referral" notnull="notnull" />
+		<column name="member_srl" var="member_srl" />
+		<column name="non_password" var="non_password" default="" />
+		<column name="addr_srl" var="addr_srl" />
+		<column name="purchaser_name" var="purchaser_name" />
+		<column name="purchaser_cellphone" var="purchaser_cellphone" default="" />
+		<column name="purchaser_email" var="purchaser_email" />
+		<column name="recipient_name" var="recipient_name" default="" />
+		<column name="recipient_cellphone" var="recipient_cellphone" default="" />
+		<column name="recipient_telnum" var="recipient_telnum" default="" />
+		<column name="reserves_consume_srl" var="reserves_consume_srl" />
+		<column name="title" var="title" notnull="notnull" />
+		<column name="offered_price" var="total_price" notnull="notnull" />
+		<column name="total_discount_amount" var="total_discount_amount" notnull="notnull" />
+		<column name="delivery_fee" var="delivery_fee" notnull="notnull" />
+		<column name="delivfee_inadvance" var="delivfee_inadvance" default="Y" />
+		<column name="is_promoted" var="is_promoted" default="N" />
+		<column name="utm_source" var="utm_source" />
+		<column name="utm_medium" var="utm_medium" />
+		<column name="utm_campaign" var="utm_campaign" />
+		<column name="utm_term" var="utm_term" />
+		<column name="is_mobile_access" var="is_mobile_access" default="0" />
+		<column name="http_user_agent" var="http_user_agent" />
+		<column name="regdate" var="regdate" default="curdate()" />
+		<column name="last_changed_date" var="last_changed_date" default="curdate()" />
+	</columns>
+</query>

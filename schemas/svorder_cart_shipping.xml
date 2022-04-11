@@ -1,0 +1,10 @@
+<table name="svorder_cart_shipping">
+	<column name="shipping_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<column name="cart_srl" type="number" size="11" notnull="notnull" index="idx_cart_srl" />
+	<column name="order_srl" type="number" size="11" default="0" notnull="notnull" index="idx_order_srl" />
+	<column name="express_id" type="char" size="2" notnull="notnull" />
+	<column name="invoice_no" type="varchar" size="64" notnull="notnull" />
+	<column name="delivery_memo" type="varchar" size="255" />
+	<column name="is_deleted" type="char" size="1" default="N" />
+	<column name="regdate" type="date" notnull="notnull" />
+</table>

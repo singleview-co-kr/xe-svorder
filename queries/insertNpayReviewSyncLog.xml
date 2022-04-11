@@ -1,0 +1,11 @@
+<query id="insertNpayReviewSyncLog" action="insert">
+	<tables>
+		<table name="svorder_npay_review_log" />
+	</tables>
+	<columns>
+		<column name="npay_product_order_id" var="npay_product_order_id" notnull="notnull" />
+		<column name="npay_review_id" var="npay_review_id" notnull="notnull" />
+		<column name="npay_review_info" var="npay_review_info" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

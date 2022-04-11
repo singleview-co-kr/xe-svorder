@@ -1,0 +1,11 @@
+<query id="insertCartItemOffered" action="insert">
+	<tables>
+		<table name="svorder_cart_offered" />
+	</tables>
+	<columns>
+		<column name="cart_srl" var="cart_srl" filter="number" notnull="notnull" />
+		<column name="item_srl" var="item_srl" notnull="notnull" />
+		<column name="item_price_offered" var="item_price_offered" notnull="notnull" />
+		<column name="promotion_info" var="promotion_info" />
+	</columns>
+</query>

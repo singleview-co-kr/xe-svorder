@@ -1,0 +1,96 @@
+<h1>상품 결제 취소 상세 정보</h1>
+<table class="x_table">
+	<tbody>
+		<tr>
+			<th>결제 취소 사유 코드</th>
+			<th>결제 취소 상세 사유</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="cancel_reason" id="cancel_reason">
+				<option value="">결제취소사유선택</option>
+				<option loop="$cancel_reason=>$sReasonCode,$sSymbol" value="{$sSymbol}">{$sReasonCode}</option>
+				</select>
+			</td>
+			<td>
+				<textarea rows="4" name="detail_reason"></textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<block cond="$act=='dispSvorderAdminOrderDetail'">
+<table class="x_table">
+	<thead>
+		<tr>
+			<th>장바구니 번호</th>
+			<th>차감 항목명</th>
+			<th>금액</th>
+		</tr>
+	</thead>
+
+{@
+$aDeductInfo = $order_info->aSingleDeductionInfo[$cart_srl];
+}
+	<tbody id="deduction_detail">
+		<tr loop="$aDeductInfo=>$sTitle,$nDeductAmnt" cond="$sTitle!='bank_name' && $sTitle!='bank_acct' && $sTitle!='acct_holder' && $sTitle!='resultant_refund_amnt' && $sTitle!='deduction_level' && $sTitle!='pg_manual_cancel'">
+			<td>{$nSvCartSrl}</td>
+			<td>{$sTitle}</td>
+			<td>{number_format($nDeductAmnt)}</td>
+		</tr>
+	</tbody>
+	<tfoot align="center" cond="$aDeductInfo['bank_acct']">
+		<tr>
+			<td>환불 계좌 정보<BR>{$aDeductInfo['bank_name']} {$aDeductInfo['bank_acct']} ({$aDeductInfo['acct_holder']})</td>
+			<td>환불 요청액 {number_format($aDeductInfo['resultant_refund_amnt'])}</td>
+{@
+if( $aDeductInfo['pg_manual_cancel'] == 'y' )
+$bPgManualCancelChecked = 'CHECKED onclick="return false;"';
+}
+			<td><input type="checkbox" name="pg_manual_cancel" value="y" {$bPgManualCancelChecked}> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+	<tfoot align="center" cond="$order_info->payment_method != 'CC' && !$aDeductInfo['bank_acct']">
+		<tr>
+			<td><input type="checkbox" name="pg_manual_cancel" value="y"> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+</table>
+</block>
+<block cond="$act=='dispSvorderAdminCartItemManagement'">
+<table class="x_table">
+	<thead>
+		<tr>
+			<th>장바구니 번호</th>
+			<th>차감 항목명</th>
+			<th>금액</th>
+		</tr>
+	</thead>
+
+{@
+$aDeductInfo = $order_info->aSingleDeductionInfo[$cart_srl];
+}
+	<tbody id="deduction_detail">
+		<tr loop="$aDeductInfo=>$sTitle,$nDeductAmnt" cond="$sTitle!='bank_name' && $sTitle!='bank_acct' && $sTitle!='acct_holder' && $sTitle!='resultant_refund_amnt' && $sTitle!='deduction_level' && $sTitle!='pg_manual_cancel'">
+			<td>{$nSvCartSrl}</td>
+			<td>{$sTitle}</td>
+			<td>{number_format($nDeductAmnt)}</td>
+		</tr>
+	</tbody>
+	<tfoot align="center" cond="$aDeductInfo['bank_acct']">
+		<tr>
+			<td>환불 계좌 정보<BR>{$aDeductInfo['bank_name']} {$aDeductInfo['bank_acct']} ({$aDeductInfo['acct_holder']})</td>
+			<td>환불 요청액 {number_format($aDeductInfo['resultant_refund_amnt'])}</td>
+{@
+if( $aDeductInfo['pg_manual_cancel'] == 'y' )
+$bPgManualCancelChecked = 'CHECKED onclick="return false;"';
+}
+			<td><input type="checkbox" name="pg_manual_cancel" value="y" {$bPgManualCancelChecked}> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+	<tfoot align="center" cond="!$aDeductInfo['bank_acct']">
+		<tr>
+			<td><input type="checkbox" name="pg_manual_cancel" value="y"> 수기 취소 완료</td>
+		</tr>
+	</tfoot>
+</table>
+</block>

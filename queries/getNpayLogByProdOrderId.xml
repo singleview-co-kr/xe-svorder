@@ -1,0 +1,22 @@
+<query id="getNpayLogByProdOrderId" action="select">
+	<tables>
+		<table name="svorder_npay_prod_order_log" />
+	</tables>
+	<columns>
+		<column name="order_srl" />
+		<column name="npay_product_order_info" />
+		<column name="npay_order_status" />
+		<column name="npay_last_changed_date" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="npay_product_order_id" var="npay_product_order_id" />
+		<condition operation="equal" column="npay_order_id" var="npay_order_id" pipe="AND" />
+		<condition operation="notequal" column="mode" var="mode" pipe="AND" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="npay_log_srl" order="desc" />
+		<list_count var="list_count" default="1" />
+		<page_count var="page_count" default="1" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

@@ -1,0 +1,12 @@
+<query id="updateDeliveryMemoByCartSrl" action="update">
+	<tables>
+		<table name="svorder_cart" />
+	</tables>
+	<columns>
+		<column name="delivery_memo" var="delivery_memo" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="cart_srl" var="cart_srl" notnull="notnull" />
+		<condition operation="equal" column="order_srl" var="order_srl" notnull="notnull" pipe='and'/>
+	</conditions>
+</query>
